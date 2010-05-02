@@ -11,6 +11,7 @@
 	<packaging>pom</packaging>
 	<name>Cipollino-Build</name>
 	<modules>
+		<module>../cipollino-parent</module>
 		<module>../cipollino-core</module>
 		<module>../cipollino-logger</module>
 		<module>../cipollino-agent</module>
