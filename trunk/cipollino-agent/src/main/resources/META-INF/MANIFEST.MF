@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Agent-Class: com.intellibird.cipollino.agent.Agent
+Premain-Class: com.intellibird.cipollino.agent.Agent
+Can-Redefine-Classes: true
+Can-Retransform-Classes: true
+
+
+
+
