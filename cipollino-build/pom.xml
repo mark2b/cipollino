@@ -5,6 +5,7 @@
 		<artifactId>cipollino-parent</artifactId>
 		<groupId>com.google.code.cipollino</groupId>
 		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../cipollino-parent</relativePath>
 	</parent>
 	<artifactId>cipollino-build</artifactId>
 	<packaging>pom</packaging>
