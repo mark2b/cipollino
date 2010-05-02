@@ -1,0 +1,10 @@
+<%@ jet class="BeforeMethodGenerator" package="com.intellibird.cipollino.core.codegen" skeleton="Codegen.skeleton"%>
+{
+	com.intellibird.cipollino.core.runtime.Runtime __runtime = com.intellibird.cipollino.core.runtime.Runtime.getInstance();
+	com.intellibird.cipollino.core.model.MethodDef __methodDef=(com.intellibird.cipollino.core.model.MethodDef) __runtime.getElement(<%=getMethodDef().hashCode()%>);
+
+	com.intellibird.cipollino.core.actions.ActionsRunner
+		 __runner = new com.intellibird.cipollino.core.actions.ActionsRunner($0,__methodDef,$sig,$args,__methodDef.getDirectiveDef().getActions());
+	__runner.beforeMethod();
+	__runtime.pushRunner(__runner);
+}
