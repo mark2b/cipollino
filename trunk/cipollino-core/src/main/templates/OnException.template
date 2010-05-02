@@ -1,0 +1,11 @@
+<%@ jet class="OnExceptionGenerator" package="com.intellibird.cipollino.core.codegen" skeleton="Codegen.skeleton"%>
+{
+	com.intellibird.cipollino.core.runtime.Runtime __runtime = com.intellibird.cipollino.core.runtime.Runtime.getInstance();
+
+	com.intellibird.cipollino.core.actions.ActionsRunner __runner = __runtime.peekRunner();
+
+	__runner.getCallState().setException($e);
+	__runner.onException();
+	
+	throw $e;
+}

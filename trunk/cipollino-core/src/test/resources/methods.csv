@@ -1,0 +1,4 @@
+java.lang.String com.a.c.b.Class.init(int a)|java.lang.String|com.a.c.b.Class|init|int a
+String com.a.c.b.Class.init(java.lang.String a)|java.lang.String|com.a.c.b.Class|init|java.lang.String a
+void com.a.c.b.Class.init(String a, String b)|void|com.a.c.b.Class|init|java.lang.String a,java.lang.String b
+void com.a.c.b.Class.init(java.lang.String a,String b)|void|com.a.c.b.Class|init|java.lang.String a,java.lang.String b

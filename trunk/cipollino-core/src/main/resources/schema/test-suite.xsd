@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.intellibird.com/cipollino/test-suite/1.0"
+	xmlns:c="http://www.intellibird.com/cipollino/test-suite/1.0"
+	xmlns:jxb="http://java.sun.com/xml/ns/jaxb" elementFormDefault="qualified"
+	jxb:version="2.0">
+	<annotation>
+		<appinfo>
+			<jxb:schemaBindings>
+				<jxb:package name="com.intellibird.cipollino.core.schema" />
+			</jxb:schemaBindings>
+		</appinfo>
+	</annotation>
+	<element name="suite" type="c:SuiteType" />
+	<complexType name="SuiteType">
+		<sequence>
+			<element name="interceptor" type="c:InterceptorType"
+				minOccurs="0" maxOccurs="unbounded" />
+			<element name="traceInterceptor" type="c:TraceInterceptorType"
+				minOccurs="0" maxOccurs="unbounded" />
+			<element name="test" type="c:TestType" minOccurs="0"
+				maxOccurs="unbounded" />
+		</sequence>
+	</complexType>
+	<complexType name="TestType">
+		<sequence>
+			<element name="method" type="c:MethodType" maxOccurs="unbounded" />
+			<element name="assert" type="c:AssertType" maxOccurs="unbounded" />
+		</sequence>
+		<attribute name="name" type="ID" />
+	</complexType>
+	<complexType name="MethodType">
+		<sequence>
+			<element name="parameters" type="c:MethodParameterType"
+				minOccurs="0" maxOccurs="unbounded" /><!--
+			<element name="snapshot">
+				<complexType>
+					<sequence>
+						<element name="item" type="c:SnapshotItemType" maxOccurs="unbounded" />
+					</sequence>
+				</complexType>
+			</element>
+		--></sequence>
+		<attribute name="name" type="string" />
+	</complexType>
+
+	<complexType name="InterceptorType">
+		<sequence>
+			<element name="method" type="c:MethodType" maxOccurs="unbounded" />
+		</sequence>
+		<attribute name="className" type="string" use="required" />
+	</complexType>
+
+	<complexType name="TraceInterceptorType">
+		<complexContent>
+			<extension base="c:InterceptorType">
+				<attribute name="className" use="prohibited" />
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="MethodParameterType">
+		<attribute name="index" type="int" use="optional" default="0" />
+		<attribute name="name" type="string" use="required" />
+	</complexType>
+
+	<complexType name="SnapshotArgumentType">
+		<complexContent>
+			<extension base="c:SnapshotItemType">
+				<attribute name="index" type="int" />
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="SnapshotReturnType">
+		<complexContent>
+			<extension base="c:SnapshotItemType" />
+		</complexContent>
+	</complexType>
+
+	<complexType name="SnapshotItemType" abstract="true">
+		<attribute name="id" type="ID" />
+	</complexType>
+
+	<complexType name="AssertType">
+		<attributeGroup ref="c:assertAttributes" />
+	</complexType>
+	<complexType name="ComparableType">
+
+	</complexType>
+
+	<complexType name="ScriptType">
+		<attribute name="lang" default="groovy" />
+	</complexType>
+
+	<attributeGroup name="assertAttributes">
+		<attribute name="test" type="c:assertOperator" default="equals" />
+		<attribute name="expected" />
+		<attribute name="expected-ref" type="IDREF" />
+		<attribute name="actual" />
+		<attribute name="actual-ref" type="IDREF" />
+	</attributeGroup>
+
+	<simpleType name="assertOperator">
+		<restriction base="string">
+			<enumeration value="equals" />
+			<enumeration value="notEquals" />
+			<enumeration value="null" />
+			<enumeration value="notNull" />
+		</restriction>
+	</simpleType>
+</schema>
