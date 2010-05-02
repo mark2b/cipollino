@@ -10,7 +10,7 @@
 	<annotation>
 		<appinfo>
 			<jxb:schemaBindings>
-				<jxb:package name="com.intellibird.cipollino.logger.schema" />
+				<jxb:package name="com.google.cipollino.logger.schema" />
 			</jxb:schemaBindings>
 		</appinfo>
 	</annotation>

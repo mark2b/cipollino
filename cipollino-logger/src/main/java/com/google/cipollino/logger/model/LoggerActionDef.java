@@ -1,8 +1,8 @@
-package com.intellibird.cipollino.logger.model;
+package com.google.cipollino.logger.model;
 
-import com.intellibird.cipollino.core.actions.Action;
-import com.intellibird.cipollino.core.model.ActionDef;
-import com.intellibird.cipollino.logger.actions.LoggerAction;
+import com.google.cipollino.core.actions.Action;
+import com.google.cipollino.core.model.ActionDef;
+import com.google.cipollino.logger.actions.LoggerAction;
 
 public class LoggerActionDef extends ActionDef {
 

@@ -1,4 +1,4 @@
-package com.intellibird.cipollino.logger.model;
+package com.google.cipollino.logger.model;
 
 public class FormatDef {
 

@@ -1,12 +1,12 @@
-package com.intellibird.cipollino.logger.actions;
+package com.google.cipollino.logger.actions;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.intellibird.cipollino.core.actions.AbstractAction;
-import com.intellibird.cipollino.core.runtime.CallState;
-import com.intellibird.cipollino.logger.model.FormatDef;
-import com.intellibird.cipollino.logger.model.LoggerActionDef;
+import com.google.cipollino.core.actions.AbstractAction;
+import com.google.cipollino.core.runtime.CallState;
+import com.google.cipollino.logger.model.FormatDef;
+import com.google.cipollino.logger.model.LoggerActionDef;
 
 public class LoggerAction extends AbstractAction {
 

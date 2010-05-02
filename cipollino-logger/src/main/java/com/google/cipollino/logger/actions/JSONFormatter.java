@@ -1,4 +1,4 @@
-package com.intellibird.cipollino.logger.actions;
+package com.google.cipollino.logger.actions;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
