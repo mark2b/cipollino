@@ -6,14 +6,14 @@ import javassist.CtClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.google.cipollino.core.DIModule;
+import com.google.cipollino.core.inst.ClassTransformer;
+import com.google.cipollino.core.model.DirectiveDef;
+import com.google.cipollino.core.model.Directives;
+import com.google.cipollino.core.model.MethodDef;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.intellibird.cipollino.core.DIModule;
-import com.intellibird.cipollino.core.inst.ClassTransformer;
-import com.intellibird.cipollino.core.model.Directives;
-import com.intellibird.cipollino.core.model.DirectiveDef;
-import com.intellibird.cipollino.core.model.MethodDef;
 
 @Test
 public class TransformationTest {
@@ -22,7 +22,7 @@ public class TransformationTest {
 	ClassTransformer transformer;
 
 	@Inject
-	com.intellibird.cipollino.core.runtime.Runtime runtime;
+	com.google.cipollino.core.runtime.Runtime runtime;
 
 	@BeforeClass
 	void init() {
@@ -33,7 +33,7 @@ public class TransformationTest {
 	@Test
 	void addInterceptorTest() throws Exception {
 		MethodDef method = new MethodDef();
-		method.setName("String com.intellibird.cipollino.core.test.data.Transformation1.concat(String s1, String s2)");
+		method.setName("String com.google.cipollino.core.test.data.Transformation1.concat(String s1, String s2)");
 		method.getArguments().put("s1", "java.lang.String");
 		method.getArguments().put("s2", "java.lang.String");
 

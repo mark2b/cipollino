@@ -4,7 +4,7 @@ import static org.testng.Assert.assertEquals;
 
 import org.testng.annotations.Test;
 
-import com.intellibird.cipollino.core.error.ErrorCode;
+import com.google.cipollino.core.error.ErrorCode;
 
 public class ErrorCodeTest {
 

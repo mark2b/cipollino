@@ -1,4 +1,4 @@
-//package com.intellibird.cipollino.core.test;
+//package com.google.cipollino.core.test;
 //
 //import static org.testng.Assert.assertNotNull;
 //import static org.testng.Assert.assertTrue;
@@ -11,13 +11,13 @@
 //import com.google.inject.Guice;
 //import com.google.inject.Inject;
 //import com.google.inject.Injector;
-//import com.intellibird.cipollino.core.DIModule;
-//import com.intellibird.cipollino.core.error.Status;
-//import com.intellibird.cipollino.core.error.Status.Severity;
-//import com.intellibird.cipollino.core.model.Directives;
-//import com.intellibird.cipollino.core.schema.DirectivesType;
-//import com.intellibird.cipollino.core.xml.ModelSerializer;
-//import com.intellibird.cipollino.core.xml.X2JModelFactory;
+//import com.google.cipollino.core.DIModule;
+//import com.google.cipollino.core.error.Status;
+//import com.google.cipollino.core.error.Status.Severity;
+//import com.google.cipollino.core.model.Directives;
+//import com.google.cipollino.core.schema.DirectivesType;
+//import com.google.cipollino.core.xml.ModelSerializer;
+//import com.google.cipollino.core.xml.X2JModelFactory;
 //
 //public class X2JModelFactoryTest {
 //
@@ -42,7 +42,7 @@
 //		assertNotNull(directivesType);
 //		Directives suite = modelFactory.create(directivesType);
 //		// assertTrue(suite.getTests().containsKey("test1"));
-//		// com.intellibird.cipollino.core.model.Test test =
+//		// com.google.cipollino.core.model.Test test =
 //		// suite.getTests().get("test1");
 //		// assertTrue(test.getMethods().containsKey("method1"));
 //		// Method method = test.getMethods().get("method1");
