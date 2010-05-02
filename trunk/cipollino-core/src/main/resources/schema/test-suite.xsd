@@ -7,7 +7,7 @@
 	<annotation>
 		<appinfo>
 			<jxb:schemaBindings>
-				<jxb:package name="com.intellibird.cipollino.core.schema" />
+				<jxb:package name="com.google.cipollino.core.schema" />
 			</jxb:schemaBindings>
 		</appinfo>
 	</annotation>

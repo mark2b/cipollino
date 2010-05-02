@@ -1,8 +1,8 @@
-<%@ jet class="OnExceptionGenerator" package="com.intellibird.cipollino.core.codegen" skeleton="Codegen.skeleton"%>
+<%@ jet class="OnExceptionGenerator" package="com.google.cipollino.core.codegen" skeleton="Codegen.skeleton"%>
 {
-	com.intellibird.cipollino.core.runtime.Runtime __runtime = com.intellibird.cipollino.core.runtime.Runtime.getInstance();
+	com.google.cipollino.core.runtime.Runtime __runtime = com.google.cipollino.core.runtime.Runtime.getInstance();
 
-	com.intellibird.cipollino.core.actions.ActionsRunner __runner = __runtime.peekRunner();
+	com.google.cipollino.core.actions.ActionsRunner __runner = __runtime.peekRunner();
 
 	__runner.getCallState().setException($e);
 	__runner.onException();

@@ -8,14 +8,14 @@ import java.io.InputStreamReader;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.google.cipollino.core.DIModule;
+import com.google.cipollino.core.error.Status;
+import com.google.cipollino.core.error.Status.Severity;
+import com.google.cipollino.core.schema.DirectivesType;
+import com.google.cipollino.core.xml.ModelSerializer;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.intellibird.cipollino.core.DIModule;
-import com.intellibird.cipollino.core.error.Status;
-import com.intellibird.cipollino.core.error.Status.Severity;
-import com.intellibird.cipollino.core.schema.DirectivesType;
-import com.intellibird.cipollino.core.xml.ModelSerializer;
 
 public class ModelSerializerTest {
 

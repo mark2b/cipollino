@@ -15,8 +15,8 @@ import org.testng.annotations.Test;
 
 import au.com.bytecode.opencsv.CSVReader;
 
-import com.intellibird.cipollino.core.model.MethodDef;
-import com.intellibird.cipollino.core.parsers.MethodParser;
+import com.google.cipollino.core.model.MethodDef;
+import com.google.cipollino.core.parsers.MethodParser;
 
 public class MethodParserTest {
 
