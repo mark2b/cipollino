@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
-Agent-Class: com.intellibird.cipollino.agent.Agent
-Premain-Class: com.intellibird.cipollino.agent.Agent
+Agent-Class: com.google.cipollino.agent.Agent
+Premain-Class: com.google.cipollino.agent.Agent
 Can-Redefine-Classes: true
 Can-Retransform-Classes: true
 

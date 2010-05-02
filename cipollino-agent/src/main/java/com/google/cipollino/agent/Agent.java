@@ -1,4 +1,4 @@
-package com.intellibird.cipollino.agent;
+package com.google.cipollino.agent;
 
 import java.io.File;
 import java.lang.instrument.Instrumentation;
@@ -12,14 +12,14 @@ import org.apache.commons.cli.PosixParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.cipollino.core.error.ErrorCode;
+import com.google.cipollino.core.error.Status;
+import com.google.cipollino.core.error.Status.Severity;
+import com.google.cipollino.core.runtime.StartOptions;
+import com.google.cipollino.core.services.TransformationService;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.intellibird.cipollino.core.error.ErrorCode;
-import com.intellibird.cipollino.core.error.Status;
-import com.intellibird.cipollino.core.error.Status.Severity;
-import com.intellibird.cipollino.core.runtime.StartOptions;
-import com.intellibird.cipollino.core.services.TransformationService;
 
 public class Agent {
 
@@ -46,8 +46,8 @@ public class Agent {
 	}
 
 	private void initDI() {
-		Injector injector = Guice.createInjector(new com.intellibird.cipollino.core.DIModule(),
-				new com.intellibird.cipollino.logger.DIModule());
+		Injector injector = Guice.createInjector(new com.google.cipollino.core.DIModule(),
+				new com.google.cipollino.logger.DIModule());
 		injector.injectMembers(this);
 	}
 
