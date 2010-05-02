@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.intellibird.cipollino</groupId>
+		<groupId>com.google.code.cipollino</groupId>
 		<artifactId>cipollino-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../cipollino-parent</relativePath>
@@ -75,11 +75,11 @@
 	</build>
 	<dependencies>
 		<dependency>
-			<groupId>com.intellibird.cipollino</groupId>
+			<groupId>com.google.code.cipollino</groupId>
 			<artifactId>cipollino-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.intellibird.cipollino</groupId>
+			<groupId>com.google.code.cipollino</groupId>
 			<artifactId>cipollino-logger</artifactId>
 		</dependency>
 		<dependency>

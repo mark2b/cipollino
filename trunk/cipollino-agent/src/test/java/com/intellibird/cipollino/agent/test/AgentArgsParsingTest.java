@@ -3,10 +3,10 @@ package com.intellibird.cipollino.agent.test;
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;
 
-import com.intellibird.cipollino.agent.Agent;
-import com.intellibird.cipollino.core.error.ErrorCode;
-import com.intellibird.cipollino.core.error.Status;
-import com.intellibird.cipollino.core.runtime.StartOptions;
+import com.google.cipollino.agent.Agent;
+import com.google.cipollino.core.error.ErrorCode;
+import com.google.cipollino.core.error.Status;
+import com.google.cipollino.core.runtime.StartOptions;
 
 public class AgentArgsParsingTest {
 

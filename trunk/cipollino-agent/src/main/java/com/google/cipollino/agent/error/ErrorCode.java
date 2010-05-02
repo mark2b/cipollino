@@ -1,10 +1,10 @@
-package com.intellibird.cipollino.agent.error;
+package com.google.cipollino.agent.error;
 
 import java.util.Locale;
 
-import com.intellibird.cipollino.core.annotations.Message;
-import com.intellibird.cipollino.core.error.ErrorClass;
-import com.intellibird.cipollino.core.i18n.MessageFormatter;
+import com.google.cipollino.core.annotations.Message;
+import com.google.cipollino.core.error.ErrorClass;
+import com.google.cipollino.core.i18n.MessageFormatter;
 
 public enum ErrorCode {
 	/**
