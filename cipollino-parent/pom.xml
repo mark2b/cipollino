@@ -39,6 +39,8 @@
 					<version>2.0</version>
 					<configuration>
 						<autoVersionSubmodules>true</autoVersionSubmodules>
+						<username>mark2b</username>
+						<password>${svnPassword}</password>
 					</configuration>
 				</plugin>
 				<plugin>
