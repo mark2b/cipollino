@@ -3,7 +3,7 @@
 	<groupId>com.google.code.cipollino</groupId>
 	<artifactId>cipollino-parent</artifactId>
 	<name>Cipollino - Parent</name>
-	<version>0.1-SHAPSHOT</version>
+	<version>0.1-SHAPSHOT-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<url>http://code.google.com/p/cipollino/</url>
 	<licenses>

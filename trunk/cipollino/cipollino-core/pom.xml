@@ -2,7 +2,7 @@
 	<parent>
 		<groupId>com.google.code.cipollino</groupId>
 		<artifactId>cipollino-parent</artifactId>
-		<version>0.1-SHAPSHOT</version>
+		<version>0.1-SHAPSHOT-SNAPSHOT</version>
 		<relativePath>../cipollino-parent</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>

@@ -3,7 +3,7 @@
 	<parent>
 		<artifactId>cipollino-parent</artifactId>
 		<groupId>com.google.code.cipollino</groupId>
-		<version>0.1-SHAPSHOT</version>
+		<version>0.1-SHAPSHOT-SNAPSHOT</version>
 		<relativePath>../cipollino-parent</relativePath>
 	</parent>
 	<artifactId>cipollino-logger</artifactId>
