@@ -41,6 +41,14 @@
 						<autoVersionSubmodules>true</autoVersionSubmodules>
 					</configuration>
 				</plugin>
+				<plugin>
+					<artifactId>maven-scm-plugin</artifactId>
+					<version>1.3</version>
+					<configuration>
+						<username>mark2b</username>
+						<password>${svnPassword}</password>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
