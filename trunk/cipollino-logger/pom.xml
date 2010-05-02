@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<artifactId>cipollino-parent</artifactId>
-		<groupId>com.intellibird.cipollino</groupId>
+		<groupId>com.google.code.cipollino</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../cipollino-parent</relativePath>
 	</parent>
@@ -33,7 +33,7 @@
 	</build>
 	<dependencies>
 		<dependency>
-			<groupId>com.intellibird.cipollino</groupId>
+			<groupId>com.google.code.cipollino</groupId>
 			<artifactId>cipollino-core</artifactId>
 		</dependency>
 		<dependency>

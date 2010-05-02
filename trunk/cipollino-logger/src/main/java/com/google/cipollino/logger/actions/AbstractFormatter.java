@@ -1,4 +1,4 @@
-package com.intellibird.cipollino.logger.actions;
+package com.google.cipollino.logger.actions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.intellibird.cipollino.core.runtime.CallState;
+import com.google.cipollino.core.runtime.CallState;
 
 public abstract class AbstractFormatter implements Formatter {
 

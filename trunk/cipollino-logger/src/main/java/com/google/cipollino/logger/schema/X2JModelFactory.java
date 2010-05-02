@@ -1,21 +1,21 @@
-package com.intellibird.cipollino.logger.schema;
+package com.google.cipollino.logger.schema;
 
 import java.util.List;
 
+import com.google.cipollino.core.annotations.ModelFactory;
+import com.google.cipollino.core.model.MethodDef;
+import com.google.cipollino.core.model.ProfileActionDef;
+import com.google.cipollino.core.model.ScriptDef;
+import com.google.cipollino.core.schema.MethodType;
+import com.google.cipollino.core.schema.PhaseType;
+import com.google.cipollino.core.schema.ProfileActionType;
+import com.google.cipollino.core.schema.ScriptType;
+import com.google.cipollino.core.xml.AbstractX2JModelFactory;
+import com.google.cipollino.logger.model.FormatDef;
+import com.google.cipollino.logger.model.LoggerActionDef;
 import com.google.inject.Singleton;
-import com.intellibird.cipollino.core.annotations.ModelFactory;
-import com.intellibird.cipollino.core.model.MethodDef;
-import com.intellibird.cipollino.core.model.ProfileActionDef;
-import com.intellibird.cipollino.core.model.ScriptDef;
-import com.intellibird.cipollino.core.schema.MethodType;
-import com.intellibird.cipollino.core.schema.PhaseType;
-import com.intellibird.cipollino.core.schema.ProfileActionType;
-import com.intellibird.cipollino.core.schema.ScriptType;
-import com.intellibird.cipollino.core.xml.AbstractX2JModelFactory;
-import com.intellibird.cipollino.logger.model.FormatDef;
-import com.intellibird.cipollino.logger.model.LoggerActionDef;
 
-@ModelFactory("com.intellibird.cipollino.logger.schema.ModelFactory")
+@ModelFactory("com.google.cipollino.logger.schema.ModelFactory")
 @Singleton
 public class X2JModelFactory extends AbstractX2JModelFactory {
 

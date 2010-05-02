@@ -1,4 +1,4 @@
-package com.intellibird.cipollino.logger.actions;
+package com.google.cipollino.logger.actions;
 
 public class SimpleFormatter extends AbstractFormatter {
 
