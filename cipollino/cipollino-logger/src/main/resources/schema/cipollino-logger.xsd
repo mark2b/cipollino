@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.intellibird.com/cipollino-logger/1.0"
+	xmlns:c="http://www.intellibird.com/cipollino/1.0" xmlns:l="http://www.intellibird.com/cipollino-logger/1.0"
+	xmlns:jxb="http://java.sun.com/xml/ns/jaxb" elementFormDefault="qualified"
+	jxb:version="2.0">
+
+	<import namespace="http://www.intellibird.com/cipollino/1.0"
+		schemaLocation="../../../../../cipollino-core/src/main/resources/schema/cipollino.xsd" />
+
+	<annotation>
+		<appinfo>
+			<jxb:schemaBindings>
+				<jxb:package name="com.google.cipollino.logger.schema" />
+			</jxb:schemaBindings>
+		</appinfo>
+	</annotation>
+
+	<complexType name="LoggerActionType">
+		<complexContent>
+			<extension base="c:ActionType">
+				<sequence>
+					<element name="format" type="l:FormatType" minOccurs="0"
+						maxOccurs="2" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+
+	<complexType name="FormatType">
+		<simpleContent>
+			<extension base="string">
+				<attribute name="style" type="string" default="json" />
+				<attribute name="phase" type="c:PhaseType" default="before" />
+			</extension>
+		</simpleContent>
+	</complexType>
+
+</schema>
