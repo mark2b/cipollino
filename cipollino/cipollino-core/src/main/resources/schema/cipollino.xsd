@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.intellibird.com/cipollino/1.0"
+	xmlns:c="http://www.intellibird.com/cipollino/1.0" xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+	elementFormDefault="qualified" jxb:version="2.0">
+	<annotation>
+		<appinfo>
+			<jxb:schemaBindings>
+				<jxb:package name="com.google.cipollino.core.schema" />
+			</jxb:schemaBindings>
+		</appinfo>
+	</annotation>
+	<element name="directives" type="c:DirectivesType" />
+
+	<complexType name="DirectivesType">
+		<sequence>
+			<element name="directive" type="c:DirectiveType" minOccurs="0"
+				maxOccurs="unbounded" />
+		</sequence>
+	</complexType>
+
+	<complexType name="MethodType">
+		<sequence>
+			<element name="parameters" type="c:MethodParameterType"
+				minOccurs="0" maxOccurs="unbounded" />
+		</sequence>
+		<attribute name="name" type="string" />
+	</complexType>
+
+	<complexType name="DirectiveType">
+		<sequence>
+			<element name="method" type="c:MethodType" maxOccurs="unbounded" />
+			<element name="action" type="c:ActionType" minOccurs="0"
+				maxOccurs="unbounded" />
+		</sequence>
+	</complexType>
+
+	<complexType name="ActionType">
+		<sequence>
+			<element name="script" type="c:ScriptType" minOccurs="0"
+				maxOccurs="unbounded" />
+		</sequence>
+	</complexType>
+
+	<complexType name="TraceActionType">
+		<complexContent>
+			<extension base="c:ActionType">
+				<sequence>
+					<element name="format" type="c:FormatType" minOccurs="0"
+						maxOccurs="2" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="ProfileActionType">
+		<complexContent>
+			<extension base="c:ActionType" />
+		</complexContent>
+	</complexType>
+
+
+	<complexType name="MethodParameterType">
+		<attribute name="index" type="int" use="optional" default="0" />
+		<attribute name="name" type="string" use="required" />
+	</complexType>
+
+	<complexType name="ScriptType">
+		<simpleContent>
+			<extension base="string">
+				<attribute name="lang" type="string" default="java" />
+				<attribute name="assignTo" type="string" />
+				<attribute name="phase" type="c:PhaseType" default="before" />
+			</extension>
+		</simpleContent>
+	</complexType>
+
+	<complexType name="FormatType">
+		<simpleContent>
+			<extension base="string">
+				<attribute name="style" type="string" default="json" />
+				<attribute name="phase" type="c:PhaseType" default="before" />
+			</extension>
+		</simpleContent>
+	</complexType>
+
+	<simpleType name="PhaseType">
+		<restriction base="string">
+			<enumeration value="before"></enumeration>
+			<enumeration value="after"></enumeration>
+		</restriction>
+	</simpleType>
+
+</schema>

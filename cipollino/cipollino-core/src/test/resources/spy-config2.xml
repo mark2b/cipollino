@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<c:spy-config xmlns:c="http://www.intellibird.com/cipollino/spy/1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<c:interceptor className="sss" xsi:type="c:TraceInterceptorType">
+		<c:method name="a">
+		</c:method>
+	</c:interceptor>
+</c:spy-config>
