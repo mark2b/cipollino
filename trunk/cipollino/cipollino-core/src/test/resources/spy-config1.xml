@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<c:directives xmlns:c="http://www.intellibird.com/cipollino/1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<c:directive>
+		<c:method name="a">
+		</c:method>
+		<c:action xsi:type="c:TraceActionType" />
+	</c:directive>
+</c:directives>
