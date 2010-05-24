@@ -27,8 +27,8 @@ public class Main {
 				VirtualMachine machine = VirtualMachine.attach(pid);
 				machine
 						.loadAgent(
-								"/home/mark/projects/intellibird/cipollino/cipollino-build/target/output/cipollino/lib/cipollino-agent-0.2-SNAPSHOT.jar",
-								"--file=/home/mark/projects/intellibird/cipollino/cipollino-agent/src/test/resources/jboss-control-file.xml");
+								"/Users/mark/projects/cipollino/cipollino-build/target/output/cipollino/lib/cipollino-agent-0.2-SNAPSHOT.jar",
+								"--file=/Users/mark/projects/cipollino/cipollino-agent/src/test/resources/jboss-control-file.xml");
 			} catch (AttachNotSupportedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
