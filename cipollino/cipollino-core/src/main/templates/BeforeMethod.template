@@ -1,0 +1,13 @@
+<%@ jet class="BeforeMethodGenerator" package="org.cipollino.core.codegen" skeleton="Codegen.skeleton"%>
+{
+	System.out.println("BEFORE");
+	try {
+		org.cipollino.core.runtime.Runtime __runtime = org.cipollino.core.runtime.Runtime.getInstance();
+		org.cipollino.core.model.MethodDef __methodDef=(org.cipollino.core.model.MethodDef) __runtime.getElement(<%=getMethodDef().hashCode()%>);
+		org.cipollino.core.actions.ActionsRunner __runner = new org.cipollino.core.actions.ActionsRunner($0,__methodDef,$args,__methodDef.getTargetDef().getActions());
+		__runner.beforeMethod();
+		__runtime.pushRunner(__runner);
+	} catch (java.lang.Throwable t) {
+		t.printStackTrace();
+	}
+}

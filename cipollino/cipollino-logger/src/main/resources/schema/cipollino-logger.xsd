@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://cipollino.googlecode.com/cipollino-logger/1.0"
+	xmlns:c="http://cipollino.googlecode.com/cipollino/1.0" xmlns:l="http://cipollino.googlecode.com/cipollino-logger/1.0"
+	xmlns:jxb="http://java.sun.com/xml/ns/jaxb" elementFormDefault="qualified"
+	jxb:version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://cipollino.googlecode.com/cipollino/1.0 ../../../../../cipollino-core/src/main/resources/schema/cipollino.xsd">
+
+	<import namespace="http://cipollino.googlecode.com/cipollino/1.0"
+		schemaLocation="../../../../../cipollino-core/src/main/resources/schema/cipollino.xsd" />
+	<complexType name="LoggerActionType">
+		<complexContent>
+			<extension base="c:ActionType">
+				<sequence>
+					<element name="style" type="l:StyleType" minOccurs="0" />
+					<element name="format" type="l:FormatType" minOccurs="0"
+						maxOccurs="2" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+
+	<complexType name="FormatType">
+		<simpleContent>
+			<extension base="string">
+				<attribute name="phase" type="c:PhaseType" />
+			</extension>
+		</simpleContent>
+	</complexType>
+
+	<complexType name="StyleType">
+		<attribute name="useToString" type="boolean" default="true" />
+		<attribute name="printParentFields" type="boolean" default="false" />
+		<attribute name="formatted" type="boolean" default="true" />
+	</complexType>
+
+</schema>
