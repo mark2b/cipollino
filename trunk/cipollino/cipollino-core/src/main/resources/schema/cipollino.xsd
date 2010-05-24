@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://cipollino.googlecode.com/cipollino/1.0"
+	xmlns:c="http://cipollino.googlecode.com/cipollino/1.0" xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+	elementFormDefault="qualified" jxb:version="2.0">
+	<element name="project" type="c:ProjectType" />
+
+	<complexType name="ProjectType">
+		<sequence>
+			<element name="classPath" type="c:ClassPathType" minOccurs="0"
+				maxOccurs="1" />
+			<element name="target" type="c:TargetType" minOccurs="0"
+				maxOccurs="unbounded" />
+		</sequence>
+	</complexType>
+
+	<complexType name="MethodType">
+		<sequence>
+			<element name="parameters" type="c:MethodParameterType"
+				minOccurs="0" maxOccurs="unbounded" />
+		</sequence>
+		<attribute name="name" type="string" />
+	</complexType>
+
+	<complexType name="TargetType">
+		<sequence>
+			<element name="method" type="c:MethodType" minOccurs="0"
+				maxOccurs="unbounded" />
+			<element name="action" type="c:ActionType" minOccurs="0"
+				maxOccurs="unbounded" />
+		</sequence>
+	</complexType>
+
+	<complexType name="ActionType">
+		<sequence>
+			<element name="script" type="c:ScriptType" minOccurs="0"
+				maxOccurs="unbounded" />
+		</sequence>
+	</complexType>
+
+	<complexType name="MethodParameterType">
+		<attribute name="index" type="int" use="optional" default="0" />
+		<attribute name="name" type="string" use="required" />
+	</complexType>
+
+	<complexType name="ScriptType">
+		<simpleContent>
+			<extension base="string">
+				<attribute name="lang" type="string" default="java" />
+				<attribute name="assignTo" type="string" />
+				<attribute name="phase" type="c:PhaseType" default="before" />
+			</extension>
+		</simpleContent>
+	</complexType>
+
+	<simpleType name="PhaseType">
+		<restriction base="string">
+			<enumeration value="before"></enumeration>
+			<enumeration value="after"></enumeration>
+			<enumeration value="exception"></enumeration>
+			<enumeration value="finally"></enumeration>
+		</restriction>
+	</simpleType>
+
+	<complexType name="ClassPathType">
+		<sequence>
+			<element name="classes" type="string" minOccurs="0"
+				maxOccurs="unbounded" />
+			<element name="jar" type="string" minOccurs="0" maxOccurs="unbounded" />
+			<element name="dir" type="string" minOccurs="0" maxOccurs="unbounded" />
+			<element name="path" type="string" minOccurs="0" maxOccurs="unbounded" />
+		</sequence>
+	</complexType>
+
+</schema>

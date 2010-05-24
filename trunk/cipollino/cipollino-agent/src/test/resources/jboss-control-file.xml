@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<c:project xmlns:c="http://www.intellibird.com/cipollino/1.0"
+	xmlns:l="http://www.intellibird.com/cipollino-logger/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<c:classPath>
+		<c:dir>/home/mark/lib/jboss-5.1.0.GA/common/lib</c:dir>
+		<!--
+			<c:jar>/Users/mark/lib/jboss-5.1.0.GA/lib/jboss-logging-log4j.jar</c:jar>
+		-->
+	</c:classPath>
+	<c:target>
+		<c:method name="void org.jboss.jmx.adaptor.html.HtmlAdaptorServlet.doGet()" />
+
+		<c:action xsi:type="l:LoggerActionType">
+			<c:script assignTo="thread" phase="before"><![CDATA[
+				return Thread.currentThread().getName(); 
+			]]></c:script>
+			<l:format phase="before"><![CDATA[>>> ${thread} ${method} ${parameters}]]></l:format>
+			<l:format phase="after"><![CDATA[<<< ${method} ${result}]]></l:format>
+		</c:action>
+	</c:target>
+</c:project>
