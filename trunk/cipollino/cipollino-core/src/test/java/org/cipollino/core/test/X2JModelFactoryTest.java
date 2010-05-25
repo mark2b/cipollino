@@ -9,8 +9,8 @@ import org.cipollino.core.DIModule;
 import org.cipollino.core.actions.Action;
 import org.cipollino.core.actions.DefaultAction;
 import org.cipollino.core.error.Status;
-import org.cipollino.core.model.Project;
-import org.cipollino.core.schema.ProjectType;
+import org.cipollino.core.model.Agent;
+import org.cipollino.core.schema.AgentType;
 import org.cipollino.core.schema.X2JModelFactory;
 import org.cipollino.core.xml.ModelSerializer;
 import org.testng.annotations.BeforeClass;
@@ -37,10 +37,10 @@ public class X2JModelFactoryTest {
 	@Test
 	public void parseTest() {
 		Status status = Status.createStatus();
-		ProjectType projectType = modelSerializer.read(status, new InputStreamReader(getClass().getResourceAsStream("/control-file1.xml")), ProjectType.class);
+		AgentType agentType = modelSerializer.read(status, new InputStreamReader(getClass().getResourceAsStream("/control-file1.xml")), AgentType.class);
 		assertTrue(status.isSuccess());
-		assertNotNull(projectType);
-		Project project = modelFactory.create(projectType);
+		assertNotNull(agentType);
+		Agent project = modelFactory.create(agentType);
 		Action action = project.getTargets().get(0).getActions().get(0).createAction();
 		assertTrue(action instanceof DefaultAction);
 		// assertTrue(suite.getTests().containsKey("test1"));

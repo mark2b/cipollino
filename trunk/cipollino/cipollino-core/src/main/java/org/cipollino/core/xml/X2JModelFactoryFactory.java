@@ -17,10 +17,8 @@ public class X2JModelFactoryFactory {
 		if (o == null) {
 			return null;
 		}
-		System.out.println("X2JModelFactoryFactory.getFactory() " + o);
 		Package pckg = o.getClass().getPackage();
 		String className = pckg.getName() + ".ModelFactory";
-		System.out.println("X2JModelFactoryFactory.getFactory() " + className);
 		AbstractX2JModelFactory factory = injector.getInstance(Key.get(AbstractX2JModelFactory.class, ModelFactories.named(className)));
 		return factory;
 	}
