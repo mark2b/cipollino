@@ -9,8 +9,7 @@ import java.io.InputStreamReader;
 import org.cipollino.core.DIModule;
 import org.cipollino.core.error.Status;
 import org.cipollino.core.schema.ActionType;
-import org.cipollino.core.schema.ProjectType;
-import org.cipollino.core.schema.ScriptType;
+import org.cipollino.core.schema.AgentType;
 import org.cipollino.core.xml.ModelSerializer;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -33,11 +32,11 @@ public class ModelSerializerTest {
 	@Test
 	public void testRead() throws Exception {
 		Status status = Status.createStatus();
-		ProjectType projectType = modelSerializer.read(status, new InputStreamReader(getClass().getResourceAsStream("/control-file1.xml")), ProjectType.class);
+		AgentType agentType = modelSerializer.read(status, new InputStreamReader(getClass().getResourceAsStream("/control-file1.xml")), AgentType.class);
 		assertTrue(status.isSuccess());
-		assertNotNull(projectType);
-		assertEquals(projectType.getTarget().size(), 1);
-		ActionType actionType = projectType.getTarget().get(0).getAction().get(0);
-		ScriptType scriptType = actionType.getScript().get(0);
+		assertNotNull(agentType);
+		assertEquals(agentType.getTarget().size(), 1);
+		ActionType actionType = agentType.getTarget().get(0).getAction().get(0);
+		actionType.getScript().get(0);
 	}
 }
