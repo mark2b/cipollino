@@ -19,6 +19,8 @@ public class Runtime {
 
 	private static Runtime instance;
 
+	private Map<String, Set<Class<?>>> loadedClasses = new HashMap<String, Set<Class<?>>>(20000);
+
 	private Data data = new Data();
 
 	public Runtime() {
