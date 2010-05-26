@@ -13,6 +13,7 @@
 			<useTransitiveDependencies>true</useTransitiveDependencies>
 			<useTransitiveFiltering>true</useTransitiveFiltering>
 			<useProjectArtifact>false</useProjectArtifact>
+			<outputFileNameMapping>${artifact.artifactId}-${artifact.version}.${artifact.extension}</outputFileNameMapping>
 		</dependencySet>
 	</dependencySets>
 

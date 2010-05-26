@@ -7,12 +7,13 @@ public class MethodDef {
 
 	private TargetDef targetDef;
 
-
 	private String className;
 
 	private String methodName;
 
 	private String name;
+
+	private boolean deleted = false;
 
 	private Map<String, String> arguments = new LinkedHashMap<String, String>();
 
@@ -23,7 +24,6 @@ public class MethodDef {
 	public void setName(String name) {
 		this.name = name;
 	}
-
 
 	public String getClassName() {
 		return className;
@@ -55,5 +55,13 @@ public class MethodDef {
 
 	public String createHiddenName() {
 		return String.format("___%s$hidden", getMethodName());
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 }
