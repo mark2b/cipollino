@@ -6,6 +6,7 @@ import static org.cipollino.core.error.ErrorCode.CompilationFailure;
 import static org.cipollino.core.error.ErrorCode.ControlFileMissing;
 import static org.cipollino.core.error.ErrorCode.ControlFileNotFound;
 import static org.cipollino.core.error.ErrorCode.RuntimeClassNotFound;
+import static org.cipollino.core.error.ErrorCode.RuntimeNonUniqueClass;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -80,16 +81,20 @@ public class TransformationService {
 	@Inject
 	private ClassPool classPool;
 
-	public Status start(final Instrumentation instrumentation, final StartOptions options) {
+	public Status start(final Instrumentation instrumentation,
+			final StartOptions options) {
 		this.options = options;
 		final Status status = Status.createStatus();
 		this.instrumentation = instrumentation;
 		if (options.getControlFile() != null) {
-			loadControlFile(options, status);
-			if (status.isSuccess()) {
+			if (loadControlFile(status, options).isSuccess()) {
 				instrumentation.addTransformer(classTransformer, true);
-				transformClasses(status);
-				controlFileService.start();
+				if (options.isAttached()) {
+					transformLoadedClasses(status);
+				}
+				if (status.isSuccess()) {
+					controlFileService.start();
+				}
 			}
 		} else {
 			status.add(Status.createStatus(ControlFileMissing));
@@ -97,58 +102,63 @@ public class TransformationService {
 		return status;
 	}
 
-	private void loadControlFile(StartOptions options, Status status) {
+	private Status loadControlFile(Status status, StartOptions options) {
 		Agent model = loadModel(status, options.getControlFile());
 		if (status.isSuccess()) {
-			loadDirectives(status, model);
+			loadTargets(status, model);
 			classPathService.updateClassPool(model.getClassPathDef());
 		}
+		return status;
 	}
 
-	public void transformClasses(Status status) {
+	public void transformLoadedClasses(Status status) {
 		try {
 			Map<String, Set<Class<?>>> map = getAllLoadedClasses();
-			List<Class<?>> classDefinitions = new ArrayList<Class<?>>();
-			for (String className : runtime.getTransformedClasses()) {
+			List<Class<?>> classesToTransform = new ArrayList<Class<?>>();
+			for (String className : runtime.getTargetClasses()) {
 				Set<Class<?>> classes = map.get(className);
 				if (classes != null) {
 					if (classes.size() == 1) {
-						classDefinitions.add(classes.iterator().next());
+						classesToTransform.add(classes.iterator().next());
 					} else if (classes.size() == 0) {
 						RuntimeClassNotFound.print(className);
 					} else {
-						System.out.println("Too many classes");
+						RuntimeNonUniqueClass.print(className);
 					}
 				} else {
 					RuntimeClassNotFound.print(className);
 				}
 			}
-			if (!classDefinitions.isEmpty()) {
-				instrumentation.retransformClasses(classDefinitions.toArray(new Class<?>[classDefinitions.size()]));
+			if (!classesToTransform.isEmpty()) {
+				instrumentation.retransformClasses(classesToTransform
+						.toArray(new Class<?>[classesToTransform.size()]));
 			}
 		} catch (UnmodifiableClassException e) {
 			ClassCanNotBeTransformed.print(e.getMessage());
 		}
 	}
 
-	public void reloadDirectives(Status status, File inputFile) {
+	public void reloadConfiguration(Status status) {
 		try {
 			List<Class<?>> classDefinitions = new ArrayList<Class<?>>();
-			for (String className : runtime.getTransformedClasses()) {
+			for (String className : runtime.getTargetClasses()) {
 				ClassData classData = runtime.getClassData(className);
 				ClassLoader classLoader = classData.getClassLoader();
-				Class<?> clazz = classLoader == null ? Class.forName(className) : classLoader.loadClass(className);
+				Class<?> clazz = classLoader == null ? Class.forName(className)
+						: classLoader.loadClass(className);
 				classDefinitions.add(clazz);
 			}
 			classTransformer.setReset(true);
 			if (!classDefinitions.isEmpty()) {
-				instrumentation.retransformClasses(classDefinitions.toArray(new Class<?>[classDefinitions.size()]));
+				instrumentation.retransformClasses(classDefinitions
+						.toArray(new Class<?>[classDefinitions.size()]));
 			}
 			runtime.reset();
 			classTransformer.setReset(false);
-			loadControlFile(options, status);
+			loadControlFile(status, options);
 			if (!classDefinitions.isEmpty()) {
-				instrumentation.retransformClasses(classDefinitions.toArray(new Class<?>[classDefinitions.size()]));
+				instrumentation.retransformClasses(classDefinitions
+						.toArray(new Class<?>[classDefinitions.size()]));
 			}
 		} catch (ClassNotFoundException e) {
 			RuntimeClassNotFound.print(e.getMessage());
@@ -161,9 +171,11 @@ public class TransformationService {
 		FileReader reader = null;
 		try {
 			reader = new FileReader(inputFile);
-			AgentType agentType = modelSerializer.read(status, reader, AgentType.class);
+			AgentType agentType = modelSerializer.read(status, reader,
+					AgentType.class);
 			if (status.isSuccess()) {
-				AbstractX2JModelFactory modelFactory = modelFactoryFactory.getFactory(agentType);
+				AbstractX2JModelFactory modelFactory = modelFactoryFactory
+						.getFactory(agentType);
 				return modelFactory.createModel(agentType, Agent.class);
 			}
 		} catch (FileNotFoundException e) {
@@ -179,7 +191,7 @@ public class TransformationService {
 		return null;
 	}
 
-	public void loadDirectives(Status status, Agent model) {
+	public void loadTargets(Status status, Agent model) {
 		for (TargetDef targetDef : model.getTargets()) {
 			for (MethodDef methodDef : targetDef.getMethods().values()) {
 				loadMethod(methodDef);
@@ -200,8 +212,11 @@ public class TransformationService {
 				CtClass ctClass = classPool.makeClass(className);
 				ctClass.setSuperclass(ctSuperClass);
 				CtClass ctReturnType = getCtClass(Object.class);
-				CtMethod invokeMethod = CtNewMethod.make(ctReturnType, "invoke", new CtClass[] { getCtClass(CallState.class) }, new CtClass[0],
-						ajustSourceCode(scriptDef, scriptDef.getSourceCode()), ctClass);
+				CtMethod invokeMethod = CtNewMethod.make(ctReturnType,
+						"invoke",
+						new CtClass[] { getCtClass(CallState.class) },
+						new CtClass[0], ajustSourceCode(scriptDef, scriptDef
+								.getSourceCode()), ctClass);
 				ctClass.addMethod(invokeMethod);
 				Class<Script> clazz = ctClass.toClass();
 				runtime.registerImplClass(className, clazz);
@@ -246,7 +261,8 @@ public class TransformationService {
 
 	private Map<String, Set<Class<?>>> getAllLoadedClasses() {
 		Class<?>[] loadedClasses = instrumentation.getAllLoadedClasses();
-		Map<String, Set<Class<?>>> map = new HashMap<String, Set<Class<?>>>(20000);
+		Map<String, Set<Class<?>>> map = new HashMap<String, Set<Class<?>>>(
+				20000);
 		for (Class<?> clazz : loadedClasses) {
 			Set<Class<?>> classes = map.get(clazz.getName());
 			if (classes == null) {

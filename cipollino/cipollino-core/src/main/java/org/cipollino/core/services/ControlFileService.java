@@ -12,11 +12,10 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import static org.cipollino.core.error.ErrorCode.Info;
 
 @Singleton
 public class ControlFileService extends TimerTask {
-
-	private Logger logger = LoggerFactory.getLogger(ControlFileService.class);
 
 	private Timer timer = new Timer(true);
 
@@ -42,8 +41,8 @@ public class ControlFileService extends TimerTask {
 		long lastModified = controlFile.lastModified();
 		if (lastModifiedTime != 0 && lastModified > lastModifiedTime) {
 			Status status = Status.createStatus();
-			logger.info("Loading control file");
-			transformationService.reloadDirectives(status, controlFile);
+			Info.print("Loading control file");
+			transformationService.reloadConfiguration(status);
 		}
 		lastModifiedTime = lastModified;
 	}
