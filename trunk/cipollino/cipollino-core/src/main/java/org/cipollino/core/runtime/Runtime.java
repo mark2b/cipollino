@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.Stack;
 
 import org.cipollino.core.actions.ActionsRunner;
-import org.cipollino.core.error.ErrorCode;
 import org.cipollino.core.model.MethodDef;
 
 import com.google.inject.Singleton;
@@ -19,7 +18,8 @@ public class Runtime {
 
 	private static Runtime instance;
 
-	private Map<String, Set<Class<?>>> loadedClasses = new HashMap<String, Set<Class<?>>>(20000);
+	private Map<String, Set<Class<?>>> loadedClasses = new HashMap<String, Set<Class<?>>>(
+			20000);
 
 	private Data data = new Data();
 
@@ -63,7 +63,6 @@ public class Runtime {
 	}
 
 	public void registerMethod(MethodDef methodDef) {
-		ErrorCode.Trace.print("Register method " + methodDef.getMethodName());
 		addElement(methodDef);
 		List<MethodDef> methods = data.methodsMap.get(methodDef.getClassName());
 		if (methods == null) {
@@ -76,7 +75,7 @@ public class Runtime {
 		}
 	}
 
-	public Set<String> getTransformedClasses() {
+	public Set<String> getTargetClasses() {
 		return data.classesMap.keySet();
 	}
 

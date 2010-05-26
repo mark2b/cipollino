@@ -95,17 +95,22 @@ public enum ErrorCode implements ErrorMessage {
 	/**
 	 * 
 	 */
-	@Message(code = "00506", message = "Compilation failure [%s].")
+	@Message(code = "00506", message = "Non uniquie class [%s]. Will not be transformed.")
+	RuntimeNonUniqueClass,
+	/**
+	 * 
+	 */
+	@Message(code = "00507", message = "Compilation failure [%s].")
 	CompilationFailure,
 	/**
 	 * 
 	 */
-	@Message(code = "00507", message = "Class can not be transformed [%s].")
+	@Message(code = "00508", message = "Class can not be transformed [%s].")
 	ClassCanNotBeTransformed,
 	/**
 	 * 
 	 */
-	@Message(code = "00508", message = "Class Path not found [%s].")
+	@Message(code = "00509", message = "Class Path not found [%s].")
 	ClassPathNotFound;
 
 	private final static LogManager MANAGER = new LogManager(ErrorCode.class);
