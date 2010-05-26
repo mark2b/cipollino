@@ -24,6 +24,7 @@ import org.cipollino.core.codegen.OnExceptionGenerator;
 import org.cipollino.core.codegen.OnFinallyGenerator;
 import org.cipollino.core.model.MethodDef;
 import org.cipollino.core.runtime.ClassData;
+import org.cipollino.core.runtime.ClassState;
 import org.cipollino.core.runtime.Runtime;
 
 import com.google.inject.Inject;
@@ -38,8 +39,6 @@ public class ClassTransformer implements ClassFileTransformer {
 	@Inject
 	private ClassPool classPool;
 
-	private boolean reset = false;
-
 	@Override
 	public byte[] transform(ClassLoader classLoader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer)
 			throws IllegalClassFormatException {
@@ -47,27 +46,45 @@ public class ClassTransformer implements ClassFileTransformer {
 		if (runtime.needTransformation(classFQN)) {
 			ClassData classData = runtime.getClassData(classFQN);
 			// Save origin byte code for first time loaded class
-			if (classData != null && !classData.isLoaded()) {
+			if (!classData.isLoaded()) {
 				classData.setOriginByteCode(classfileBuffer);
 				classData.setClassLoader(classLoader);
-				Trace.print("Transformed " + classFQN + " class.");
 			}
-			if (reset) {
-				classfileBuffer = classData.getOriginByteCode();
-			} else {
-				try {
-					CtClass cl = classPool.makeClass(new java.io.ByteArrayInputStream(classfileBuffer), false);
 
-					List<MethodDef> methods = runtime.getMethods(classFQN);
-					for (MethodDef methodDef : methods) {
-						transformMethod(methodDef, cl);
-					}
-					classfileBuffer = cl.toBytecode();
+			switch (classData.getState()) {
+			case TO_BE_TRANSFORMED:
+				classfileBuffer = transformBytecode(classfileBuffer, classFQN);
+				classData.setState(ClassState.TRANSFORMED);
+				break;
+			case TO_BE_RETRANSFORMED:
+				classfileBuffer = transformBytecode(classData.getOriginBytecode(), classFQN);
+				classData.setState(ClassState.TRANSFORMED);
+				break;
+			case TO_BE_DELETED:
+				classfileBuffer = classData.getOriginBytecode();
+				classData.setState(ClassState.DELETED);
+				break;
+			}
+		}
+		return classfileBuffer;
+	}
 
-				} catch (Exception e) {
-					e.printStackTrace();
+	private byte[] transformBytecode(byte[] classfileBuffer, String classFQN) {
+		try {
+			CtClass cl = classPool.makeClass(new java.io.ByteArrayInputStream(classfileBuffer), false);
+			ClassData classData = runtime.getClassData(classFQN);
+			if (classData != null) {
+				List<MethodDef> methods = classData.getMethods();
+				for (MethodDef methodDef : methods) {
+					transformMethod(methodDef, cl);
 				}
+				classfileBuffer = cl.toBytecode();
+				Trace.print("Transformed " + classFQN + " class.");
+			} else {
+				System.out.println("ClassTransformer.transformBytecode() class not found");
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return classfileBuffer;
 	}
@@ -130,13 +147,5 @@ public class ClassTransformer implements ClassFileTransformer {
 			MethodNotFound.print(method.getMethodName());
 			return null;
 		}
-	}
-
-	public boolean isReset() {
-		return reset;
-	}
-
-	public void setReset(boolean reset) {
-		this.reset = reset;
 	}
 }

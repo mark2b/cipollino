@@ -1,5 +1,10 @@
 package org.cipollino.core.runtime;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.cipollino.core.model.MethodDef;
+
 public class ClassData {
 
 	private byte[] originByteCode = null;
@@ -8,7 +13,11 @@ public class ClassData {
 
 	private ClassLoader classLoader;
 
-	public byte[] getOriginByteCode() {
+	private ClassState state;
+
+	List<MethodDef> methods = new ArrayList<MethodDef>();
+
+	public byte[] getOriginBytecode() {
 		return originByteCode;
 	}
 
@@ -34,5 +43,17 @@ public class ClassData {
 
 	public void setClassLoader(ClassLoader classLoader) {
 		this.classLoader = classLoader;
+	}
+
+	public ClassState getState() {
+		return state;
+	}
+
+	public void setState(ClassState state) {
+		this.state = state;
+	}
+
+	public List<MethodDef> getMethods() {
+		return methods;
 	}
 }

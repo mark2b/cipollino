@@ -34,7 +34,22 @@ public enum ErrorCode implements ErrorMessage {
 	 * 
 	 */
 	@Message(code = "00205", message = "Agent was not started.")
-	AgentWasnotStarted;
+	AgentWasnotStarted,
+	/**
+	 * 
+	 */
+	@Message(code = "00206", message = "The Process ID file [%s] not found.")
+	PidFileNotFound,
+	/**
+	 * 
+	 */
+	@Message(code = "00207", message = "The Process ID missing.")
+	PidMissing,
+	/**
+	 * 
+	 */
+	@Message(code = "00208", message = "The Process with ID [%s] not found.")
+	ProcessNotFound;
 
 	private final static LogManager MANAGER = new LogManager(ErrorCode.class);
 

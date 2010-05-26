@@ -1,0 +1,2 @@
+set "DIRNAME=%~dp0%"
+
