@@ -26,6 +26,7 @@
 							<finalName>app1</finalName>
 							<includes>
 								<include>**/app1/*</include>
+								<include>log4j.xml</include>
 							</includes>
 							<archive>
 								<manifest>
