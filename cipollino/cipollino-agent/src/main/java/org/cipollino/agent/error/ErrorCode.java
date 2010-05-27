@@ -49,7 +49,17 @@ public enum ErrorCode implements ErrorMessage {
 	 * 
 	 */
 	@Message(code = "00208", message = "The Process with ID [%s] not found.")
-	ProcessNotFound;
+	ProcessNotFound,
+	/**
+	 * 
+	 */
+	@Message(code = "00209", message = "Connected.", severity = Severity.INFO, suppressMessageCode = true)
+	AgentWasConnected,
+	/**
+	 * 
+	 */
+	@Message(code = "00210", message = "Connected to application failed.")
+	AgentWasnotConnected;
 
 	private final static LogManager MANAGER = new LogManager(ErrorCode.class);
 

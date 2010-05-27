@@ -32,8 +32,7 @@ public class Agent {
 	@Inject
 	private TransformationService transformationService;
 
-	private void start(String argsLine, Instrumentation instrumentation,
-			boolean attached) {
+	private void start(String argsLine, Instrumentation instrumentation, boolean attached) {
 		initDI();
 		buildArgsOptions();
 		Status status = parseArgs(argsLine);
@@ -50,9 +49,7 @@ public class Agent {
 	}
 
 	private void initDI() {
-		Injector injector = DI.createInjector(
-				new org.cipollino.core.DIModule(),
-				new org.cipollino.logger.DIModule());
+		Injector injector = DI.createInjector(new org.cipollino.core.DIModule(), new org.cipollino.logger.DIModule());
 		injector.injectMembers(this);
 	}
 
@@ -84,11 +81,11 @@ public class Agent {
 	}
 
 	public static void premain(String agentArgs, Instrumentation inst) {
-		main(agentArgs, inst, true);
+		main(agentArgs, inst, false);
 	}
 
 	public static void agentmain(String agentArgs, Instrumentation inst) {
-		main(agentArgs, inst, false);
+		main(agentArgs, inst, true);
 	}
 
 	private static void main(String args, Instrumentation inst, boolean attach) {
@@ -99,8 +96,7 @@ public class Agent {
 	@SuppressWarnings("static-access")
 	private Options buildArgsOptions() {
 		Options argsOptions = new Options();
-		argsOptions.addOption(OptionBuilder.hasArg().withLongOpt(OPTION_FILE)
-				.withDescription("Control File").create('f'));
+		argsOptions.addOption(OptionBuilder.hasArg().withLongOpt(OPTION_FILE).withDescription("Control File").create('f'));
 		return argsOptions;
 	}
 }
