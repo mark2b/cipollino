@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
 import org.testng.annotations.BeforeClass;
@@ -14,6 +15,8 @@ import org.testng.annotations.BeforeClass;
 public abstract class AbstractTest {
 
 	private final List<InputStream> inputStreams = new ArrayList<InputStream>();
+
+	protected final Properties properties = new Properties();
 
 	protected File getJavaHome() {
 		return new File(System.getProperty("java.home"));
@@ -23,11 +26,18 @@ public abstract class AbstractTest {
 		return new File(getJavaHome(), "bin");
 	}
 
+	protected File getProductHome() {
+		return new File(properties.getProperty("product.home"));
+	}
+
+	protected File getProductLib() {
+		return new File(getProductHome(), "lib");
+	}
+
 	@SuppressWarnings("unchecked")
 	protected Map<String, String> getProcesses() throws IOException {
 		Map<String, String> map = new HashMap<String, String>();
-		ProcessBuilder builder = new ProcessBuilder(new File(getJavaBin(),
-				"jps").getAbsolutePath());
+		ProcessBuilder builder = new ProcessBuilder(new File(getJavaBin(), "jps").getAbsolutePath());
 		builder.command().add("-l");
 		Process process = builder.start();
 		List<String> lines = IOUtils.readLines(process.getInputStream());
@@ -41,8 +51,7 @@ public abstract class AbstractTest {
 	}
 
 	protected Process startProcess(String... commands) throws IOException {
-		ProcessBuilder builder = new ProcessBuilder(new File(getJavaBin(),
-				"java").getAbsolutePath());
+		ProcessBuilder builder = new ProcessBuilder(new File(getJavaBin(), "java").getAbsolutePath());
 		for (String command : commands) {
 			builder.command().add(command);
 		}
@@ -59,8 +68,7 @@ public abstract class AbstractTest {
 			@Override
 			public void run() {
 				while (true) {
-					InputStream[] streams = inputStreams
-							.toArray(new InputStream[inputStreams.size()]);
+					InputStream[] streams = inputStreams.toArray(new InputStream[inputStreams.size()]);
 					for (InputStream stream : streams) {
 						try {
 							IOUtils.copy(stream, System.out);
@@ -78,7 +86,12 @@ public abstract class AbstractTest {
 	}
 
 	@BeforeClass
-	public void beforeClass() {
+	public void beforeClass() throws IOException {
 		startOutputPrinter();
+		loadProperties();
+	}
+
+	private void loadProperties() throws IOException {
+		properties.load(getClass().getResourceAsStream("/itests.properties"));
 	}
 }

@@ -2,6 +2,7 @@ package org.cipollino.logger.schema;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.cipollino.core.annotations.ModelFactory;
 import org.cipollino.core.model.MethodDef;
 import org.cipollino.core.model.ScriptDef;
@@ -24,22 +25,18 @@ public class X2JModelFactory extends AbstractX2JModelFactory {
 		List<ScriptType> scriptTypes = source.getScript();
 		if (scriptTypes != null) {
 			for (ScriptType scriptType : scriptTypes) {
-				target.getScriptDef().add(
-						createModel(scriptType, ScriptDef.class));
+				target.getScriptDef().add(createModel(scriptType, ScriptDef.class));
 			}
 		}
 		List<FormatType> formatTypes = source.getFormat();
 		if (source.getFormat() != null) {
 			for (FormatType formatType : formatTypes) {
 				if (formatType.getPhase().equals(PhaseType.BEFORE)) {
-					target.setBeforeFormatDef(createModel(formatType,
-							FormatDef.class));
+					target.setBeforeFormatDef(createModel(formatType, FormatDef.class));
 				} else if (formatType.getPhase().equals(PhaseType.AFTER)) {
-					target.setAfterFormatDef(createModel(formatType,
-							FormatDef.class));
+					target.setAfterFormatDef(createModel(formatType, FormatDef.class));
 				} else if (formatType.getPhase().equals(PhaseType.EXCEPTION)) {
-					target.setExceptionFormatDef(createModel(formatType,
-							FormatDef.class));
+					target.setExceptionFormatDef(createModel(formatType, FormatDef.class));
 				}
 			}
 		}
@@ -64,7 +61,8 @@ public class X2JModelFactory extends AbstractX2JModelFactory {
 
 	public FormatDef create(FormatType source) {
 		FormatDef target = new FormatDef();
-		target.setFormat(source.getValue());
+		String value = StringUtils.defaultIfEmpty(source.getValue(), "").trim();
+		target.setFormat(value);
 		return target;
 	}
 

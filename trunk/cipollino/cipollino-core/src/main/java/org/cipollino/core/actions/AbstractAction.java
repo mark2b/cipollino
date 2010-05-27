@@ -8,9 +8,7 @@ import org.cipollino.core.runtime.CallState;
 import org.cipollino.core.runtime.Runtime;
 import org.cipollino.core.runtime.Script;
 
-
 abstract public class AbstractAction implements Action {
-
 
 	private ActionDef actionDef;
 
@@ -41,7 +39,6 @@ abstract public class AbstractAction implements Action {
 
 	@Override
 	public void executeBefore(CallState callState) {
-		System.out.println("AbstractAction.executeBefore()");
 		executeScripts(callState, false);
 		onExecuteBefore(callState);
 	}

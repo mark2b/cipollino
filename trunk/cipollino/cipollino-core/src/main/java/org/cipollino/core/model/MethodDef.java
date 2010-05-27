@@ -13,6 +13,8 @@ public class MethodDef {
 
 	private String name;
 
+	private boolean staticMethod = false;
+
 	private boolean deleted = false;
 
 	private Map<String, String> arguments = new LinkedHashMap<String, String>();
@@ -63,5 +65,13 @@ public class MethodDef {
 
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
+	}
+
+	public boolean isStaticMethod() {
+		return staticMethod;
+	}
+
+	public void setStaticMethod(boolean staticMethod) {
+		this.staticMethod = staticMethod;
 	}
 }

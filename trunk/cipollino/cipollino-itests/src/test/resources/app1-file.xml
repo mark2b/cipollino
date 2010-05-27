@@ -5,7 +5,10 @@
 	
 	<c:classPath></c:classPath>
 	<c:target>
-		<c:method name="org.cipollino.itests.app1.Main.run1()" />
+		<c:method name="org.cipollino.itests.app1.Main.main()" />
+		<c:method name="org.cipollino.itests.app1.Main.convert()" />
+		<c:method name="org.cipollino.itests.app1.Main.convertCalendar()" />
+		<c:method name="org.cipollino.itests.app1.Main.concat()" />
 
 		<c:action xsi:type="l:LoggerActionType">
 			<c:script assignTo="thread" phase="before">

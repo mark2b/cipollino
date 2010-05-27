@@ -1,6 +1,5 @@
 package org.cipollino.itests;
 
-import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 import java.io.File;
@@ -16,14 +15,11 @@ public class BasicTest extends AbstractTest {
 		File jar = new File("target/app1.jar");
 		assertTrue(jar.exists());
 
-		File jar2 = new File(
-				"../cipollino-build/target/output/cipollino/lib/cipollino-agent-0.2-SNAPSHOT.jar");
+		File jar2 = new File(getProductLib(), "cipollino-agent-0.2-SNAPSHOT.jar");
 
 		assertTrue(jar2.exists());
 
-		Process process = startProcess("-javaagent:" + jar2.getAbsolutePath()
-				+ "=--file=src/test/resources/app1-file.xml", "-jar", jar
-				.getAbsolutePath());
+		Process process = startProcess("-javaagent:" + jar2.getAbsolutePath() + "=--file=src/test/resources/app1-file.xml", "-jar", jar.getAbsolutePath());
 
 		// String pid = getProcesses().get(jar.getAbsolutePath());
 		// assertNotNull(pid);

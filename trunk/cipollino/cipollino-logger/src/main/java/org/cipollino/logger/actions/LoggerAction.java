@@ -5,7 +5,6 @@ import org.cipollino.core.actions.AbstractAction;
 import org.cipollino.core.runtime.CallState;
 import org.cipollino.logger.model.FormatDef;
 import org.cipollino.logger.model.LoggerActionDef;
-import org.cipollino.logger.model.StyleDef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
