@@ -10,7 +10,30 @@
 	<artifactId>cipollino-itests</artifactId>
 	<name>Cipollino - Integration Tests</name>
 	<build>
+		<testResources>
+			<testResource>
+				<filtering>true</filtering>
+				<directory>src/test/resources</directory>
+			</testResource>
+		</testResources>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<configuration>
+						<skipTests>true</skipTests>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
+			<!--
+				<plugin> <artifactId>maven-surefire-plugin</artifactId> <executions>
+				<execution> <id>integration-tests</id>
+				<phase>integration-test</phase> <goals> <goal>test</goal> </goals>
+				<configuration> <skipTests>false</skipTests> </configuration>
+				</execution> </executions> </plugin>
+			-->
 			<plugin>
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>

@@ -10,7 +10,6 @@ import org.cipollino.core.model.ActionDef;
 import org.cipollino.core.model.MethodDef;
 import org.cipollino.core.runtime.CallState;
 
-
 public class ActionsRunner {
 
 	private final List<Action> actions = new LinkedList<Action>();
@@ -36,12 +35,9 @@ public class ActionsRunner {
 	}
 
 	public boolean beforeMethod() {
-		System.out.println("ActionsRunner.beforeMethod()");
 		for (Action action : actions) {
-			System.out.println("ActionsRunner.beforeMethod() " + action);
 			try {
 				action.executeBefore(callState);
-
 			} catch (Exception e) {
 				ActionExecutionFailed.print("before", callState.getMethodDef().getMethodName(), e);
 				return false;
@@ -71,5 +67,4 @@ public class ActionsRunner {
 	public CallState getCallState() {
 		return callState;
 	}
-
 }

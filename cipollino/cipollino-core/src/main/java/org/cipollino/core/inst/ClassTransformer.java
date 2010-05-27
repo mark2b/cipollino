@@ -16,6 +16,7 @@ import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
+import javassist.Modifier;
 import javassist.NotFoundException;
 
 import org.cipollino.core.codegen.AfterMethodGenerator;
@@ -92,6 +93,8 @@ public class ClassTransformer implements ClassFileTransformer {
 	private void transformMethod(MethodDef methodDef, CtClass ctClass) {
 		try {
 			CtMethod srcCtMethod = getCtMethodByMethod(ctClass, methodDef);
+			boolean staticMethod = (srcCtMethod.getModifiers() & Modifier.STATIC) == Modifier.STATIC;
+			methodDef.setStaticMethod(staticMethod);
 			if (srcCtMethod != null) {
 				srcCtMethod.insertBefore(buildBeforeMethodCode(methodDef));
 				srcCtMethod.insertAfter(buildAfterMethodCode());
