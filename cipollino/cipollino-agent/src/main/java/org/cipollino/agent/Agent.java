@@ -32,7 +32,8 @@ public class Agent {
 	@Inject
 	private TransformationService transformationService;
 
-	private void start(String argsLine, Instrumentation instrumentation, boolean attached) {
+	private void start(String argsLine, Instrumentation instrumentation,
+			boolean attached) {
 		initDI();
 		buildArgsOptions();
 		Status status = parseArgs(argsLine);
@@ -57,6 +58,9 @@ public class Agent {
 
 	protected Status parseArgs(String argsLine) {
 		Status status = Status.createStatus();
+		if (argsLine == null) {
+			argsLine = "";
+		}
 		String[] args = argsLine.split("&");
 		CommandLineParser parser = new PosixParser();
 		try {

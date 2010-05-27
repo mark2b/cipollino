@@ -16,18 +16,22 @@ public class BasicTest extends AbstractTest {
 		File jar = new File("target/app1.jar");
 		assertTrue(jar.exists());
 
-		Process process = startProcess("-jar", jar.getAbsolutePath());
-		String pid = getProcesses().get(jar.getAbsolutePath());
-		assertNotNull(pid);
-
 		File jar2 = new File(
 				"../cipollino-build/target/output/cipollino/lib/cipollino-agent-0.2-SNAPSHOT.jar");
+
 		assertTrue(jar2.exists());
 
-		startProcess("-jar", jar2.getAbsolutePath(), "--pid", pid, "--file",
-				"src/test/resources/app1-file.xml");
+		Process process = startProcess("-javaagent:" + jar2.getAbsolutePath()
+				+ "=--file=src/test/resources/app1-file.xml", "-jar", jar
+				.getAbsolutePath());
 
-		Thread.sleep(2000);
+		// String pid = getProcesses().get(jar.getAbsolutePath());
+		// assertNotNull(pid);
+		//
+		// startProcess("-jar", jar2.getAbsolutePath(), "--pid", pid, "--file",
+		// "src/test/resources/app1-file.xml");
+
+		Thread.sleep(5000);
 		process.destroy();
 	}
 

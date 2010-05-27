@@ -44,38 +44,6 @@ public class Main {
 
 		Main main = new Main();
 		main.start(args);
-
-		// List<VirtualMachineDescriptor> machineDescriptors =
-		// VirtualMachine.list();
-		// String pid = null;
-		// for (VirtualMachineDescriptor virtualMachineDescriptor :
-		// machineDescriptors) {
-		// System.out.println(virtualMachineDescriptor.displayName() + " " +
-		// virtualMachineDescriptor.id());
-		// if (virtualMachineDescriptor.displayName().startsWith("org.jboss")) {
-		// pid = virtualMachineDescriptor.id();
-		// }
-		// }
-		// if (pid != null) {
-		// System.out.println(pid);
-		// try {
-		// VirtualMachine machine = VirtualMachine.attach(pid);
-		// machine.loadAgent("/Users/mark/projects/cipollino/cipollino-build/target/output/cipollino/lib/cipollino-agent-0.2-SNAPSHOT.jar",
-		// "--file=/Users/mark/projects/cipollino/cipollino-agent/src/test/resources/jboss-control-file.xml");
-		// } catch (AttachNotSupportedException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// } catch (IOException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// } catch (AgentLoadException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// } catch (AgentInitializationException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// }
 	}
 
 	private void start(String[] args) {
@@ -89,21 +57,23 @@ public class Main {
 			AgentWasnotStarted.print();
 			System.exit(-1);
 		} else {
-			AgentWasStarted.print();
+//			AgentWasStarted.print();
 			System.exit(0);
 		}
 	}
 
 	private void connectToVM(Status status) {
 		try {
-			URLClassLoader classLoader = (URLClassLoader) ClassLoader.getSystemClassLoader();
+			URLClassLoader classLoader = (URLClassLoader) ClassLoader
+					.getSystemClassLoader();
 			URL[] urls = classLoader.getURLs();
 			if (urls.length == 0) {
 				throw new RuntimeException();
 			}
 			String jarName = new File(urls[0].getFile()).getAbsolutePath();
 			VirtualMachine machine = VirtualMachine.attach(options.getPid());
-			machine.loadAgent(jarName, String.format("--file=%s", options.getControlFile().getAbsolutePath()));
+			machine.loadAgent(jarName, String.format("--file=%s", options
+					.getControlFile().getAbsolutePath()));
 		} catch (AttachNotSupportedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -169,9 +139,13 @@ public class Main {
 	@SuppressWarnings("static-access")
 	private Options buildArgsOptions() {
 		Options argsOptions = new Options();
-		argsOptions.addOption(OptionBuilder.hasArg().withLongOpt(OPTION_FILE).withDescription("Control File").create()).addOption(
-				OptionBuilder.hasArg().withLongOpt(OPTION_PID).withDescription("Process ID").create()).addOption(
-				OptionBuilder.hasArg().withLongOpt(OPTION_PID_FILE).withDescription("Process ID file").create());
+		argsOptions.addOption(
+				OptionBuilder.hasArg().withLongOpt(OPTION_FILE)
+						.withDescription("Control File").create()).addOption(
+				OptionBuilder.hasArg().withLongOpt(OPTION_PID).withDescription(
+						"Process ID").create()).addOption(
+				OptionBuilder.hasArg().withLongOpt(OPTION_PID_FILE)
+						.withDescription("Process ID file").create());
 		return argsOptions;
 	}
 
