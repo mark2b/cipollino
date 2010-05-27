@@ -1,6 +1,7 @@
 package org.cipollino.itests;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public abstract class AbstractTest {
 	protected final Properties properties = new Properties();
 
 	protected File getJavaHome() {
-		return new File(System.getProperty("java.home"));
+		return new File(properties.getProperty("jdk.home", System.getProperty("java.home")));
 	}
 
 	protected File getJavaBin() {
@@ -50,7 +51,7 @@ public abstract class AbstractTest {
 		return map;
 	}
 
-	protected Process startProcess(String... commands) throws IOException {
+	protected Process startJavaProcess(String... commands) throws IOException {
 		ProcessBuilder builder = new ProcessBuilder(new File(getJavaBin(), "java").getAbsolutePath());
 		for (String command : commands) {
 			builder.command().add(command);
@@ -93,5 +94,10 @@ public abstract class AbstractTest {
 
 	private void loadProperties() throws IOException {
 		properties.load(getClass().getResourceAsStream("/itests.properties"));
+	}
+
+	@SuppressWarnings("unchecked")
+	protected List<String> loadLog(File log) throws IOException {
+		return log.exists() ? IOUtils.readLines(new FileReader(log)) : new ArrayList<String>();
 	}
 }

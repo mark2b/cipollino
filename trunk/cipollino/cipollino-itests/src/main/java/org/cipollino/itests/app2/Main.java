@@ -3,7 +3,7 @@ package org.cipollino.itests.app2;
 public class Main {
 
 	public static void main(String[] args) {
-		A1 a1 = new A1();
+		Main a1 = new Main();
 		while (true) {
 			a1.run1();
 			try {
@@ -14,9 +14,7 @@ public class Main {
 		}
 	}
 
-	static class A1 {
-		public void run1() {
-			System.out.println("Main.A1.run1()");
-		}
+	public void run1() {
+		System.out.println("Main.A1.run1()");
 	}
 }

@@ -117,6 +117,7 @@ public class TransformationService {
 			List<Class<?>> classesToTransform = new ArrayList<Class<?>>();
 			for (Class<?> loadedClass : loadedClasses) {
 				if (runtime.needTransformation(loadedClass.getName())) {
+					System.out.println("TransformationService.transformLoadedClasses() " + loadedClass.getName());
 					classesToTransform.add(loadedClass);
 				}
 			}

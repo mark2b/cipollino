@@ -15,7 +15,7 @@ public enum ErrorCode implements ErrorMessage {
 	/**
 	 * 
 	 */
-	@Message(code = "00001", message = "Internal Error.")
+	@Message(code = "00001", message = "Internal Error. %s.")
 	InternalError,
 	/**
 	 * 

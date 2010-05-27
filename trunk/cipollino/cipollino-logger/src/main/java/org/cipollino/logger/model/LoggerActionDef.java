@@ -4,7 +4,6 @@ import org.cipollino.core.actions.Action;
 import org.cipollino.core.model.ActionDef;
 import org.cipollino.logger.actions.LoggerAction;
 
-
 public class LoggerActionDef extends ActionDef {
 
 	private FormatDef beforeFormatDef;
@@ -55,22 +54,19 @@ public class LoggerActionDef extends ActionDef {
 
 	private FormatDef createBeforeFormatDefault() {
 		FormatDef formatDef = new FormatDef();
-		formatDef.setFormat("${parameters}");
-		formatDef.setStyle("simple");
+		formatDef.setFormat("${method} < ${parameters}");
 		return formatDef;
 	}
 
 	private FormatDef createAfterFormatDefault() {
 		FormatDef formatDef = new FormatDef();
-		formatDef.setFormat("${return}");
-		formatDef.setStyle("simple");
+		formatDef.setFormat("${method} > ${return}");
 		return formatDef;
 	}
 
 	private FormatDef createExceptionFormatDefault() {
 		FormatDef formatDef = new FormatDef();
-		formatDef.setFormat("${exception}");
-		formatDef.setStyle("simple");
+		formatDef.setFormat("${method} > throws ${exception}");
 		return formatDef;
 	}
 

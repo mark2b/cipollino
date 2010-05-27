@@ -68,7 +68,13 @@
 							<finalName>app2</finalName>
 							<includes>
 								<include>**/app2/*</include>
+								<include>log4j.xml</include>
 							</includes>
+							<archive>
+								<manifest>
+									<mainClass>org.cipollino.itests.app2.Main</mainClass>
+								</manifest>
+							</archive>
 						</configuration>
 					</execution>
 				</executions>

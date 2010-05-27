@@ -63,7 +63,6 @@ public class ModelSerializer {
 	}
 
 	private JAXBContext createJAXBContext() throws JAXBException {
-		System.out.println("ModelSerializer.createJAXBContext() " + propertiesService.getJaxbPath());
 		return JAXBContext.newInstance(propertiesService.getJaxbPath(), getClassLoader());
 	}
 }
