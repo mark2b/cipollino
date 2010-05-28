@@ -48,6 +48,5 @@ public class TransformationTest {
 		// String.class, String.class }).invoke(
 		// instance, new Object[] { "a", "b" });
 		//
-		// System.out.println(r1);
 	}
 }

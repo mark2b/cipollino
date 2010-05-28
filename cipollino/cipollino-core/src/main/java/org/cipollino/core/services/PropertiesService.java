@@ -27,8 +27,6 @@ public class PropertiesService {
 					"cipollino.properties");
 			while (urls.hasMoreElements()) {
 				URL url = urls.nextElement();
-				System.out.println("PropertiesService.PropertiesService() "
-						+ url);
 				Properties properties = new Properties();
 				InputStream inputStream;
 				try {
