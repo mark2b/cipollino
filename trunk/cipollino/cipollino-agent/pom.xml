@@ -21,11 +21,12 @@
 								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 								<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
 								<addClasspath>true</addClasspath>
-								<mainClass>org.cipollino.agent.Main</mainClass>
 								<classpathLayoutType>custom</classpathLayoutType>
 								<customClasspathLayout>$${artifact.artifactId}-$${artifact.version}.$${artifact.extension}</customClasspathLayout>
+								<mainClass>org.cipollino.agent.Main</mainClass>
 							</manifest>
 							<manifestEntries>
+								<Class-Path>../conf/</Class-Path>
 								<Agent-Class>org.cipollino.agent.Agent</Agent-Class>
 								<Premain-Class>org.cipollino.agent.Agent</Premain-Class>
 								<Can-Redefine-Classes>true</Can-Redefine-Classes>
@@ -100,11 +101,13 @@
 	<profiles>
 		<profile>
 			<id>jboss51</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 			<dependencies>
 				<dependency>
 					<groupId>org.jboss.logging</groupId>
 					<artifactId>jboss-logging-log4j</artifactId>
-					<version>2.0.5.GA</version>
 				</dependency>
 			</dependencies>
 		</profile>

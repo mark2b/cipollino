@@ -26,6 +26,7 @@ import org.cipollino.core.error.ErrorCode;
 
 import com.sun.tools.attach.VirtualMachine;
 
+@SuppressWarnings("restriction")
 public class Main {
 	private static final String CIPOLLINO_LOG_FILE = "cipollino.log.file";
 
@@ -38,37 +39,42 @@ public class Main {
 	private final StartOptions options = new StartOptions();
 
 	public static void main(String[] args) {
-		System.setProperty(CIPOLLINO_LOG_FILE, System.getProperty(CIPOLLINO_LOG_FILE, "cipollino.log"));
+		System.setProperty(CIPOLLINO_LOG_FILE, System.getProperty(
+				CIPOLLINO_LOG_FILE, "cipollino.log"));
 
 		Main main = new Main();
 		main.start(args);
 	}
 
 	private void start(String[] args) {
-		parseArgs(args);
 		try {
+			parseArgs(args);
 			buildArgsOptions();
 			connectToVM();
 			AgentWasConnected.print();
 			System.exit(0);
+		} catch (RuntimeException e) {
+			AgentWasnotConnected.print(e.getMessage());
 		} catch (Exception e) {
-			AgentWasnotConnected.print(e);
-			System.exit(-1);
+			AgentWasnotConnected.print(e.getMessage(), e);
 		}
+		System.exit(-1);
 	}
 
 	private void connectToVM() {
 		try {
-			URLClassLoader classLoader = (URLClassLoader) ClassLoader.getSystemClassLoader();
+			URLClassLoader classLoader = (URLClassLoader) ClassLoader
+					.getSystemClassLoader();
 			URL[] urls = classLoader.getURLs();
 			if (urls.length == 0) {
 				throw new RuntimeException();
 			}
 			String jarName = new File(urls[0].getFile()).getAbsolutePath();
 			VirtualMachine machine = VirtualMachine.attach(options.getPid());
-			machine.loadAgent(jarName, String.format("--file=%s", options.getControlFile().getAbsolutePath()));
+			machine.loadAgent(jarName, String.format("--file=%s", options
+					.getControlFile().getAbsolutePath()));
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException(e.getMessage(), e);
 		}
 
 	}
@@ -82,7 +88,8 @@ public class Main {
 				String fileName = cl.getOptionValue(OPTION_FILE);
 				File file = new File(fileName);
 				if (!file.exists()) {
-					throw new RuntimeException(ControlFileNotFound.format(file.getAbsolutePath()));
+					throw new RuntimeException(ControlFileNotFound.format(file
+							.getAbsolutePath()));
 				} else {
 					options.setControlFile(file);
 				}
@@ -96,7 +103,8 @@ public class Main {
 					String fileName = cl.getOptionValue(OPTION_PID_FILE);
 					File file = new File(fileName);
 					if (!file.exists()) {
-						throw new RuntimeException(PidFileNotFound.format(file.getAbsolutePath()));
+						throw new RuntimeException(PidFileNotFound.format(file
+								.getAbsolutePath()));
 					} else {
 						try {
 							FileReader reader = new FileReader(file);
@@ -104,9 +112,11 @@ public class Main {
 							options.setPid(pid);
 							IOUtils.closeQuietly(reader);
 						} catch (FileNotFoundException e) {
-							throw new RuntimeException(PidFileNotFound.format(file.getAbsolutePath()));
+							throw new RuntimeException(PidFileNotFound
+									.format(file.getAbsolutePath()));
 						} catch (IOException e) {
-							throw new RuntimeException(ErrorCode.InternalError.format(e.getMessage(), e));
+							throw new RuntimeException(ErrorCode.InternalError
+									.format(e.getMessage(), e));
 						}
 					}
 				}
@@ -121,9 +131,13 @@ public class Main {
 	@SuppressWarnings("static-access")
 	private Options buildArgsOptions() {
 		Options argsOptions = new Options();
-		argsOptions.addOption(OptionBuilder.hasArg().withLongOpt(OPTION_FILE).withDescription("Control File").create()).addOption(
-				OptionBuilder.hasArg().withLongOpt(OPTION_PID).withDescription("Process ID").create()).addOption(
-				OptionBuilder.hasArg().withLongOpt(OPTION_PID_FILE).withDescription("Process ID file").create());
+		argsOptions.addOption(
+				OptionBuilder.hasArg().withLongOpt(OPTION_FILE)
+						.withDescription("Control File").create()).addOption(
+				OptionBuilder.hasArg().withLongOpt(OPTION_PID).withDescription(
+						"Process ID").create()).addOption(
+				OptionBuilder.hasArg().withLongOpt(OPTION_PID_FILE)
+						.withDescription("Process ID file").create());
 		return argsOptions;
 	}
 

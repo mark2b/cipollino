@@ -22,6 +22,6 @@ public class PropertiesServiceTest {
 
 	@Test
 	public void jaxbPathTest() {
-		System.out.println(propertiesService.getJaxbPath());
+//		System.out.println(propertiesService.getJaxbPath());
 	}
 }

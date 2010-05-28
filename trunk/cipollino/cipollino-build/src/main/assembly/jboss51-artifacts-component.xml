@@ -8,8 +8,6 @@
 			<includes>
 				<include>org.jboss.logging:jboss-logging-log4j</include>
 			</includes>
-			<useTransitiveDependencies>true</useTransitiveDependencies>
-			<useTransitiveFiltering>true</useTransitiveFiltering>
 			<useProjectArtifact>false</useProjectArtifact>
 		</dependencySet>
 	</dependencySets>
