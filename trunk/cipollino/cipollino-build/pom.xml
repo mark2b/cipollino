@@ -34,6 +34,7 @@
 			<id>build-all</id>
 			<modules>
 				<module>../cipollino-parent</module>
+				<module>./dependencies</module>
 				<module>../cipollino-core</module>
 				<module>../cipollino-logger</module>
 				<module>../cipollino-agent</module>
@@ -43,6 +44,17 @@
 			<id>assembly</id>
 			<build>
 				<plugins>
+					<plugin>
+						<artifactId>maven-clean-plugin</artifactId>
+						<configuration>
+							<filesets>
+								<fileset>
+									<directory>${product.output}/${product.name}</directory>
+									<followSymlinks>false</followSymlinks>
+								</fileset>
+							</filesets>
+						</configuration>
+					</plugin>
 					<plugin>
 						<artifactId>maven-assembly-plugin</artifactId>
 						<executions>
@@ -76,6 +88,11 @@
 				<dependency>
 					<groupId>org.cipollino</groupId>
 					<artifactId>cipollino-logger</artifactId>
+					<version>${project.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>org.cipollino</groupId>
+					<artifactId>cipollino-dependencies</artifactId>
 					<version>${project.version}</version>
 				</dependency>
 			</dependencies>
@@ -158,8 +175,9 @@
 		</profile>
 	</profiles>
 	<properties>
-		<product.output>${project.build.directory}/output
-		</product.output>
+		<!--
+			<product.output>${project.build.directory}/output </product.output>
+		-->
 		<product.name>cipollino</product.name>
 	</properties>
 </project>

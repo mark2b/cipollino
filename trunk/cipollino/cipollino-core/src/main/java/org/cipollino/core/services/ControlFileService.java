@@ -1,18 +1,16 @@
 package org.cipollino.core.services;
 
+import static org.cipollino.core.error.ErrorCode.Info;
+
 import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import org.cipollino.core.error.Status;
-import org.cipollino.core.error.Status.Severity;
 import org.cipollino.core.runtime.StartOptions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import static org.cipollino.core.error.ErrorCode.Info;
 
 @Singleton
 public class ControlFileService extends TimerTask {

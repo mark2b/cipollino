@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 @Test
 public class BasicTest extends AbstractTest {
 
-	@Test(enabled = false)
+	@Test(enabled = true)
 	public void testJavaAgent() throws Exception {
 
 		File jar = new File("target/app1.jar");
@@ -41,7 +41,6 @@ public class BasicTest extends AbstractTest {
 		assertTrue(jar.exists());
 
 		File jar2 = new File(getProductLib(), "cipollino-agent-0.2-SNAPSHOT.jar");
-
 		assertTrue(jar2.exists());
 
 		Process process = startJavaProcess("-Dlog.file=" + log.getAbsolutePath(), "-jar", jar.getAbsolutePath());
@@ -52,7 +51,7 @@ public class BasicTest extends AbstractTest {
 		Process agentProcess = startJavaProcess("-Dcipollino.log.file=" + log2.getAbsolutePath(), "-jar", jar2.getAbsolutePath(), "--file",
 				"src/test/resources/app2-file.xml", "--pid", pid);
 
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 		assertEquals(agentProcess.exitValue(), 0);
 		process.destroy();
 		Thread.sleep(1000);

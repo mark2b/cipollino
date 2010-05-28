@@ -33,11 +33,21 @@
 							</bindingIncludes>
 							<extension>true</extension>
 							<!--
-								<episodes> <episode>
-								<groupId>org.cipollino</groupId>
+								<episodes> <episode> <groupId>org.cipollino</groupId>
 								<artifactId>cipollino-core</artifactId> </episode> </episodes>
 							-->
 						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-shade-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>
@@ -49,9 +59,17 @@
 			<artifactId>cipollino-core</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
 			<classifier>jdk15</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>

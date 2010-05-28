@@ -9,6 +9,8 @@
 	<c:target>
 		<c:method name="void org.jboss.jmx.adaptor.html.HtmlAdaptorServlet.doGet()" />
 
+		<c:method name="org.hibernate.impl.SessionImpl.find()"></c:method>
+		
 		<c:action xsi:type="l:LoggerActionType">
 			<c:script assignTo="thread" phase="before">
 				<![CDATA[
