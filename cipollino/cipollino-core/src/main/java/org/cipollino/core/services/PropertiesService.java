@@ -27,14 +27,19 @@ public class PropertiesService {
 					"cipollino.properties");
 			while (urls.hasMoreElements()) {
 				URL url = urls.nextElement();
+				System.out.println("PropertiesService.PropertiesService() "
+						+ url);
 				Properties properties = new Properties();
-				InputStream inputStream = url.openStream();
-				properties.load(inputStream);
-				inputStream.close();
+				InputStream inputStream;
+				try {
+					inputStream = url.openStream();
+					properties.load(inputStream);
+					inputStream.close();
+				} catch (IOException e) {
+				}
 				propertiesList.add(properties);
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException e1) {
 		}
 	}
 

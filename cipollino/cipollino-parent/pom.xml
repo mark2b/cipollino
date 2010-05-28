@@ -32,6 +32,39 @@
 					<version>2.3.1</version>
 				</plugin>
 				<plugin>
+					<artifactId>maven-shade-plugin</artifactId>
+					<version>1.3.3</version>
+					<configuration>
+						<artifactSet>
+							<includes>
+								<inclusion>${groupId}:${artifactId}</inclusion>
+							</includes>
+						</artifactSet>
+						<relocations>
+							<relocation>
+								<pattern>javassist</pattern>
+								<shadedPattern>org.cipollino.internal.javassist</shadedPattern>
+							</relocation>
+							<relocation>
+								<pattern>org.slf4j</pattern>
+								<shadedPattern>org.cipollino.internal.org.slf4j</shadedPattern>
+							</relocation>
+							<relocation>
+								<pattern>org.apache.commons.lang</pattern>
+								<shadedPattern>org.cipollino.internal.org.apache.commons.lang</shadedPattern>
+							</relocation>
+							<relocation>
+								<pattern>org.apache.commons.io</pattern>
+								<shadedPattern>org.cipollino.internal.org.apache.commons.io</shadedPattern>
+							</relocation>
+							<relocation>
+								<pattern>org.apache.commons.cli</pattern>
+								<shadedPattern>org.cipollino.internal.org.apache.commons.cli</shadedPattern>
+							</relocation>
+						</relocations>
+					</configuration>
+				</plugin>
+				<plugin>
 					<artifactId>maven-assembly-plugin</artifactId>
 					<version>2.2-beta-5</version>
 				</plugin>
@@ -123,12 +156,13 @@
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
 				<version>1.5.8</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-log4j12</artifactId>
 				<version>1.5.8</version>
-				<scope>runtime</scope>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
@@ -151,6 +185,7 @@
 				<groupId>org.jboss</groupId>
 				<artifactId>javassist</artifactId>
 				<version>3.7.1.GA</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>net.sf.opencsv</groupId>
@@ -200,5 +235,7 @@
 	</repositories>
 	<properties>
 		<powermock.version>1.3.8</powermock.version>
+		<product.output>${basedir}/../output</product.output>
+		<product.name>cipollino</product.name>
 	</properties>
 </project>

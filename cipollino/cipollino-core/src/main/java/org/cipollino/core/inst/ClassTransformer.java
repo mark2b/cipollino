@@ -41,8 +41,9 @@ public class ClassTransformer implements ClassFileTransformer {
 	private ClassPool classPool;
 
 	@Override
-	public byte[] transform(ClassLoader classLoader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer)
-			throws IllegalClassFormatException {
+	public byte[] transform(ClassLoader classLoader, String className,
+			Class<?> classBeingRedefined, ProtectionDomain protectionDomain,
+			byte[] classfileBuffer) throws IllegalClassFormatException {
 		String classFQN = className.replace('/', '.');
 		if (runtime.needTransformation(classFQN)) {
 			ClassData classData = runtime.getClassData(classFQN);
@@ -58,7 +59,8 @@ public class ClassTransformer implements ClassFileTransformer {
 				classData.setState(ClassState.TRANSFORMED);
 				break;
 			case TO_BE_RETRANSFORMED:
-				classfileBuffer = transformBytecode(classData.getOriginBytecode(), classFQN);
+				classfileBuffer = transformBytecode(classData
+						.getOriginBytecode(), classFQN);
 				classData.setState(ClassState.TRANSFORMED);
 				break;
 			case TO_BE_DELETED:
@@ -72,7 +74,8 @@ public class ClassTransformer implements ClassFileTransformer {
 
 	private byte[] transformBytecode(byte[] classfileBuffer, String classFQN) {
 		try {
-			CtClass cl = classPool.makeClass(new java.io.ByteArrayInputStream(classfileBuffer), false);
+			CtClass cl = classPool.makeClass(new java.io.ByteArrayInputStream(
+					classfileBuffer), false);
 			ClassData classData = runtime.getClassData(classFQN);
 			if (classData != null) {
 				List<MethodDef> methods = classData.getMethods();
@@ -82,7 +85,8 @@ public class ClassTransformer implements ClassFileTransformer {
 				classfileBuffer = cl.toBytecode();
 				Trace.print("Transformed " + classFQN + " class.");
 			} else {
-				System.out.println("ClassTransformer.transformBytecode() class not found");
+				System.out
+						.println("ClassTransformer.transformBytecode() class not found");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -93,14 +97,18 @@ public class ClassTransformer implements ClassFileTransformer {
 	private void transformMethod(MethodDef methodDef, CtClass ctClass) {
 		try {
 			CtMethod srcCtMethod = getCtMethodByMethod(ctClass, methodDef);
-			boolean staticMethod = (srcCtMethod.getModifiers() & Modifier.STATIC) == Modifier.STATIC;
-			methodDef.setStaticMethod(staticMethod);
 			if (srcCtMethod != null) {
-				srcCtMethod.insertBefore(buildBeforeMethodCode(methodDef));
-				srcCtMethod.insertAfter(buildAfterMethodCode());
-				srcCtMethod.addCatch(buildOnExceptionCode(), classPool.get(Throwable.class.getName()));
-				srcCtMethod.insertAfter(buildOnFinally(), true);
-				Trace.print("Transformed " + methodDef.getClassName() + "." + methodDef.getMethodName() + " method.");
+				boolean staticMethod = (srcCtMethod.getModifiers() & Modifier.STATIC) == Modifier.STATIC;
+				methodDef.setStaticMethod(staticMethod);
+				if (srcCtMethod != null) {
+					srcCtMethod.insertBefore(buildBeforeMethodCode(methodDef));
+					srcCtMethod.insertAfter(buildAfterMethodCode());
+					srcCtMethod.addCatch(buildOnExceptionCode(), classPool
+							.get(Throwable.class.getName()));
+					srcCtMethod.insertAfter(buildOnFinally(), true);
+					Trace.print("Transformed " + methodDef.getClassName() + "."
+							+ methodDef.getMethodName() + " method.");
+				}
 			}
 		} catch (NotFoundException e) {
 			ClassNotFound.print(e.getMessage());
@@ -144,7 +152,8 @@ public class ClassTransformer implements ClassFileTransformer {
 			for (Entry<String, String> entry : method.getArguments().entrySet()) {
 				argumentClasses.add(classPool.get(entry.getValue()));
 			}
-			CtMethod matchedMethod = ctClass.getDeclaredMethod(method.getMethodName());
+			CtMethod matchedMethod = ctClass.getDeclaredMethod(method
+					.getMethodName());
 			return matchedMethod;
 		} catch (NotFoundException e) {
 			MethodNotFound.print(method.getMethodName());

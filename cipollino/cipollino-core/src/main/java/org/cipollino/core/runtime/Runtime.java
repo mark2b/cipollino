@@ -5,7 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
-import java.util.Map.Entry;
 
 import org.cipollino.core.actions.ActionsRunner;
 import org.cipollino.core.model.MethodDef;
@@ -48,7 +47,8 @@ public class Runtime {
 
 	public void registerClass(String className, ClassData classData) {
 		if (classesMap.containsKey(className)) {
-			throw new IllegalStateException("The class already registered - " + className);
+			throw new IllegalStateException("The class already registered - "
+					+ className);
 		}
 		classesMap.put(className, classData);
 		for (MethodDef methodDef : classData.getMethods()) {
@@ -57,14 +57,18 @@ public class Runtime {
 	}
 
 	public void cleanDeletedItems() {
-		for (Entry<String, ClassData> entry : classesMap.entrySet()) {
-			if (entry.getValue().getState().equals(ClassState.DELETED)) {
-				classesMap.remove(entry.getKey());
+		String[] keys = classesMap.keySet().toArray(
+				new String[classesMap.size()]);
+		for (String key : keys) {
+			if (classesMap.get(key).getState().equals(ClassState.DELETED)) {
+				classesMap.remove(key);
 			}
 		}
-		for (Entry<Integer, Object> entry : elementsMap.entrySet()) {
-			if (entry.getValue() instanceof MethodDef) {
-				MethodDef method = (MethodDef) entry.getValue();
+		Integer[] hashCodes = elementsMap.keySet().toArray(
+				new Integer[elementsMap.size()]);
+		for (Integer hashCode : hashCodes) {
+			if (elementsMap.get(hashCode) instanceof MethodDef) {
+				MethodDef method = (MethodDef) elementsMap.get(hashCode);
 				if (method.isDeleted()) {
 					elementsMap.remove(method.hashCode());
 				}
