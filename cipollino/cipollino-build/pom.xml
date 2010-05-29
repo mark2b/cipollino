@@ -124,54 +124,19 @@
 			</dependencies>
 		</profile>
 		<profile>
-			<id>deploy</id>
+			<id>jse</id>
 			<build>
 				<plugins>
 					<plugin>
 						<artifactId>maven-assembly-plugin</artifactId>
-						<executions>
-							<execution>
-								<phase>package</phase>
-								<goals>
-									<goal>single</goal>
-								</goals>
-								<configuration>
-									<outputDirectory>${product.output}</outputDirectory>
-									<appendAssemblyId>false</appendAssemblyId>
-									<attach>false</attach>
-									<finalName>${product.name}</finalName>
-									<descriptors>
-										<descriptor>src/main/assembly/deploy.xml</descriptor>
-									</descriptors>
-								</configuration>
-							</execution>
-						</executions>
+						<configuration>
+							<descriptors>
+								<descriptor>src/main/assembly/assembly.xml</descriptor>
+							</descriptors>
+						</configuration>
 					</plugin>
 				</plugins>
 			</build>
-			<dependencies>
-				<dependency>
-					<groupId>org.cipollino</groupId>
-					<artifactId>cipollino-core</artifactId>
-					<version>${project.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>org.cipollino</groupId>
-					<artifactId>cipollino-agent</artifactId>
-					<version>${project.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>org.cipollino</groupId>
-					<artifactId>cipollino-logger</artifactId>
-					<version>${project.version}</version>
-				</dependency>
-			</dependencies>
 		</profile>
 	</profiles>
-	<properties>
-		<!--
-			<product.output>${project.build.directory}/output </product.output>
-		-->
-		<product.name>cipollino</product.name>
-	</properties>
 </project>
