@@ -1,5 +1,8 @@
 package org.cipollino.itests;
 
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -36,6 +39,14 @@ public abstract class AbstractTest {
 		return new File(getProductHome(), "lib");
 	}
 
+	protected File getProductConf() {
+		return new File(getProductHome(), "conf");
+	}
+
+	protected File getLog4jXml() {
+		return new File(getProductConf(), "cipollino-log4j.xml");
+	}
+
 	@SuppressWarnings("unchecked")
 	protected Map<String, String> getProcesses() throws IOException {
 		Map<String, String> map = new HashMap<String, String>();
@@ -60,6 +71,7 @@ public abstract class AbstractTest {
 			builder.command().add(command);
 		}
 		builder.redirectErrorStream(true);
+
 		Process process = builder.start();
 		inputStreams.add(process.getErrorStream());
 		inputStreams.add(process.getInputStream());
@@ -78,7 +90,7 @@ public abstract class AbstractTest {
 				}
 			}
 		}
-		return -1;
+		return -100;
 	}
 
 	private void startOutputPrinter() {
@@ -96,7 +108,7 @@ public abstract class AbstractTest {
 						}
 					}
 					try {
-						Thread.sleep(1000);
+						Thread.sleep(200);
 					} catch (InterruptedException e) {
 						break;
 					}
@@ -119,5 +131,64 @@ public abstract class AbstractTest {
 	protected List<String> loadLog(File log) throws IOException {
 		return log.exists() ? IOUtils.readLines(new FileReader(log))
 				: new ArrayList<String>();
+	}
+
+	protected ProcessContext startAgentApp(String controlFile, String pid)
+			throws IOException {
+		File jarFile = new File(getProductLib(),
+				"cipollino-agent-0.2-SNAPSHOT.jar");
+		assertTrue(jarFile.exists());
+		File logFile = new File("target/cipollino.log");
+		logFile.delete();
+		Process process = startJavaProcess("-Dcipollino.log.file="
+				+ logFile.getAbsolutePath(), "-jar", jarFile.getAbsolutePath(),
+				"--file", controlFile, "--pid", pid);
+
+		ProcessContext context = new ProcessContext();
+		context.process = process;
+		context.log = logFile;
+		return context;
+	}
+
+	protected ProcessContext startTestApp(String jar, String log)
+			throws IOException {
+		File jarFile = new File(jar);
+		File logFile = new File(log);
+		assertTrue(jarFile.exists());
+
+		logFile.delete();
+
+		Process process = startJavaProcess("-Dlog.file="
+				+ logFile.getAbsolutePath(), "-jar", jarFile.getAbsolutePath());
+		String pid = getProcesses().get(jarFile.getAbsolutePath());
+		assertNotNull(pid);
+
+		ProcessContext context = new ProcessContext();
+		context.pid = pid;
+		context.process = process;
+		context.log = logFile;
+		return context;
+	}
+
+	protected ProcessContext startTestAppWithAgen(String jar, String log,
+			String controlFile) throws IOException {
+		File jarFile = new File(jar);
+		File logFile = new File(log);
+		assertTrue(jarFile.exists());
+
+		File agentJarFile = new File(getProductLib(),
+				"cipollino-agent-0.2-SNAPSHOT.jar");
+		assertTrue(agentJarFile.exists());
+
+		logFile.delete();
+		Process process = startJavaProcess("-javaagent:"
+				+ agentJarFile.getAbsolutePath() + "=--file=" + controlFile,
+				"-Dlog.file=" + logFile.getAbsolutePath(), "-jar", jarFile
+						.getAbsolutePath());
+
+		ProcessContext context = new ProcessContext();
+		context.process = process;
+		context.log = logFile;
+		return context;
 	}
 }

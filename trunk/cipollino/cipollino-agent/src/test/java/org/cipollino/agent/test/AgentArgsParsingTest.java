@@ -13,16 +13,16 @@ public class AgentArgsParsingTest {
 
 	@Test
 	public void parseArgumentsTest() {
-		TestAgent agent = new TestAgent();
+		final TestAgent agent = new TestAgent();
 		try {
 			agent.testParseArgs("");
 			fail();
-		} catch (ErrorException e) {
+		} catch (final ErrorException e) {
 		}
 		try {
 			agent.testParseArgs("--file=control.file.xml");
 			fail();
-		} catch (ErrorException e) {
+		} catch (final ErrorException e) {
 			assertEquals(e.getErrorMessage(), ErrorCode.ControlFileNotFound);
 		}
 
@@ -31,7 +31,7 @@ public class AgentArgsParsingTest {
 		try {
 			agent.testParseArgs("--fil=control.file.xml");
 			fail();
-		} catch (ErrorException e) {
+		} catch (final ErrorException e) {
 			assertEquals(e.getErrorMessage(), ErrorCode.ArgumentsParsingError);
 		}
 	}

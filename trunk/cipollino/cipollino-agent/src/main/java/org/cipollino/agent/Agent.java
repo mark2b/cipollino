@@ -42,17 +42,17 @@ public class Agent {
 			options.setAttached(attached);
 			transformationService.start(instrumentation, options);
 			AgentWasStarted.print();
-		} catch (ErrorException e) {
+		} catch (final ErrorException e) {
 			e.getErrorMessage().print(e.getArgs());
 			AgentWasnotStarted.print();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			ErrorCode.InternalError.print(e.getMessage(), e);
 			AgentWasnotStarted.print();
 		}
 	}
 
 	private void initDI() {
-		Injector injector = DI.createInjector(
+		final Injector injector = DI.createInjector(
 				new org.cipollino.core.DIModule(),
 				new org.cipollino.logger.DIModule());
 		injector.injectMembers(this);
@@ -62,14 +62,14 @@ public class Agent {
 		if (argsLine == null) {
 			argsLine = "";
 		}
-		String[] args = argsLine.split("&");
-		CommandLineParser parser = new PosixParser();
+		final String[] args = argsLine.split("&");
+		final CommandLineParser parser = new PosixParser();
 		try {
-			Options argsOptions = buildArgsOptions();
-			CommandLine cl = parser.parse(argsOptions, args);
+			final Options argsOptions = buildArgsOptions();
+			final CommandLine cl = parser.parse(argsOptions, args);
 			if (cl.hasOption(OPTION_FILE)) {
-				String fileName = cl.getOptionValue(OPTION_FILE);
-				File file = new File(fileName);
+				final String fileName = cl.getOptionValue(OPTION_FILE);
+				final File file = new File(fileName);
 				if (!file.exists()) {
 					throw new ErrorException(ControlFileNotFound, fileName);
 				} else {
@@ -78,7 +78,7 @@ public class Agent {
 			} else {
 				throw new ErrorException(ControlFileMissing);
 			}
-		} catch (ParseException e) {
+		} catch (final ParseException e) {
 			throw new ErrorException(ArgumentsParsingError, e, e.getMessage());
 		}
 	}
@@ -92,13 +92,13 @@ public class Agent {
 	}
 
 	private static void main(String args, Instrumentation inst, boolean attach) {
-		Agent agent = new Agent();
+		final Agent agent = new Agent();
 		agent.start(args, inst, attach);
 	}
 
 	@SuppressWarnings("static-access")
 	private Options buildArgsOptions() {
-		Options argsOptions = new Options();
+		final Options argsOptions = new Options();
 		argsOptions.addOption(OptionBuilder.hasArg().withLongOpt(OPTION_FILE)
 				.withDescription("Control File").create('f'));
 		return argsOptions;

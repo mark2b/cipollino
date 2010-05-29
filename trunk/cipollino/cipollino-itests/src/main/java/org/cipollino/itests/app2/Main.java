@@ -4,7 +4,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		Main a1 = new Main();
-		while (true) {
+		for (int i = 0; i < 10; i++) {
 			a1.run1();
 			try {
 				Thread.sleep(1000);
@@ -12,6 +12,7 @@ public class Main {
 				break;
 			}
 		}
+		System.exit(0);
 	}
 
 	public void run1() {
