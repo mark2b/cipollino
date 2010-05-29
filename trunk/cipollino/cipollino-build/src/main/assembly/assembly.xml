@@ -6,5 +6,9 @@
 		<format>dir</format>
 	</formats>
 	<includeBaseDirectory>false</includeBaseDirectory>
+
+	<componentDescriptors>
+		<componentDescriptor>src/main/assembly/main-artifacts-component.xml</componentDescriptor>
+	</componentDescriptors>
 	
 </assembly>
