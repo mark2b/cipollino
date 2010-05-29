@@ -23,6 +23,7 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.apache.commons.io.IOUtils;
 import org.cipollino.core.error.ErrorCode;
+import org.cipollino.core.error.ErrorException;
 
 import com.sun.tools.attach.VirtualMachine;
 
@@ -42,7 +43,7 @@ public class Main {
 		System.setProperty(CIPOLLINO_LOG_FILE, System.getProperty(
 				CIPOLLINO_LOG_FILE, "cipollino.log"));
 
-		Main main = new Main();
+		final Main main = new Main();
 		main.start(args);
 	}
 
@@ -53,40 +54,47 @@ public class Main {
 			connectToVM();
 			AgentWasConnected.print();
 			System.exit(0);
-		} catch (RuntimeException e) {
-			AgentWasnotConnected.print(e.getMessage());
-		} catch (Exception e) {
+			return;
+		} catch (final ErrorException e) {
+			e.getErrorMessage().print(e.getArgs());
+			e.printStackTrace();
+			AgentWasnotConnected.print();
+			System.exit(201);
+		} catch (final Exception e) {
+			e.printStackTrace();
 			AgentWasnotConnected.print(e.getMessage(), e);
+			System.exit(202);
 		}
-		System.exit(-1);
 	}
 
 	private void connectToVM() {
 		try {
-			URLClassLoader classLoader = (URLClassLoader) ClassLoader
+			final URLClassLoader classLoader = (URLClassLoader) ClassLoader
 					.getSystemClassLoader();
-			URL[] urls = classLoader.getURLs();
+			final URL[] urls = classLoader.getURLs();
 			if (urls.length == 0) {
 				throw new RuntimeException();
 			}
-			String jarName = new File(urls[0].getFile()).getAbsolutePath();
-			VirtualMachine machine = VirtualMachine.attach(options.getPid());
+			final String jarName = new File(urls[0].getFile())
+					.getAbsolutePath();
+			final VirtualMachine machine = VirtualMachine.attach(options
+					.getPid());
 			machine.loadAgent(jarName, String.format("--file=%s", options
 					.getControlFile().getAbsolutePath()));
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new RuntimeException(e.getMessage(), e);
 		}
 
 	}
 
 	private void parseArgs(String[] args) {
-		CommandLineParser parser = new PosixParser();
+		final CommandLineParser parser = new PosixParser();
 		try {
-			Options argsOptions = buildArgsOptions();
-			CommandLine cl = parser.parse(argsOptions, args);
+			final Options argsOptions = buildArgsOptions();
+			final CommandLine cl = parser.parse(argsOptions, args);
 			if (cl.hasOption(OPTION_FILE)) {
-				String fileName = cl.getOptionValue(OPTION_FILE);
-				File file = new File(fileName);
+				final String fileName = cl.getOptionValue(OPTION_FILE);
+				final File file = new File(fileName);
 				if (!file.exists()) {
 					throw new RuntimeException(ControlFileNotFound.format(file
 							.getAbsolutePath()));
@@ -100,21 +108,21 @@ public class Main {
 				if (cl.hasOption(OPTION_PID)) {
 					options.setPid(cl.getOptionValue(OPTION_PID));
 				} else {
-					String fileName = cl.getOptionValue(OPTION_PID_FILE);
-					File file = new File(fileName);
+					final String fileName = cl.getOptionValue(OPTION_PID_FILE);
+					final File file = new File(fileName);
 					if (!file.exists()) {
 						throw new RuntimeException(PidFileNotFound.format(file
 								.getAbsolutePath()));
 					} else {
 						try {
-							FileReader reader = new FileReader(file);
-							String pid = IOUtils.toString(reader).trim();
+							final FileReader reader = new FileReader(file);
+							final String pid = IOUtils.toString(reader).trim();
 							options.setPid(pid);
 							IOUtils.closeQuietly(reader);
-						} catch (FileNotFoundException e) {
+						} catch (final FileNotFoundException e) {
 							throw new RuntimeException(PidFileNotFound
 									.format(file.getAbsolutePath()));
-						} catch (IOException e) {
+						} catch (final IOException e) {
 							throw new RuntimeException(ErrorCode.InternalError
 									.format(e.getMessage(), e));
 						}
@@ -123,14 +131,14 @@ public class Main {
 			} else {
 				throw new RuntimeException(PidMissing.format());
 			}
-		} catch (ParseException e) {
+		} catch (final ParseException e) {
 			throw new RuntimeException(ArgumentsParsingError.format(e));
 		}
 	}
 
 	@SuppressWarnings("static-access")
 	private Options buildArgsOptions() {
-		Options argsOptions = new Options();
+		final Options argsOptions = new Options();
 		argsOptions.addOption(
 				OptionBuilder.hasArg().withLongOpt(OPTION_FILE)
 						.withDescription("Control File").create()).addOption(

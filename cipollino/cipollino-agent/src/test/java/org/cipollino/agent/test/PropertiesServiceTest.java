@@ -13,15 +13,15 @@ public class PropertiesServiceTest {
 
 	@Inject
 	PropertiesService propertiesService;
-	
+
 	@BeforeClass
 	void init() {
-		Injector injector = Guice.createInjector(new DIModule());
+		final Injector injector = Guice.createInjector(new DIModule());
 		injector.injectMembers(this);
 	}
 
 	@Test
 	public void jaxbPathTest() {
-//		System.out.println(propertiesService.getJaxbPath());
+		// System.out.println(propertiesService.getJaxbPath());
 	}
 }

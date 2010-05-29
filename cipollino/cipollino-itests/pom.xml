@@ -54,6 +54,9 @@
 							<archive>
 								<manifest>
 									<mainClass>org.cipollino.itests.app1.Main</mainClass>
+									<addClasspath>true</addClasspath>
+									<classpathLayoutType>repository</classpathLayoutType>
+									<classpathPrefix>${settings.localRepository}/</classpathPrefix>
 								</manifest>
 							</archive>
 						</configuration>
@@ -73,6 +76,9 @@
 							<archive>
 								<manifest>
 									<mainClass>org.cipollino.itests.app2.Main</mainClass>
+									<addClasspath>true</addClasspath>
+									<classpathLayoutType>repository</classpathLayoutType>
+									<classpathPrefix>${settings.localRepository}/</classpathPrefix>
 								</manifest>
 							</archive>
 						</configuration>
