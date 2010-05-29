@@ -1,5 +1,7 @@
 package org.cipollino.core.xml;
 
+import static org.cipollino.core.error.ErrorCode.XmlParsingError;
+
 import java.io.Reader;
 
 import javax.xml.bind.JAXBContext;
@@ -10,15 +12,13 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.cipollino.core.error.Status;
+import org.cipollino.core.error.ErrorException;
 import org.cipollino.core.services.PropertiesService;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
-import static org.cipollino.core.error.ErrorCode.*;
 
 @Singleton
 public class ModelSerializer {
@@ -29,7 +29,7 @@ public class ModelSerializer {
 	private PropertiesService propertiesService;
 
 	@SuppressWarnings("unchecked")
-	public <T> T read(Status status, Reader reader, Class<T> clazz) {
+	public <T> T read(Reader reader, Class<T> clazz) {
 		try {
 			DocumentBuilder builder = createDocumentBuilder();
 			InputSource inputSource = new InputSource(reader);
@@ -38,14 +38,14 @@ public class ModelSerializer {
 			JAXBElement<T> element = (JAXBElement<T>) u.unmarshal(document);
 			return (T) element.getValue();
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add(Status.createStatus(XmlParsingError, e));
-			return null;
+			throw new ErrorException(XmlParsingError, e, e.getMessage());
 		}
 	}
 
-	private DocumentBuilder createDocumentBuilder() throws ParserConfigurationException {
-		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+	private DocumentBuilder createDocumentBuilder()
+			throws ParserConfigurationException {
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+				.newInstance();
 		documentBuilderFactory.setXIncludeAware(true);
 		documentBuilderFactory.setNamespaceAware(true);
 		DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
@@ -63,6 +63,7 @@ public class ModelSerializer {
 	}
 
 	private JAXBContext createJAXBContext() throws JAXBException {
-		return JAXBContext.newInstance(propertiesService.getJaxbPath(), getClassLoader());
+		return JAXBContext.newInstance(propertiesService.getJaxbPath(),
+				getClassLoader());
 	}
 }

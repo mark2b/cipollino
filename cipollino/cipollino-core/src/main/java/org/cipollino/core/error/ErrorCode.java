@@ -45,7 +45,7 @@ public enum ErrorCode implements ErrorMessage {
 	/**
 	 * 
 	 */
-	@Message(code = "00103", message = "XML Parsing failed. [%s]")
+	@Message(code = "00103", message = "XML Parsing failed. %s.")
 	XmlParsingError,
 	/**
 	* 

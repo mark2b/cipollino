@@ -28,7 +28,7 @@ public enum ErrorCode implements ErrorMessage {
 	/**
 	 * 
 	 */
-	@Message(code = "00204", message = "Arguments Parsing failed.")
+	@Message(code = "00204", message = "Arguments Parsing failed. %s.")
 	ArgumentsParsingError,
 	/**
 	 * 

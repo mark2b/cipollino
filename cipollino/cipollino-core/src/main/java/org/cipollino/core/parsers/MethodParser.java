@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.cipollino.core.exception.ErrorException;
+import org.cipollino.core.error.ErrorException;
 import org.cipollino.core.model.MethodDef;
 
 import com.google.inject.Singleton;
@@ -31,12 +31,12 @@ public class MethodParser {
 		if (matcher.find()) {
 			String className = matcher.group(1);
 			if (className == null) {
-				throw new ErrorException(ClassNameNotFound.format(input));
+				throw new ErrorException(ClassNameNotFound, input);
 			}
 			method.setClassName(className);
 			String methodName = matcher.group(2);
 			if (methodName == null) {
-				throw new ErrorException(MethodNameNotFound.format(input));
+				throw new ErrorException(MethodNameNotFound, input);
 			}
 			method.setMethodName(methodName);
 			for (int i = 4; i <= matcher.groupCount(); i += 3) {
@@ -50,7 +50,7 @@ public class MethodParser {
 			}
 			normalizeMethod(method);
 		} else {
-			throw new ErrorException(InvalidMethod.format(input));
+			throw new ErrorException(InvalidMethod, input);
 		}
 	}
 

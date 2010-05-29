@@ -18,11 +18,14 @@ public class BasicTest extends AbstractTest {
 
 		assertTrue(jar.exists());
 
-		File jar2 = new File(getProductLib(), "cipollino-agent-0.2-SNAPSHOT.jar");
+		File jar2 = new File(getProductLib(),
+				"cipollino-agent-0.2-SNAPSHOT.jar");
 
 		assertTrue(jar2.exists());
 
-		Process process = startJavaProcess("-javaagent:" + jar2.getAbsolutePath() + "=--file=src/test/resources/app1-file.xml", "-Dlog.file="
+		Process process = startJavaProcess("-javaagent:"
+				+ jar2.getAbsolutePath()
+				+ "=--file=src/test/resources/app1-file.xml", "-Dlog.file="
 				+ log.getAbsolutePath(), "-jar", jar.getAbsolutePath());
 
 		Thread.sleep(1000);
@@ -40,19 +43,23 @@ public class BasicTest extends AbstractTest {
 
 		assertTrue(jar.exists());
 
-		File jar2 = new File(getProductLib(), "cipollino-agent-0.2-SNAPSHOT.jar");
+		File jar2 = new File(getProductLib(),
+				"cipollino-agent-0.2-SNAPSHOT.jar");
 		assertTrue(jar2.exists());
 
-		Process process = startJavaProcess("-Dlog.file=" + log.getAbsolutePath(), "-jar", jar.getAbsolutePath());
+		Process process = startJavaProcess("-Dlog.file="
+				+ log.getAbsolutePath(), "-jar", jar.getAbsolutePath());
 		String pid = getProcesses().get(jar.getAbsolutePath());
 		assertNotNull(pid);
 		Thread.sleep(1000);
 
-		Process agentProcess = startJavaProcess("-Dcipollino.log.file=" + log2.getAbsolutePath(), "-jar", jar2.getAbsolutePath(), "--file",
-				"src/test/resources/app2-file.xml", "--pid", pid);
+		Process agentProcess = startJavaProcess("-Dcipollino.log.file="
+				+ log2.getAbsolutePath(), "-jar", jar2.getAbsolutePath(),
+				"--file", "src/test/resources/app2-file.xml", "--pid", pid);
 
 		Thread.sleep(2000);
-		assertEquals(agentProcess.exitValue(), 0);
+		int exitValue = waitForProcessExit(agentProcess);
+		assertEquals(exitValue, 0);
 		process.destroy();
 		Thread.sleep(1000);
 		List<String> logLines = loadLog(log);

@@ -20,7 +20,8 @@ public abstract class AbstractTest {
 	protected final Properties properties = new Properties();
 
 	protected File getJavaHome() {
-		return new File(properties.getProperty("jdk.home", System.getProperty("java.home")));
+		return new File(properties.getProperty("jdk.home", System
+				.getProperty("java.home")));
 	}
 
 	protected File getJavaBin() {
@@ -38,7 +39,8 @@ public abstract class AbstractTest {
 	@SuppressWarnings("unchecked")
 	protected Map<String, String> getProcesses() throws IOException {
 		Map<String, String> map = new HashMap<String, String>();
-		ProcessBuilder builder = new ProcessBuilder(new File(getJavaBin(), "jps").getAbsolutePath());
+		ProcessBuilder builder = new ProcessBuilder(new File(getJavaBin(),
+				"jps").getAbsolutePath());
 		builder.command().add("-l");
 		Process process = builder.start();
 		List<String> lines = IOUtils.readLines(process.getInputStream());
@@ -52,7 +54,8 @@ public abstract class AbstractTest {
 	}
 
 	protected Process startJavaProcess(String... commands) throws IOException {
-		ProcessBuilder builder = new ProcessBuilder(new File(getJavaBin(), "java").getAbsolutePath());
+		ProcessBuilder builder = new ProcessBuilder(new File(getJavaBin(),
+				"java").getAbsolutePath());
 		for (String command : commands) {
 			builder.command().add(command);
 		}
@@ -63,13 +66,29 @@ public abstract class AbstractTest {
 		return process;
 	}
 
+	protected int waitForProcessExit(Process process) {
+		while (true) {
+			try {
+				return process.exitValue();
+			} catch (Exception e) {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e1) {
+					break;
+				}
+			}
+		}
+		return -1;
+	}
+
 	private void startOutputPrinter() {
 		new Thread() {
 
 			@Override
 			public void run() {
 				while (true) {
-					InputStream[] streams = inputStreams.toArray(new InputStream[inputStreams.size()]);
+					InputStream[] streams = inputStreams
+							.toArray(new InputStream[inputStreams.size()]);
 					for (InputStream stream : streams) {
 						try {
 							IOUtils.copy(stream, System.out);
@@ -98,6 +117,7 @@ public abstract class AbstractTest {
 
 	@SuppressWarnings("unchecked")
 	protected List<String> loadLog(File log) throws IOException {
-		return log.exists() ? IOUtils.readLines(new FileReader(log)) : new ArrayList<String>();
+		return log.exists() ? IOUtils.readLines(new FileReader(log))
+				: new ArrayList<String>();
 	}
 }

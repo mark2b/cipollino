@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 import org.cipollino.core.DIModule;
 import org.cipollino.core.actions.Action;
 import org.cipollino.core.actions.DefaultAction;
-import org.cipollino.core.error.Status;
 import org.cipollino.core.model.Agent;
 import org.cipollino.core.schema.AgentType;
 import org.cipollino.core.schema.X2JModelFactory;
@@ -36,9 +35,7 @@ public class X2JModelFactoryTest {
 
 	@Test
 	public void parseTest() {
-		Status status = Status.createStatus();
-		AgentType agentType = modelSerializer.read(status, new InputStreamReader(getClass().getResourceAsStream("/control-file1.xml")), AgentType.class);
-		assertTrue(status.isSuccess());
+		AgentType agentType = modelSerializer.read(new InputStreamReader(getClass().getResourceAsStream("/control-file1.xml")), AgentType.class);
 		assertNotNull(agentType);
 		Agent project = modelFactory.create(agentType);
 		Action action = project.getTargets().get(0).getActions().get(0).createAction();

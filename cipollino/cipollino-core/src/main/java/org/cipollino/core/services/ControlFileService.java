@@ -6,7 +6,6 @@ import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.cipollino.core.error.Status;
 import org.cipollino.core.runtime.StartOptions;
 
 import com.google.inject.Inject;
@@ -38,9 +37,8 @@ public class ControlFileService extends TimerTask {
 	public void run() {
 		long lastModified = controlFile.lastModified();
 		if (lastModifiedTime != 0 && lastModified > lastModifiedTime) {
-			Status status = Status.createStatus();
 			Info.print("Loading control file");
-			transformationService.reloadConfiguration(status);
+			transformationService.reloadConfiguration();
 		}
 		lastModifiedTime = lastModified;
 	}

@@ -2,12 +2,10 @@ package org.cipollino.core.test;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
 
 import java.io.InputStreamReader;
 
 import org.cipollino.core.DIModule;
-import org.cipollino.core.error.Status;
 import org.cipollino.core.schema.ActionType;
 import org.cipollino.core.schema.AgentType;
 import org.cipollino.core.xml.ModelSerializer;
@@ -31,9 +29,7 @@ public class ModelSerializerTest {
 
 	@Test
 	public void testRead() throws Exception {
-		Status status = Status.createStatus();
-		AgentType agentType = modelSerializer.read(status, new InputStreamReader(getClass().getResourceAsStream("/control-file1.xml")), AgentType.class);
-		assertTrue(status.isSuccess());
+		AgentType agentType = modelSerializer.read(new InputStreamReader(getClass().getResourceAsStream("/control-file1.xml")), AgentType.class);
 		assertNotNull(agentType);
 		assertEquals(agentType.getTarget().size(), 1);
 		ActionType actionType = agentType.getTarget().get(0).getAction().get(0);
