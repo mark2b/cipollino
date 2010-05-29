@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 
 import org.cipollino.core.DIModule;
 import org.cipollino.core.actions.Action;
-import org.cipollino.core.error.Status;
 import org.cipollino.core.model.Agent;
 import org.cipollino.core.schema.AgentType;
 import org.cipollino.core.schema.X2JModelFactory;
@@ -30,18 +29,20 @@ public class X2JModelFactoryTest {
 
 	@BeforeClass
 	void init() {
-		Injector injector = Guice.createInjector(new DIModule(), new org.cipollino.logger.DIModule());
+		Injector injector = Guice.createInjector(new DIModule(),
+				new org.cipollino.logger.DIModule());
 		injector.injectMembers(this);
 	}
 
 	@Test
 	public void parseTest() {
-		Status status = Status.createStatus();
-		AgentType agentType = modelSerializer.read(status, new InputStreamReader(getClass().getResourceAsStream("/control-file1.xml")), AgentType.class);
-		assertTrue(status.isSuccess());
+		AgentType agentType = modelSerializer.read(new InputStreamReader(
+				getClass().getResourceAsStream("/control-file1.xml")),
+				AgentType.class);
 		assertNotNull(agentType);
 		Agent agent = modelFactory.create(agentType);
-		Action action = agent.getTargets().get(0).getActions().get(0).createAction();
+		Action action = agent.getTargets().get(0).getActions().get(0)
+				.createAction();
 		assertTrue(action instanceof LoggerAction);
 	}
 }

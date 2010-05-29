@@ -5,7 +5,6 @@ import static org.testng.Assert.assertEquals;
 import org.cipollino.core.error.ErrorCode;
 import org.testng.annotations.Test;
 
-
 public class ErrorCodeTest {
 
 	@Test
@@ -17,7 +16,7 @@ public class ErrorCodeTest {
 	@Test
 	public void formatMessageTest() {
 		ErrorCode errorCode = ErrorCode.InternalError;
-		assertEquals(errorCode.format(), "(00001) Internal Error.");
+		assertEquals(errorCode.format("Error"), "(00001) Internal Error. Error.");
 		assertEquals(ErrorCode.ControlFileNotFound.format("/file.xml"),
 				"(00102) The Control file [/file.xml] not found.");
 	}

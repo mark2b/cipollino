@@ -107,6 +107,7 @@
 		<dependency>
 			<groupId>org.jboss</groupId>
 			<artifactId>javassist</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.opencsv</groupId>
@@ -121,6 +122,11 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

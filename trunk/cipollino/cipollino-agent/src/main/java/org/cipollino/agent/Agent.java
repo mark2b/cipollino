@@ -16,7 +16,8 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.cipollino.core.DI;
-import org.cipollino.core.error.Status;
+import org.cipollino.core.error.ErrorCode;
+import org.cipollino.core.error.ErrorException;
 import org.cipollino.core.runtime.StartOptions;
 import org.cipollino.core.services.TransformationService;
 
@@ -32,29 +33,32 @@ public class Agent {
 	@Inject
 	private TransformationService transformationService;
 
-	private void start(String argsLine, Instrumentation instrumentation, boolean attached) {
-		initDI();
-		buildArgsOptions();
-		Status status = parseArgs(argsLine);
-		options.setAttached(attached);
-		if (status.isSuccess()) {
-			status = transformationService.start(instrumentation, options);
-		}
-		if (status.isError()) {
-			status.getErrorMessage().print();
-			AgentWasnotStarted.print();
-		} else {
+	private void start(String argsLine, Instrumentation instrumentation,
+			boolean attached) {
+		try {
+			initDI();
+			buildArgsOptions();
+			parseArgs(argsLine);
+			options.setAttached(attached);
+			transformationService.start(instrumentation, options);
 			AgentWasStarted.print();
+		} catch (ErrorException e) {
+			e.getErrorMessage().print(e.getArgs());
+			AgentWasnotStarted.print();
+		} catch (Exception e) {
+			ErrorCode.InternalError.print(e.getMessage(), e);
+			AgentWasnotStarted.print();
 		}
 	}
 
 	private void initDI() {
-		Injector injector = DI.createInjector(new org.cipollino.core.DIModule(), new org.cipollino.logger.DIModule());
+		Injector injector = DI.createInjector(
+				new org.cipollino.core.DIModule(),
+				new org.cipollino.logger.DIModule());
 		injector.injectMembers(this);
 	}
 
-	protected Status parseArgs(String argsLine) {
-		Status status = Status.createStatus();
+	protected void parseArgs(String argsLine) {
 		if (argsLine == null) {
 			argsLine = "";
 		}
@@ -67,17 +71,16 @@ public class Agent {
 				String fileName = cl.getOptionValue(OPTION_FILE);
 				File file = new File(fileName);
 				if (!file.exists()) {
-					status.add(Status.createStatus(ControlFileNotFound));
+					throw new ErrorException(ControlFileNotFound, fileName);
 				} else {
 					options.setControlFile(file);
 				}
 			} else {
-				status.add(Status.createStatus(ControlFileMissing));
+				throw new ErrorException(ControlFileMissing);
 			}
 		} catch (ParseException e) {
-			status.add(Status.createStatus(ArgumentsParsingError, e));
+			throw new ErrorException(ArgumentsParsingError, e, e.getMessage());
 		}
-		return status;
 	}
 
 	public static void premain(String agentArgs, Instrumentation inst) {
@@ -96,7 +99,8 @@ public class Agent {
 	@SuppressWarnings("static-access")
 	private Options buildArgsOptions() {
 		Options argsOptions = new Options();
-		argsOptions.addOption(OptionBuilder.hasArg().withLongOpt(OPTION_FILE).withDescription("Control File").create('f'));
+		argsOptions.addOption(OptionBuilder.hasArg().withLongOpt(OPTION_FILE)
+				.withDescription("Control File").create('f'));
 		return argsOptions;
 	}
 }

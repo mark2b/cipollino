@@ -9,7 +9,6 @@ import static org.cipollino.core.error.ErrorCode.ControlFileNotFound;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.lang.instrument.Instrumentation;
 import java.lang.instrument.UnmodifiableClassException;
 import java.util.ArrayList;
@@ -26,7 +25,8 @@ import javassist.CtMethod;
 import javassist.CtNewMethod;
 import javassist.NotFoundException;
 
-import org.cipollino.core.error.Status;
+import org.apache.commons.io.IOUtils;
+import org.cipollino.core.error.ErrorException;
 import org.cipollino.core.inst.ClassTransformer;
 import org.cipollino.core.model.ActionDef;
 import org.cipollino.core.model.Agent;
@@ -80,38 +80,30 @@ public class TransformationService {
 	@Inject
 	private ClassPool classPool;
 
-	public Status start(final Instrumentation instrumentation, final StartOptions options) {
+	public void start(Instrumentation instrumentation, StartOptions options) {
 		this.options = options;
-		final Status status = Status.createStatus();
 		this.instrumentation = instrumentation;
 		if (options.getControlFile() != null) {
-			loadControlFile(status);
-			if (status.isSuccess()) {
-				instrumentation.addTransformer(classTransformer, true);
-				if (options.isAttached()) {
-					transformLoadedClasses(status);
-				}
-				if (status.isSuccess()) {
-					controlFileService.start();
-				}
+			loadControlFile();
+			instrumentation.addTransformer(classTransformer, true);
+			if (options.isAttached()) {
+				transformLoadedClasses();
 			}
+			controlFileService.start();
 		} else {
-			status.add(Status.createStatus(ControlFileMissing));
+			throw new ErrorException(ControlFileMissing);
 		}
-		return status;
 	}
 
-	private List<String> loadControlFile(Status status) {
+	private List<String> loadControlFile() {
 		List<String> affectedClasses = new ArrayList<String>();
-		Agent model = loadModel(status, options.getControlFile());
-		if (status.isSuccess()) {
-			affectedClasses = loadTargets(status, model);
-			classPathService.updateClassPool(model.getClassPathDef());
-		}
+		Agent model = loadModel(options.getControlFile());
+		affectedClasses = loadTargets(model);
+		classPathService.updateClassPool(model.getClassPathDef());
 		return affectedClasses;
 	}
 
-	public void transformLoadedClasses(Status status) {
+	public void transformLoadedClasses() {
 		try {
 			Class<?>[] loadedClasses = instrumentation.getAllLoadedClasses();
 			List<Class<?>> classesToTransform = new ArrayList<Class<?>>();
@@ -121,15 +113,16 @@ public class TransformationService {
 				}
 			}
 			if (!classesToTransform.isEmpty()) {
-				instrumentation.retransformClasses(classesToTransform.toArray(new Class<?>[classesToTransform.size()]));
+				instrumentation.retransformClasses(classesToTransform
+						.toArray(new Class<?>[classesToTransform.size()]));
 			}
 		} catch (UnmodifiableClassException e) {
 			ClassCanNotBeTransformed.print(e.getMessage());
 		}
 	}
 
-	public void reloadConfiguration(Status status) {
-		List<String> affectedClasses = loadControlFile(status);
+	public void reloadConfiguration() {
+		List<String> affectedClasses = loadControlFile();
 		try {
 			Class<?>[] loadedClasses = instrumentation.getAllLoadedClasses();
 			List<Class<?>> classesToTransform = new ArrayList<Class<?>>();
@@ -139,7 +132,8 @@ public class TransformationService {
 				}
 			}
 			if (!classesToTransform.isEmpty()) {
-				instrumentation.retransformClasses(classesToTransform.toArray(new Class<?>[classesToTransform.size()]));
+				instrumentation.retransformClasses(classesToTransform
+						.toArray(new Class<?>[classesToTransform.size()]));
 			}
 		} catch (UnmodifiableClassException e) {
 			ClassCanNotBeTransformed.print(e.getMessage());
@@ -147,32 +141,26 @@ public class TransformationService {
 		runtime.cleanDeletedItems();
 	}
 
-	public Agent loadModel(Status status, File inputFile) {
+	public Agent loadModel(File inputFile) {
 		FileReader reader = null;
 		try {
 			reader = new FileReader(inputFile);
-			AgentType agentType = modelSerializer.read(status, reader, AgentType.class);
-			if (status.isSuccess()) {
-				AbstractX2JModelFactory modelFactory = modelFactoryFactory.getFactory(agentType);
-				return modelFactory.createModel(agentType, Agent.class);
-			}
+			AgentType agentType = modelSerializer.read(reader, AgentType.class);
+			AbstractX2JModelFactory modelFactory = modelFactoryFactory
+					.getFactory(agentType);
+			return modelFactory.createModel(agentType, Agent.class);
 		} catch (FileNotFoundException e) {
-			status.add(Status.createStatus(ControlFileNotFound));
+			throw new ErrorException(ControlFileNotFound, inputFile);
 		} finally {
-			try {
-				if (reader != null) {
-					reader.close();
-				}
-			} catch (IOException e) {
-			}
+			IOUtils.closeQuietly(reader);
 		}
-		return null;
 	}
 
-	public List<String> loadTargets(Status status, Agent model) {
+	public List<String> loadTargets(Agent model) {
 		List<String> affectedClasses = new ArrayList<String>();
 
-		Map<String, List<MethodDef>> methodsMap = loadMethods(model.getTargets());
+		Map<String, List<MethodDef>> methodsMap = loadMethods(model
+				.getTargets());
 
 		// Mark unused transformed classes for delete
 		Set<String> targetClasses = runtime.getTargetClasses();
@@ -241,8 +229,11 @@ public class TransformationService {
 				CtClass ctClass = classPool.makeClass(className);
 				ctClass.setSuperclass(ctSuperClass);
 				CtClass ctReturnType = getCtClass(Object.class);
-				CtMethod invokeMethod = CtNewMethod.make(ctReturnType, "invoke", new CtClass[] { getCtClass(CallState.class) }, new CtClass[0],
-						ajustSourceCode(scriptDef, scriptDef.getSourceCode()), ctClass);
+				CtMethod invokeMethod = CtNewMethod.make(ctReturnType,
+						"invoke",
+						new CtClass[] { getCtClass(CallState.class) },
+						new CtClass[0], ajustSourceCode(scriptDef, scriptDef
+								.getSourceCode()), ctClass);
 				ctClass.addMethod(invokeMethod);
 				Class<Script> clazz = ctClass.toClass();
 				runtime.registerImplClass(className, clazz);
