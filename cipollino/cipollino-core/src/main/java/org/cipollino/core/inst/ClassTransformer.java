@@ -59,6 +59,7 @@ public class ClassTransformer implements ClassFileTransformer {
 				classData.setState(ClassState.TRANSFORMED);
 				break;
 			case TO_BE_RETRANSFORMED:
+System.out.println("ClassTransformer.transform() " + classFQN);				
 				classfileBuffer = transformBytecode(classData
 						.getOriginBytecode(), classFQN);
 				classData.setState(ClassState.TRANSFORMED);

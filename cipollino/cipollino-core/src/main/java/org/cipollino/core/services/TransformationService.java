@@ -113,8 +113,7 @@ public class TransformationService {
 				}
 			}
 			if (!classesToTransform.isEmpty()) {
-				instrumentation.retransformClasses(classesToTransform
-						.toArray(new Class<?>[classesToTransform.size()]));
+				instrumentation.retransformClasses(classesToTransform.toArray(new Class<?>[classesToTransform.size()]));
 			}
 		} catch (UnmodifiableClassException e) {
 			ClassCanNotBeTransformed.print(e.getMessage());
@@ -132,8 +131,7 @@ public class TransformationService {
 				}
 			}
 			if (!classesToTransform.isEmpty()) {
-				instrumentation.retransformClasses(classesToTransform
-						.toArray(new Class<?>[classesToTransform.size()]));
+				instrumentation.retransformClasses(classesToTransform.toArray(new Class<?>[classesToTransform.size()]));
 			}
 		} catch (UnmodifiableClassException e) {
 			ClassCanNotBeTransformed.print(e.getMessage());
@@ -146,8 +144,7 @@ public class TransformationService {
 		try {
 			reader = new FileReader(inputFile);
 			AgentType agentType = modelSerializer.read(reader, AgentType.class);
-			AbstractX2JModelFactory modelFactory = modelFactoryFactory
-					.getFactory(agentType);
+			AbstractX2JModelFactory modelFactory = modelFactoryFactory.getFactory(agentType);
 			return modelFactory.createModel(agentType, Agent.class);
 		} catch (FileNotFoundException e) {
 			throw new ErrorException(ControlFileNotFound, inputFile);
@@ -159,8 +156,7 @@ public class TransformationService {
 	public List<String> loadTargets(Agent model) {
 		List<String> affectedClasses = new ArrayList<String>();
 
-		Map<String, List<MethodDef>> methodsMap = loadMethods(model
-				.getTargets());
+		Map<String, List<MethodDef>> methodsMap = loadMethods(model.getTargets());
 
 		// Mark unused transformed classes for delete
 		Set<String> targetClasses = runtime.getTargetClasses();
@@ -174,6 +170,7 @@ public class TransformationService {
 			}
 			oldMethods.clear();
 			if (methodsMap.containsKey(targetClassName)) {
+				System.out.println("TransformationService.loadTargets() " + targetClassName);
 				classData.setState(ClassState.TO_BE_RETRANSFORMED);
 				classData.getMethods().addAll(newMethods);
 
@@ -229,11 +226,8 @@ public class TransformationService {
 				CtClass ctClass = classPool.makeClass(className);
 				ctClass.setSuperclass(ctSuperClass);
 				CtClass ctReturnType = getCtClass(Object.class);
-				CtMethod invokeMethod = CtNewMethod.make(ctReturnType,
-						"invoke",
-						new CtClass[] { getCtClass(CallState.class) },
-						new CtClass[0], ajustSourceCode(scriptDef, scriptDef
-								.getSourceCode()), ctClass);
+				CtMethod invokeMethod = CtNewMethod.make(ctReturnType, "invoke", new CtClass[] { getCtClass(CallState.class) }, new CtClass[0],
+						ajustSourceCode(scriptDef, scriptDef.getSourceCode()), ctClass);
 				ctClass.addMethod(invokeMethod);
 				Class<Script> clazz = ctClass.toClass();
 				runtime.registerImplClass(className, clazz);
