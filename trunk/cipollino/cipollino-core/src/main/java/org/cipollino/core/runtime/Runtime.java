@@ -64,16 +64,16 @@ public class Runtime {
 				classesMap.remove(key);
 			}
 		}
-		Integer[] hashCodes = elementsMap.keySet().toArray(
-				new Integer[elementsMap.size()]);
-		for (Integer hashCode : hashCodes) {
-			if (elementsMap.get(hashCode) instanceof MethodDef) {
-				MethodDef method = (MethodDef) elementsMap.get(hashCode);
-				if (method.isDeleted()) {
-					elementsMap.remove(method.hashCode());
-				}
-			}
-		}
+//		Integer[] hashCodes = elementsMap.keySet().toArray(
+//				new Integer[elementsMap.size()]);
+//		for (Integer hashCode : hashCodes) {
+//			if (elementsMap.get(hashCode) instanceof MethodDef) {
+//				MethodDef method = (MethodDef) elementsMap.get(hashCode);
+//				if (method.isDeleted()) {
+//					elementsMap.remove(method.hashCode());
+//				}
+//			}
+//		}
 	}
 
 	public ClassData getClassData(String className) {

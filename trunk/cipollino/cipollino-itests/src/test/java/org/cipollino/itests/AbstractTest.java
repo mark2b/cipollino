@@ -23,8 +23,7 @@ public abstract class AbstractTest {
 	protected final Properties properties = new Properties();
 
 	protected File getJavaHome() {
-		return new File(properties.getProperty("jdk.home", System
-				.getProperty("java.home")));
+		return new File(properties.getProperty("jdk.home", System.getProperty("java.home")));
 	}
 
 	protected File getJavaBin() {
@@ -50,8 +49,7 @@ public abstract class AbstractTest {
 	@SuppressWarnings("unchecked")
 	protected Map<String, String> getProcesses() throws IOException {
 		Map<String, String> map = new HashMap<String, String>();
-		ProcessBuilder builder = new ProcessBuilder(new File(getJavaBin(),
-				"jps").getAbsolutePath());
+		ProcessBuilder builder = new ProcessBuilder(new File(getJavaBin(), "jps").getAbsolutePath());
 		builder.command().add("-l");
 		Process process = builder.start();
 		List<String> lines = IOUtils.readLines(process.getInputStream());
@@ -65,8 +63,7 @@ public abstract class AbstractTest {
 	}
 
 	protected Process startJavaProcess(String... commands) throws IOException {
-		ProcessBuilder builder = new ProcessBuilder(new File(getJavaBin(),
-				"java").getAbsolutePath());
+		ProcessBuilder builder = new ProcessBuilder(new File(getJavaBin(), "java").getAbsolutePath());
 		for (String command : commands) {
 			builder.command().add(command);
 		}
@@ -99,8 +96,7 @@ public abstract class AbstractTest {
 			@Override
 			public void run() {
 				while (true) {
-					InputStream[] streams = inputStreams
-							.toArray(new InputStream[inputStreams.size()]);
+					InputStream[] streams = inputStreams.toArray(new InputStream[inputStreams.size()]);
 					for (InputStream stream : streams) {
 						try {
 							IOUtils.copy(stream, System.out);
@@ -129,20 +125,16 @@ public abstract class AbstractTest {
 
 	@SuppressWarnings("unchecked")
 	protected List<String> loadLog(File log) throws IOException {
-		return log.exists() ? IOUtils.readLines(new FileReader(log))
-				: new ArrayList<String>();
+		return log.exists() ? IOUtils.readLines(new FileReader(log)) : new ArrayList<String>();
 	}
 
-	protected ProcessContext startAgentApp(String controlFile, String pid)
-			throws IOException {
-		File jarFile = new File(getProductLib(),
-				"cipollino-agent-0.2-SNAPSHOT.jar");
+	protected ProcessContext startAgentApp(String controlFile, String pid) throws IOException {
+		File jarFile = new File(getProductLib(), "cipollino-agent.jar");
 		assertTrue(jarFile.exists());
 		File logFile = new File("target/cipollino.log");
 		logFile.delete();
-		Process process = startJavaProcess("-Dcipollino.log.file="
-				+ logFile.getAbsolutePath(), "-jar", jarFile.getAbsolutePath(),
-				"--file", controlFile, "--pid", pid);
+		Process process = startJavaProcess("-Dcipollino.log.file=" + logFile.getAbsolutePath(), "-jar", jarFile.getAbsolutePath(), "--file", controlFile,
+				"--pid", pid);
 
 		ProcessContext context = new ProcessContext();
 		context.process = process;
@@ -150,16 +142,14 @@ public abstract class AbstractTest {
 		return context;
 	}
 
-	protected ProcessContext startTestApp(String jar, String log)
-			throws IOException {
+	protected ProcessContext startTestApp(String jar, String log) throws IOException {
 		File jarFile = new File(jar);
 		File logFile = new File(log);
 		assertTrue(jarFile.exists());
 
 		logFile.delete();
 
-		Process process = startJavaProcess("-Dlog.file="
-				+ logFile.getAbsolutePath(), "-jar", jarFile.getAbsolutePath());
+		Process process = startJavaProcess("-Dlog.file=" + logFile.getAbsolutePath(), "-jar", jarFile.getAbsolutePath());
 		String pid = getProcesses().get(jarFile.getAbsolutePath());
 		assertNotNull(pid);
 
@@ -170,21 +160,17 @@ public abstract class AbstractTest {
 		return context;
 	}
 
-	protected ProcessContext startTestAppWithAgen(String jar, String log,
-			String controlFile) throws IOException {
+	protected ProcessContext startTestAppWithAgen(String jar, String log, String controlFile) throws IOException {
 		File jarFile = new File(jar);
 		File logFile = new File(log);
 		assertTrue(jarFile.exists());
 
-		File agentJarFile = new File(getProductLib(),
-				"cipollino-agent-0.2-SNAPSHOT.jar");
+		File agentJarFile = new File(getProductLib(), "cipollino-agent.jar");
 		assertTrue(agentJarFile.exists());
 
 		logFile.delete();
-		Process process = startJavaProcess("-javaagent:"
-				+ agentJarFile.getAbsolutePath() + "=--file=" + controlFile,
-				"-Dlog.file=" + logFile.getAbsolutePath(), "-jar", jarFile
-						.getAbsolutePath());
+		Process process = startJavaProcess("-javaagent:" + agentJarFile.getAbsolutePath() + "=--file=" + controlFile,
+				"-Dlog.file=" + logFile.getAbsolutePath(), "-jar", jarFile.getAbsolutePath());
 
 		ProcessContext context = new ProcessContext();
 		context.process = process;
