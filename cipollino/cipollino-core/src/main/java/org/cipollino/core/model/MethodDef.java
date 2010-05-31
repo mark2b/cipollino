@@ -2,6 +2,7 @@ package org.cipollino.core.model;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class MethodDef {
 
@@ -17,7 +18,13 @@ public class MethodDef {
 
 	private boolean deleted = false;
 
+	final private String uuid;
+
 	private Map<String, String> arguments = new LinkedHashMap<String, String>();
+
+	public MethodDef() {
+		this.uuid = UUID.randomUUID().toString();
+	}
 
 	public String getName() {
 		return name;
@@ -73,5 +80,9 @@ public class MethodDef {
 
 	public void setStaticMethod(boolean staticMethod) {
 		this.staticMethod = staticMethod;
+	}
+
+	public String getUuid() {
+		return uuid;
 	}
 }

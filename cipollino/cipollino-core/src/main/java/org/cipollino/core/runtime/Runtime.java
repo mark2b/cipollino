@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
+import java.util.Map.Entry;
 
 import org.cipollino.core.actions.ActionsRunner;
 import org.cipollino.core.model.MethodDef;
@@ -20,7 +21,7 @@ public class Runtime {
 
 	private ThreadLocal<Stack<ActionsRunner>> currentRunner = new ThreadLocal<Stack<ActionsRunner>>();
 
-	private Map<Integer, Object> elementsMap = new HashMap<Integer, Object>();
+	private Map<String, Object> elementsMap = new HashMap<String, Object>();
 
 	private Map<String, Class<Script>> implClassMap = new LinkedHashMap<String, Class<Script>>();
 
@@ -29,11 +30,11 @@ public class Runtime {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T getElement(Class<T> clazz, int key) {
+	public <T> T getElement(Class<T> clazz, String key) {
 		return (T) elementsMap.get(key);
 	}
 
-	public Object getElement(int key) {
+	public Object getElement(String key) {
 		return elementsMap.get(key);
 	}
 
@@ -46,13 +47,14 @@ public class Runtime {
 	}
 
 	public void registerClass(String className, ClassData classData) {
-		if (classesMap.containsKey(className)) {
-			throw new IllegalStateException("The class already registered - "
-					+ className);
-		}
+		// if (classesMap.containsKey(className)) {
+		// throw new IllegalStateException("The class already registered - "
+		// + className);
+		// }
 		classesMap.put(className, classData);
 		for (MethodDef methodDef : classData.getMethods()) {
-			elementsMap.put(methodDef.hashCode(), methodDef);
+			System.out.println(methodDef.getUuid() + " " + methodDef);
+			elementsMap.put(methodDef.getUuid(), methodDef);
 		}
 	}
 
@@ -64,16 +66,16 @@ public class Runtime {
 				classesMap.remove(key);
 			}
 		}
-//		Integer[] hashCodes = elementsMap.keySet().toArray(
-//				new Integer[elementsMap.size()]);
-//		for (Integer hashCode : hashCodes) {
-//			if (elementsMap.get(hashCode) instanceof MethodDef) {
-//				MethodDef method = (MethodDef) elementsMap.get(hashCode);
-//				if (method.isDeleted()) {
-//					elementsMap.remove(method.hashCode());
-//				}
-//			}
-//		}
+		// Integer[] hashCodes = elementsMap.keySet().toArray(
+		// new Integer[elementsMap.size()]);
+		// for (Integer hashCode : hashCodes) {
+		// if (elementsMap.get(hashCode) instanceof MethodDef) {
+		// MethodDef method = (MethodDef) elementsMap.get(hashCode);
+		// if (method.isDeleted()) {
+		// elementsMap.remove(method.hashCode());
+		// }
+		// }
+		// }
 	}
 
 	public ClassData getClassData(String className) {

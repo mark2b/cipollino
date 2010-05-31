@@ -156,6 +156,7 @@ public class TransformationService {
 	public List<String> loadTargets(Agent model) {
 		List<String> affectedClasses = new ArrayList<String>();
 
+		// Class name to methods list map for new methods.
 		Map<String, List<MethodDef>> methodsMap = loadMethods(model.getTargets());
 
 		// Mark unused transformed classes for delete
@@ -164,16 +165,17 @@ public class TransformationService {
 			ClassData classData = runtime.getClassData(targetClassName);
 			List<MethodDef> newMethods = methodsMap.get(targetClassName);
 			List<MethodDef> oldMethods = classData.getMethods();
-			// Prepare old methods for delete
+			// Mark old methods for delete
 			for (MethodDef methodDef : oldMethods) {
 				methodDef.setDeleted(true);
 			}
+			// Clean classData from old methods
 			oldMethods.clear();
 			if (methodsMap.containsKey(targetClassName)) {
 				System.out.println("TransformationService.loadTargets() " + targetClassName);
 				classData.setState(ClassState.TO_BE_RETRANSFORMED);
 				classData.getMethods().addAll(newMethods);
-
+				runtime.registerClass(targetClassName, classData);
 			} else {
 				classData.setState(ClassState.TO_BE_DELETED);
 			}
@@ -183,7 +185,7 @@ public class TransformationService {
 		for (Entry<String, List<MethodDef>> entry : methodsMap.entrySet()) {
 			String className = entry.getKey();
 			List<MethodDef> methods = entry.getValue();
-			if (!targetClasses.contains(entry.getKey())) {
+			if (!targetClasses.contains(className)) {
 				ClassData classData = new ClassData();
 				classData.setState(ClassState.TO_BE_TRANSFORMED);
 				classData.getMethods().addAll(methods);
