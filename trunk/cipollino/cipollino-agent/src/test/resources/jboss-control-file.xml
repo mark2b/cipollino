@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<c:agent xmlns:c="http://cipollino.googlecode.com/cipollino/1.0" xmlns:l="http://cipollino.googlecode.com/cipollino-logger/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<c:agent xmlns:c="http://cipollino.googlecode.com/cipollino/1.0"
+	xmlns:l="http://cipollino.googlecode.com/cipollino-logger/1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<c:classPath>
-		<c:dir>C:\deploy.head\corefirst\thirdparty\openserver\common\lib</c:dir>
+		<c:dir>/Users/mark/lib/jboss-5.1.0.GA/common/lib</c:dir>
+
+		<!--
+			<c:dir>C:\deploy.head\corefirst\thirdparty\openserver\common\lib</c:dir>
+		-->
 		<!--
 			<c:jar>/Users/mark/lib/jboss-5.1.0.GA/lib/jboss-logging-log4j.jar</c:jar>
 		-->
 	</c:classPath>
 	<c:target>
-		<c:method name="void org.jboss.jmx.adaptor.html.HtmlAdaptorServlet.doGet()" />
+ 		<c:method name="void org.jboss.jmx.adaptor.html.HtmlAdaptorServlet.doGet()" />
 
 		<c:method name="org.hibernate.impl.SessionImpl.find()"></c:method>
-		
+
 		<c:action xsi:type="l:LoggerActionType">
 			<c:script assignTo="thread" phase="before">
 				<![CDATA[

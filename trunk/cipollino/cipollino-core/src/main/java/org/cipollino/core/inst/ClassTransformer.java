@@ -59,7 +59,7 @@ public class ClassTransformer implements ClassFileTransformer {
 				classData.setState(ClassState.TRANSFORMED);
 				break;
 			case TO_BE_RETRANSFORMED:
-System.out.println("ClassTransformer.transform() " + classFQN);				
+				System.out.println("ClassTransformer.transform() " + classFQN);
 				classfileBuffer = transformBytecode(classData
 						.getOriginBytecode(), classFQN);
 				classData.setState(ClassState.TRANSFORMED);
@@ -129,6 +129,8 @@ System.out.println("ClassTransformer.transform() " + classFQN);
 	private String buildBeforeMethodCode(MethodDef methodDef) {
 		BeforeMethodGenerator codegen = new BeforeMethodGenerator();
 		codegen.setMethodDef(methodDef);
+		System.out.println("ClassTransformer.buildBeforeMethodCode() \n"
+				+ codegen.generate());
 		return codegen.generate();
 	}
 
