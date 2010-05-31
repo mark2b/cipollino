@@ -7,6 +7,8 @@ import org.cipollino.core.model.MethodDef;
 
 public class ClassData {
 
+	private final String className;
+
 	private byte[] originByteCode = null;
 
 	private Class<?> redefinedClass;
@@ -16,6 +18,10 @@ public class ClassData {
 	private ClassState state;
 
 	List<MethodDef> methods = new ArrayList<MethodDef>();
+
+	public ClassData(String className) {
+		this.className = className;
+	}
 
 	public byte[] getOriginBytecode() {
 		return originByteCode;
@@ -55,5 +61,9 @@ public class ClassData {
 
 	public List<MethodDef> getMethods() {
 		return methods;
+	}
+
+	public String getClassName() {
+		return className;
 	}
 }
