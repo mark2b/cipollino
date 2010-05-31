@@ -41,9 +41,8 @@ public class ClassTransformer implements ClassFileTransformer {
 	private ClassPool classPool;
 
 	@Override
-	public byte[] transform(ClassLoader classLoader, String className,
-			Class<?> classBeingRedefined, ProtectionDomain protectionDomain,
-			byte[] classfileBuffer) throws IllegalClassFormatException {
+	public byte[] transform(ClassLoader classLoader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer)
+			throws IllegalClassFormatException {
 		String classFQN = className.replace('/', '.');
 		if (runtime.needTransformation(classFQN)) {
 			ClassData classData = runtime.getClassData(classFQN);
@@ -55,13 +54,11 @@ public class ClassTransformer implements ClassFileTransformer {
 
 			switch (classData.getState()) {
 			case TO_BE_TRANSFORMED:
-				classfileBuffer = transformBytecode(classfileBuffer, classFQN);
+				classfileBuffer = transformBytecode(classfileBuffer, classData);
 				classData.setState(ClassState.TRANSFORMED);
 				break;
 			case TO_BE_RETRANSFORMED:
-				System.out.println("ClassTransformer.transform() " + classFQN);
-				classfileBuffer = transformBytecode(classData
-						.getOriginBytecode(), classFQN);
+				classfileBuffer = transformBytecode(classData.getOriginBytecode(), classData);
 				classData.setState(ClassState.TRANSFORMED);
 				break;
 			case TO_BE_DELETED:
@@ -73,22 +70,15 @@ public class ClassTransformer implements ClassFileTransformer {
 		return classfileBuffer;
 	}
 
-	private byte[] transformBytecode(byte[] classfileBuffer, String classFQN) {
+	private byte[] transformBytecode(byte[] classfileBuffer, ClassData classData) {
 		try {
-			CtClass cl = classPool.makeClass(new java.io.ByteArrayInputStream(
-					classfileBuffer), false);
-			ClassData classData = runtime.getClassData(classFQN);
-			if (classData != null) {
-				List<MethodDef> methods = classData.getMethods();
-				for (MethodDef methodDef : methods) {
-					transformMethod(methodDef, cl);
-				}
-				classfileBuffer = cl.toBytecode();
-				Trace.print("Transformed " + classFQN + " class.");
-			} else {
-				System.out
-						.println("ClassTransformer.transformBytecode() class not found");
+			CtClass cl = classPool.makeClass(new java.io.ByteArrayInputStream(classfileBuffer), false);
+			List<MethodDef> methods = classData.getMethods();
+			for (MethodDef methodDef : methods) {
+				transformMethod(methodDef, cl);
 			}
+			classfileBuffer = cl.toBytecode();
+			Trace.print("Transformed " + classData.getClassName() + " class.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -104,11 +94,9 @@ public class ClassTransformer implements ClassFileTransformer {
 				if (srcCtMethod != null) {
 					srcCtMethod.insertBefore(buildBeforeMethodCode(methodDef));
 					srcCtMethod.insertAfter(buildAfterMethodCode());
-					srcCtMethod.addCatch(buildOnExceptionCode(), classPool
-							.get(Throwable.class.getName()));
+					srcCtMethod.addCatch(buildOnExceptionCode(), classPool.get(Throwable.class.getName()));
 					srcCtMethod.insertAfter(buildOnFinally(), true);
-					Trace.print("Transformed " + methodDef.getClassName() + "."
-							+ methodDef.getMethodName() + " method.");
+					Trace.print("Transformed " + methodDef.getClassName() + "." + methodDef.getMethodName() + " method.");
 				}
 			}
 		} catch (NotFoundException e) {
@@ -129,8 +117,6 @@ public class ClassTransformer implements ClassFileTransformer {
 	private String buildBeforeMethodCode(MethodDef methodDef) {
 		BeforeMethodGenerator codegen = new BeforeMethodGenerator();
 		codegen.setMethodDef(methodDef);
-		System.out.println("ClassTransformer.buildBeforeMethodCode() \n"
-				+ codegen.generate());
 		return codegen.generate();
 	}
 
@@ -155,8 +141,7 @@ public class ClassTransformer implements ClassFileTransformer {
 			for (Entry<String, String> entry : method.getArguments().entrySet()) {
 				argumentClasses.add(classPool.get(entry.getValue()));
 			}
-			CtMethod matchedMethod = ctClass.getDeclaredMethod(method
-					.getMethodName());
+			CtMethod matchedMethod = ctClass.getDeclaredMethod(method.getMethodName());
 			return matchedMethod;
 		} catch (NotFoundException e) {
 			MethodNotFound.print(method.getMethodName());

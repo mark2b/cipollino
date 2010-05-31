@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.cipollino.core.model.MethodDef;
 
-
 public class CallState {
 
 	final public static String TARGET = "$target";
@@ -45,6 +44,18 @@ public class CallState {
 	}
 
 	public void setResult(Object result) {
+		stateMap.put(RESULT, result);
+	}
+
+	public void setResult(int result) {
+		stateMap.put(RESULT, result);
+	}
+
+	public void setResult(boolean result) {
+		stateMap.put(RESULT, result);
+	}
+
+	public void setResult(double result) {
 		stateMap.put(RESULT, result);
 	}
 

@@ -47,13 +47,8 @@ public class Runtime {
 	}
 
 	public void registerClass(String className, ClassData classData) {
-		// if (classesMap.containsKey(className)) {
-		// throw new IllegalStateException("The class already registered - "
-		// + className);
-		// }
 		classesMap.put(className, classData);
 		for (MethodDef methodDef : classData.getMethods()) {
-			System.out.println(methodDef.getUuid() + " " + methodDef);
 			elementsMap.put(methodDef.getUuid(), methodDef);
 		}
 	}
@@ -66,16 +61,15 @@ public class Runtime {
 				classesMap.remove(key);
 			}
 		}
-		// Integer[] hashCodes = elementsMap.keySet().toArray(
-		// new Integer[elementsMap.size()]);
-		// for (Integer hashCode : hashCodes) {
-		// if (elementsMap.get(hashCode) instanceof MethodDef) {
-		// MethodDef method = (MethodDef) elementsMap.get(hashCode);
-		// if (method.isDeleted()) {
-		// elementsMap.remove(method.hashCode());
-		// }
-		// }
-		// }
+		String[] uuids = elementsMap.keySet().toArray(new String[elementsMap.size()]);
+		for (String uuid : uuids) {
+			if (elementsMap.get(uuid) instanceof MethodDef) {
+				MethodDef method = (MethodDef) elementsMap.get(uuid);
+				if (method.isDeleted()) {
+					elementsMap.remove(method.hashCode());
+				}
+			}
+		}
 	}
 
 	public ClassData getClassData(String className) {

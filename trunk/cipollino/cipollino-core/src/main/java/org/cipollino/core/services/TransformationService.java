@@ -172,7 +172,6 @@ public class TransformationService {
 			// Clean classData from old methods
 			oldMethods.clear();
 			if (methodsMap.containsKey(targetClassName)) {
-				System.out.println("TransformationService.loadTargets() " + targetClassName);
 				classData.setState(ClassState.TO_BE_RETRANSFORMED);
 				classData.getMethods().addAll(newMethods);
 				runtime.registerClass(targetClassName, classData);
@@ -186,7 +185,7 @@ public class TransformationService {
 			String className = entry.getKey();
 			List<MethodDef> methods = entry.getValue();
 			if (!targetClasses.contains(className)) {
-				ClassData classData = new ClassData();
+				ClassData classData = new ClassData(className);
 				classData.setState(ClassState.TO_BE_TRANSFORMED);
 				classData.getMethods().addAll(methods);
 				runtime.registerClass(className, classData);
