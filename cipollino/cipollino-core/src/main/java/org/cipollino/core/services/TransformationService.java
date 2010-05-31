@@ -96,14 +96,27 @@ public class TransformationService {
 	}
 
 	private List<String> loadControlFile() {
-		List<String> affectedClasses = new ArrayList<String>();
 		Agent model = loadModel(options.getControlFile());
-		affectedClasses = loadTargets(model);
+		List<String> affectedClasses = loadTargets(model);
 		classPathService.updateClassPool(model.getClassPathDef());
 		return affectedClasses;
 	}
 
-	public void transformLoadedClasses() {
+	private Agent loadModel(File inputFile) {
+		FileReader reader = null;
+		try {
+			reader = new FileReader(inputFile);
+			AgentType agentType = modelSerializer.read(reader, AgentType.class);
+			AbstractX2JModelFactory modelFactory = modelFactoryFactory.getFactory(agentType);
+			return modelFactory.createModel(agentType, Agent.class);
+		} catch (FileNotFoundException e) {
+			throw new ErrorException(ControlFileNotFound, inputFile);
+		} finally {
+			IOUtils.closeQuietly(reader);
+		}
+	}
+
+	private void transformLoadedClasses() {
 		try {
 			Class<?>[] loadedClasses = instrumentation.getAllLoadedClasses();
 			List<Class<?>> classesToTransform = new ArrayList<Class<?>>();
@@ -137,20 +150,6 @@ public class TransformationService {
 			ClassCanNotBeTransformed.print(e.getMessage());
 		}
 		runtime.cleanDeletedItems();
-	}
-
-	public Agent loadModel(File inputFile) {
-		FileReader reader = null;
-		try {
-			reader = new FileReader(inputFile);
-			AgentType agentType = modelSerializer.read(reader, AgentType.class);
-			AbstractX2JModelFactory modelFactory = modelFactoryFactory.getFactory(agentType);
-			return modelFactory.createModel(agentType, Agent.class);
-		} catch (FileNotFoundException e) {
-			throw new ErrorException(ControlFileNotFound, inputFile);
-		} finally {
-			IOUtils.closeQuietly(reader);
-		}
 	}
 
 	public List<String> loadTargets(Agent model) {

@@ -52,10 +52,9 @@ public class ClassPathService {
 
 	private void updateClassPath(String cp, Map<String, ClassPath> localClassPathMap) {
 		if (!classPathMap.containsKey(cp)) {
-			ClassPath classPath;
 			try {
 				String transformedClassPath = replaceService.replaceBySystemProperties(cp);
-				classPath = classPool.appendClassPath(transformedClassPath);
+				ClassPath classPath = classPool.appendClassPath(transformedClassPath);
 				localClassPathMap.put(cp, classPath);
 			} catch (NotFoundException e) {
 				ClassPathNotFound.print(e.getMessage());
