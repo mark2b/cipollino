@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 @Test
 public class BasicTest extends AbstractTest {
 
-	@Test(enabled = false)
+	@Test(enabled = true)
 	public void testJavaAgent() throws Exception {
 
 		ProcessContext context = startTestAppWithAgen("target/app1.jar",
@@ -22,7 +22,7 @@ public class BasicTest extends AbstractTest {
 		assertTrue(logLines.get(0).endsWith("Agent was started."));
 	}
 
-	@Test(enabled = true)
+	@Test(enabled = false)
 	public void testAgentConnect() throws Exception {
 
 		ProcessContext appContext = startTestApp("target/app2.jar",

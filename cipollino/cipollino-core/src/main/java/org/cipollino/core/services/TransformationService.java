@@ -4,7 +4,7 @@ import static org.cipollino.core.error.ErrorCode.ClassCanNotBeTransformed;
 import static org.cipollino.core.error.ErrorCode.ClassNotFound;
 import static org.cipollino.core.error.ErrorCode.CompilationFailure;
 import static org.cipollino.core.error.ErrorCode.ControlFileMissing;
-import static org.cipollino.core.error.ErrorCode.ControlFileNotFound;
+import static org.cipollino.core.error.ErrorCode.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -95,19 +95,31 @@ public class TransformationService {
 		}
 	}
 
+	/**
+	 * Load the control file
+	 * 
+	 * @return list of affected classes
+	 */
 	private List<String> loadControlFile() {
 		Agent model = loadModel(options.getControlFile());
-		List<String> affectedClasses = loadTargets(model);
 		classPathService.updateClassPool(model.getClassPathDef());
+		List<String> affectedClasses = loadTargets(model);
 		return affectedClasses;
 	}
 
+	/**
+	 * Load model from XML control file
+	 * 
+	 * @param inputFile
+	 * @return model
+	 */
 	private Agent loadModel(File inputFile) {
 		FileReader reader = null;
 		try {
 			reader = new FileReader(inputFile);
 			AgentType agentType = modelSerializer.read(reader, AgentType.class);
-			AbstractX2JModelFactory modelFactory = modelFactoryFactory.getFactory(agentType);
+			AbstractX2JModelFactory modelFactory = modelFactoryFactory
+					.getFactory(agentType);
 			return modelFactory.createModel(agentType, Agent.class);
 		} catch (FileNotFoundException e) {
 			throw new ErrorException(ControlFileNotFound, inputFile);
@@ -126,7 +138,8 @@ public class TransformationService {
 				}
 			}
 			if (!classesToTransform.isEmpty()) {
-				instrumentation.retransformClasses(classesToTransform.toArray(new Class<?>[classesToTransform.size()]));
+				instrumentation.retransformClasses(classesToTransform
+						.toArray(new Class<?>[classesToTransform.size()]));
 			}
 		} catch (UnmodifiableClassException e) {
 			ClassCanNotBeTransformed.print(e.getMessage());
@@ -144,7 +157,8 @@ public class TransformationService {
 				}
 			}
 			if (!classesToTransform.isEmpty()) {
-				instrumentation.retransformClasses(classesToTransform.toArray(new Class<?>[classesToTransform.size()]));
+				instrumentation.retransformClasses(classesToTransform
+						.toArray(new Class<?>[classesToTransform.size()]));
 			}
 		} catch (UnmodifiableClassException e) {
 			ClassCanNotBeTransformed.print(e.getMessage());
@@ -152,11 +166,18 @@ public class TransformationService {
 		runtime.cleanDeletedItems();
 	}
 
+	/**
+	 * Load targets.
+	 * 
+	 * @param model
+	 * @return list of affected classes
+	 */
 	public List<String> loadTargets(Agent model) {
 		List<String> affectedClasses = new ArrayList<String>();
 
 		// Class name to methods list map for new methods.
-		Map<String, List<MethodDef>> methodsMap = loadMethods(model.getTargets());
+		Map<String, List<MethodDef>> methodsMap = loadMethods(model
+				.getTargets());
 
 		// Mark unused transformed classes for delete
 		Set<String> targetClasses = runtime.getTargetClasses();
@@ -200,20 +221,73 @@ public class TransformationService {
 		return affectedClasses;
 	}
 
+	/**
+	 * Load methods
+	 * 
+	 * @param targets
+	 * @return map class names to methods list.
+	 */
 	private Map<String, List<MethodDef>> loadMethods(List<TargetDef> targets) {
 		Map<String, List<MethodDef>> map = new HashMap<String, List<MethodDef>>();
 		for (TargetDef targetDef : targets) {
 			for (MethodDef methodDef : targetDef.getMethods().values()) {
-				methodParser.parseMethod(methodDef);
-				List<MethodDef> methods = map.get(methodDef.getClassName());
-				if (methods == null) {
-					methods = new ArrayList<MethodDef>(1);
-					map.put(methodDef.getClassName(), methods);
+				if (loadMethod(methodDef)) {
+					methodParser.parseMethod(methodDef);
+					List<MethodDef> methods = map.get(methodDef.getClassName());
+					if (methods == null) {
+						methods = new ArrayList<MethodDef>(1);
+						map.put(methodDef.getClassName(), methods);
+					}
+					methods.add(methodDef);
 				}
-				methods.add(methodDef);
 			}
 		}
 		return map;
+	}
+
+	/**
+	 * Load single method
+	 * 
+	 * @param methodDef
+	 */
+	private boolean loadMethod(MethodDef methodDef) {
+		methodParser.parseMethod(methodDef);
+		try {
+			CtClass ctClass = classPool.get(methodDef.getClassName());
+			CtMethod[] ctMethods = ctClass.getDeclaredMethods();
+			CtMethod ctMethod = findCtMethod(methodDef, ctMethods);
+			if (ctMethod == null) {
+				ctMethods = ctClass.getMethods();
+				ctMethod = findCtMethod(methodDef, ctMethods);
+			}
+			if (ctMethod != null) {
+				methodDef.setClassName(ctMethod.getDeclaringClass().getName());
+				methodDef.setSignature(ctMethod.getSignature());
+				return true;
+			}
+			MethodNotFound.print(methodDef.getMethodName());
+		} catch (NotFoundException e) {
+			ClassNotFound.print(e.getMessage());
+		}
+		return false;
+	}
+
+	private CtMethod findCtMethod(MethodDef methodDef, CtMethod[] methods)
+			throws NotFoundException {
+		CtMethod method = null;
+		for (CtMethod ctMethod : methods) {
+			if (ctMethod.getName().equals(methodDef.getMethodName())) {
+				if (methodDef.getArguments().size() == 0) {
+					method = ctMethod;
+					break;
+				} else if (ctMethod.getParameterTypes().length == methodDef
+						.getArguments().size()) {
+					method = ctMethod;
+					break;
+				}
+			}
+		}
+		return method;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -226,8 +300,11 @@ public class TransformationService {
 				CtClass ctClass = classPool.makeClass(className);
 				ctClass.setSuperclass(ctSuperClass);
 				CtClass ctReturnType = getCtClass(Object.class);
-				CtMethod invokeMethod = CtNewMethod.make(ctReturnType, "invoke", new CtClass[] { getCtClass(CallState.class) }, new CtClass[0],
-						ajustSourceCode(scriptDef, scriptDef.getSourceCode()), ctClass);
+				CtMethod invokeMethod = CtNewMethod.make(ctReturnType,
+						"invoke",
+						new CtClass[] { getCtClass(CallState.class) },
+						new CtClass[0], ajustSourceCode(scriptDef, scriptDef
+								.getSourceCode()), ctClass);
 				ctClass.addMethod(invokeMethod);
 				Class<Script> clazz = ctClass.toClass();
 				runtime.registerImplClass(className, clazz);
