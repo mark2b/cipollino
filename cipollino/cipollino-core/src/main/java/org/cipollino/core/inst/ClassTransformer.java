@@ -10,7 +10,6 @@ import java.security.ProtectionDomain;
 import java.util.List;
 
 import javassist.CannotCompileException;
-import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.Modifier;
@@ -24,6 +23,7 @@ import org.cipollino.core.model.MethodDef;
 import org.cipollino.core.runtime.ClassData;
 import org.cipollino.core.runtime.ClassState;
 import org.cipollino.core.runtime.Runtime;
+import org.cipollino.core.services.ClassPathService;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -35,12 +35,11 @@ public class ClassTransformer implements ClassFileTransformer {
 	private Runtime runtime;
 
 	@Inject
-	private ClassPool classPool;
+	private ClassPathService classPathService;
 
 	@Override
-	public byte[] transform(ClassLoader classLoader, String className,
-			Class<?> classBeingRedefined, ProtectionDomain protectionDomain,
-			byte[] classfileBuffer) throws IllegalClassFormatException {
+	public byte[] transform(ClassLoader classLoader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer)
+			throws IllegalClassFormatException {
 		String classFQN = className.replace('/', '.');
 		if (runtime.needTransformation(classFQN)) {
 			ClassData classData = runtime.getClassData(classFQN);
@@ -56,8 +55,7 @@ public class ClassTransformer implements ClassFileTransformer {
 				classData.setState(ClassState.TRANSFORMED);
 				break;
 			case TO_BE_RETRANSFORMED:
-				classfileBuffer = transformBytecode(classData
-						.getOriginBytecode(), classData);
+				classfileBuffer = transformBytecode(classData.getOriginBytecode(), classData);
 				classData.setState(ClassState.TRANSFORMED);
 				break;
 			case TO_BE_DELETED:
@@ -71,8 +69,7 @@ public class ClassTransformer implements ClassFileTransformer {
 
 	private byte[] transformBytecode(byte[] classfileBuffer, ClassData classData) {
 		try {
-			CtClass cl = classPool.makeClass(new java.io.ByteArrayInputStream(
-					classfileBuffer), false);
+			CtClass cl = classPathService.getClassPool().makeClass(new java.io.ByteArrayInputStream(classfileBuffer), false);
 			List<MethodDef> methods = classData.getMethods();
 			for (MethodDef methodDef : methods) {
 				transformMethod(methodDef, cl);
@@ -87,18 +84,15 @@ public class ClassTransformer implements ClassFileTransformer {
 
 	private void transformMethod(MethodDef methodDef, CtClass ctClass) {
 		try {
-			CtMethod srcCtMethod = ctClass.getMethod(methodDef.getMethodName(),
-					methodDef.getSignature());
+			CtMethod srcCtMethod = ctClass.getMethod(methodDef.getMethodName(), methodDef.getSignature());
 			boolean staticMethod = (srcCtMethod.getModifiers() & Modifier.STATIC) == Modifier.STATIC;
 			methodDef.setStaticMethod(staticMethod);
 			if (srcCtMethod != null) {
 				srcCtMethod.insertBefore(buildBeforeMethodCode(methodDef));
 				srcCtMethod.insertAfter(buildAfterMethodCode());
-				srcCtMethod.addCatch(buildOnExceptionCode(), classPool
-						.get(Throwable.class.getName()));
+				srcCtMethod.addCatch(buildOnExceptionCode(), classPathService.getClassPool().get(Throwable.class.getName()));
 				srcCtMethod.insertAfter(buildOnFinally(), true);
-				Trace.print("Transformed " + methodDef.getClassName() + "."
-						+ methodDef.getMethodName() + " method.");
+				Trace.print("Transformed " + methodDef.getClassName() + "." + methodDef.getMethodName() + " method.");
 			}
 		} catch (NotFoundException e) {
 			ClassNotFound.print(e.getMessage());

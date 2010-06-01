@@ -25,13 +25,11 @@ public class DIModule extends AbstractModule {
 		bind(ClassTransformer.class);
 		bind(MethodParser.class);
 		bind(TransformationService.class);
-		bind(ClassPool.class).toInstance(ClassPool.getDefault());
 		bind(PropertiesService.class);
 		bind(ControlFileService.class);
 		bind(ReplaceService.class);
 		bind(ClassPathService.class);
-		bind(AbstractX2JModelFactory.class).annotatedWith(
-				ModelFactories.named("org.cipollino.core.schema.ModelFactory")).to(
+		bind(AbstractX2JModelFactory.class).annotatedWith(ModelFactories.named("org.cipollino.core.schema.ModelFactory")).to(
 				org.cipollino.core.schema.X2JModelFactory.class);
 	}
 }
