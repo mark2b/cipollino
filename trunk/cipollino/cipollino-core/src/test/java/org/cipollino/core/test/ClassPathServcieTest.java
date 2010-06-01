@@ -1,18 +1,17 @@
 package org.cipollino.core.test;
 
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
+
 import java.io.File;
-import java.util.Iterator;
 import java.util.Properties;
 
-import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.NotFoundException;
 
 import org.cipollino.core.model.ClassPathDef;
 import org.cipollino.core.services.ClassPathService;
-import static org.testng.Assert.*;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.google.inject.Guice;
@@ -27,13 +26,9 @@ public class ClassPathServcieTest {
 	@Inject
 	ClassPathService classPathService;
 
-	@Inject
-	ClassPool classPool;
-
 	@BeforeClass
 	void init() {
-		Injector injector = Guice.createInjector(new DIModule(),
-				new org.cipollino.core.DIModule());
+		Injector injector = Guice.createInjector(new DIModule(), new org.cipollino.core.DIModule());
 		injector.injectMembers(this);
 	}
 
@@ -47,6 +42,6 @@ public class ClassPathServcieTest {
 		classPathDef.getDir().add(jar.getParentFile().getAbsolutePath());
 		// classPathDef.getJar().add(jar.getAbsolutePath());
 		classPathService.updateClassPool(classPathDef);
-		CtClass ctClass = classPool.get("org.apache.maven.plugin.CompilerMojo");
+		CtClass ctClass = classPathService.getClassPool().get("org.apache.maven.plugin.CompilerMojo");
 	}
 }

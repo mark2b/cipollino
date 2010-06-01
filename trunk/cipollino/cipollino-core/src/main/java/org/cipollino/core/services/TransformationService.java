@@ -4,7 +4,8 @@ import static org.cipollino.core.error.ErrorCode.ClassCanNotBeTransformed;
 import static org.cipollino.core.error.ErrorCode.ClassNotFound;
 import static org.cipollino.core.error.ErrorCode.CompilationFailure;
 import static org.cipollino.core.error.ErrorCode.ControlFileMissing;
-import static org.cipollino.core.error.ErrorCode.*;
+import static org.cipollino.core.error.ErrorCode.ControlFileNotFound;
+import static org.cipollino.core.error.ErrorCode.MethodNotFound;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,7 +20,6 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import javassist.CannotCompileException;
-import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.CtNewMethod;
@@ -77,9 +77,6 @@ public class TransformationService {
 	@Inject
 	private ClassPathService classPathService;
 
-	@Inject
-	private ClassPool classPool;
-
 	public void start(Instrumentation instrumentation, StartOptions options) {
 		this.options = options;
 		this.instrumentation = instrumentation;
@@ -118,8 +115,7 @@ public class TransformationService {
 		try {
 			reader = new FileReader(inputFile);
 			AgentType agentType = modelSerializer.read(reader, AgentType.class);
-			AbstractX2JModelFactory modelFactory = modelFactoryFactory
-					.getFactory(agentType);
+			AbstractX2JModelFactory modelFactory = modelFactoryFactory.getFactory(agentType);
 			return modelFactory.createModel(agentType, Agent.class);
 		} catch (FileNotFoundException e) {
 			throw new ErrorException(ControlFileNotFound, inputFile);
@@ -138,8 +134,7 @@ public class TransformationService {
 				}
 			}
 			if (!classesToTransform.isEmpty()) {
-				instrumentation.retransformClasses(classesToTransform
-						.toArray(new Class<?>[classesToTransform.size()]));
+				instrumentation.retransformClasses(classesToTransform.toArray(new Class<?>[classesToTransform.size()]));
 			}
 		} catch (UnmodifiableClassException e) {
 			ClassCanNotBeTransformed.print(e.getMessage());
@@ -157,8 +152,7 @@ public class TransformationService {
 				}
 			}
 			if (!classesToTransform.isEmpty()) {
-				instrumentation.retransformClasses(classesToTransform
-						.toArray(new Class<?>[classesToTransform.size()]));
+				instrumentation.retransformClasses(classesToTransform.toArray(new Class<?>[classesToTransform.size()]));
 			}
 		} catch (UnmodifiableClassException e) {
 			ClassCanNotBeTransformed.print(e.getMessage());
@@ -176,8 +170,7 @@ public class TransformationService {
 		List<String> affectedClasses = new ArrayList<String>();
 
 		// Class name to methods list map for new methods.
-		Map<String, List<MethodDef>> methodsMap = loadMethods(model
-				.getTargets());
+		Map<String, List<MethodDef>> methodsMap = loadMethods(model.getTargets());
 
 		// Mark unused transformed classes for delete
 		Set<String> targetClasses = runtime.getTargetClasses();
@@ -232,7 +225,6 @@ public class TransformationService {
 		for (TargetDef targetDef : targets) {
 			for (MethodDef methodDef : targetDef.getMethods().values()) {
 				if (loadMethod(methodDef)) {
-					methodParser.parseMethod(methodDef);
 					List<MethodDef> methods = map.get(methodDef.getClassName());
 					if (methods == null) {
 						methods = new ArrayList<MethodDef>(1);
@@ -253,7 +245,7 @@ public class TransformationService {
 	private boolean loadMethod(MethodDef methodDef) {
 		methodParser.parseMethod(methodDef);
 		try {
-			CtClass ctClass = classPool.get(methodDef.getClassName());
+			CtClass ctClass = getCtClass(methodDef.getClassName());
 			CtMethod[] ctMethods = ctClass.getDeclaredMethods();
 			CtMethod ctMethod = findCtMethod(methodDef, ctMethods);
 			if (ctMethod == null) {
@@ -272,16 +264,14 @@ public class TransformationService {
 		return false;
 	}
 
-	private CtMethod findCtMethod(MethodDef methodDef, CtMethod[] methods)
-			throws NotFoundException {
+	private CtMethod findCtMethod(MethodDef methodDef, CtMethod[] methods) throws NotFoundException {
 		CtMethod method = null;
 		for (CtMethod ctMethod : methods) {
 			if (ctMethod.getName().equals(methodDef.getMethodName())) {
 				if (methodDef.getArguments().size() == 0) {
 					method = ctMethod;
 					break;
-				} else if (ctMethod.getParameterTypes().length == methodDef
-						.getArguments().size()) {
+				} else if (ctMethod.getParameterTypes().length == methodDef.getArguments().size()) {
 					method = ctMethod;
 					break;
 				}
@@ -297,14 +287,11 @@ public class TransformationService {
 				String className = createUniqueClassName();
 				CtClass ctSuperClass;
 				ctSuperClass = getCtClass(AbstractScript.class);
-				CtClass ctClass = classPool.makeClass(className);
+				CtClass ctClass = classPathService.getClassPool().makeClass(className);
 				ctClass.setSuperclass(ctSuperClass);
 				CtClass ctReturnType = getCtClass(Object.class);
-				CtMethod invokeMethod = CtNewMethod.make(ctReturnType,
-						"invoke",
-						new CtClass[] { getCtClass(CallState.class) },
-						new CtClass[0], ajustSourceCode(scriptDef, scriptDef
-								.getSourceCode()), ctClass);
+				CtMethod invokeMethod = CtNewMethod.make(ctReturnType, "invoke", new CtClass[] { getCtClass(CallState.class) }, new CtClass[0],
+						ajustSourceCode(scriptDef, scriptDef.getSourceCode()), ctClass);
 				ctClass.addMethod(invokeMethod);
 				Class<Script> clazz = ctClass.toClass();
 				runtime.registerImplClass(className, clazz);
@@ -329,7 +316,11 @@ public class TransformationService {
 	}
 
 	private CtClass getCtClass(Class<?> clazz) throws NotFoundException {
-		return classPool.get(clazz.getName());
+		return classPathService.getClassPool().get(clazz.getName());
+	}
+
+	private CtClass getCtClass(String className) throws NotFoundException {
+		return classPathService.getClassPool().get(className);
 	}
 
 	public StartOptions getOptions() {
