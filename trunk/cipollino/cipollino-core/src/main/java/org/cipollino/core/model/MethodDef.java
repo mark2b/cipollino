@@ -14,6 +14,8 @@ public class MethodDef {
 
 	private String name;
 
+	private String signature;
+
 	private boolean staticMethod = false;
 
 	private boolean deleted = false;
@@ -84,5 +86,13 @@ public class MethodDef {
 
 	public String getUuid() {
 		return uuid;
+	}
+
+	public String getSignature() {
+		return signature;
+	}
+
+	public void setSignature(String signature) {
+		this.signature = signature;
 	}
 }

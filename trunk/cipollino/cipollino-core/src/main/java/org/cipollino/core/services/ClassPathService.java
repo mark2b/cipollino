@@ -2,17 +2,15 @@ package org.cipollino.core.services;
 
 import static org.cipollino.core.error.ErrorCode.ClassPathNotFound;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.cipollino.core.model.ClassPathDef;
 
 import javassist.ClassPath;
 import javassist.ClassPool;
 import javassist.NotFoundException;
+
+import org.cipollino.core.model.ClassPathDef;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -42,36 +40,30 @@ public class ClassPathService {
 		for (String cp : classPathDef.getPath()) {
 			updateClassPath(cp, localClassPathMap);
 		}
+		// Detect old not relevant class paths for delete
 		for (Entry<String, ClassPath> entry : classPathMap.entrySet()) {
-			if (!localClassPathMap.containsKey(entry.getKey())) {
+			String className = entry.getKey();
+			if (!localClassPathMap.containsKey(className)) {
+				System.out.println("ClassPathService.updateClassPool(remove) "
+						+ className);
 				classPool.removeClassPath(entry.getValue());
 			}
 		}
 		classPathMap = localClassPathMap;
 	}
 
-	private void updateClassPath(String cp, Map<String, ClassPath> localClassPathMap) {
+	private void updateClassPath(String cp,
+			Map<String, ClassPath> localClassPathMap) {
 		if (!classPathMap.containsKey(cp)) {
 			try {
-				String transformedClassPath = replaceService.replaceBySystemProperties(cp);
-				ClassPath classPath = classPool.appendClassPath(transformedClassPath);
+				String transformedClassPath = replaceService
+						.replaceBySystemProperties(cp);
+				ClassPath classPath = classPool
+						.appendClassPath(transformedClassPath);
 				localClassPathMap.put(cp, classPath);
 			} catch (NotFoundException e) {
 				ClassPathNotFound.print(e.getMessage());
 			}
 		}
-	}
-
-	public ClassPath[] createClassPath(ClassPathDef classPathDef) {
-		List<ClassPath> classPathsList = new ArrayList<ClassPath>();
-		for (String cp : classPathDef.getClasses()) {
-			try {
-				ClassPath classPath = classPool.appendClassPath(cp);
-				classPathsList.add(classPath);
-			} catch (NotFoundException e) {
-				ClassPathNotFound.print(e.getMessage());
-			}
-		}
-		return classPathsList.toArray(new ClassPath[classPathsList.size()]);
 	}
 }

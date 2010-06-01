@@ -10,6 +10,12 @@
 	<artifactId>cipollino-core</artifactId>
 	<name>Cipollino - Core</name>
 	<build>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>
 		<plugins>
 			<plugin>
 				<groupId>org.jvnet.jaxb2.maven2</groupId>

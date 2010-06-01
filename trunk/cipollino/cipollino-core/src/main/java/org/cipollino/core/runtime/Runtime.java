@@ -5,7 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
-import java.util.Map.Entry;
 
 import org.cipollino.core.actions.ActionsRunner;
 import org.cipollino.core.model.MethodDef;
