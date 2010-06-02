@@ -4,12 +4,7 @@
 	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.1 http://maven.apache.org/xsd/assembly-1.1.1.xsd">
 	<id>jboss51</id>
 	<formats>
-		<format>dir</format>
+		<format>zip</format>
 	</formats>
 	<includeBaseDirectory>false</includeBaseDirectory>
-
-	<componentDescriptors>
-		<componentDescriptor>src/main/assembly/main-artifacts-component.xml</componentDescriptor>
-		<componentDescriptor>src/main/assembly/jboss51-artifacts-component.xml</componentDescriptor>
-	</componentDescriptors>
 </assembly>
