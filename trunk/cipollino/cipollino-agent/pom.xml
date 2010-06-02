@@ -126,5 +126,20 @@
 				</dependency>
 			</dependencies>
 		</profile>
+		<profile>
+			<id>linux-platform</id>
+			<activation>
+				<os>
+					<family>linux</family>
+				</os>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>com.sun</groupId>
+					<artifactId>tools</artifactId>
+					<classifier>linux</classifier>
+				</dependency>
+			</dependencies>
+		</profile>
 	</profiles>
 </project>
