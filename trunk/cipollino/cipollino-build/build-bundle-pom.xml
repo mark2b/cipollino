@@ -37,7 +37,7 @@
 								</goals>
 								<configuration>
 									<outputDirectory>${product.output}</outputDirectory>
-									<appendAssemblyId>false</appendAssemblyId>
+									<appendAssemblyId>true</appendAssemblyId>
 									<attach>true</attach>
 									<finalName>${product.name}</finalName>
 								</configuration>
