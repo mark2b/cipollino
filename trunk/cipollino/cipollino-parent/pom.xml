@@ -259,7 +259,18 @@
 	<repositories>
 		<repository>
 			<id>intellibird.nexus</id>
-			<url>http://dev.mark2b.homeip.net:10080/nexus/content/groups/public/</url>
+			<url>http://intellibird.com/nexus/content/groups/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>never</updatePolicy>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>intellibird.nexus.snapshot</id>
+			<url>http://intellibird.com/nexus/content/repositories/snapshots/</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
