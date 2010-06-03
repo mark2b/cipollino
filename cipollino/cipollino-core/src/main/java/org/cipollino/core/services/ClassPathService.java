@@ -20,12 +20,23 @@ public class ClassPathService {
 	private ReplaceService replaceService;
 
 	public synchronized void updateClassPool(ClassPathDef classPathDef) {
+		// Drop old class poll
 		classPool = null;
 		for (String cp : classPathDef.getClasses()) {
+			if (!cp.endsWith("/")) {
+				cp += "/";
+			}
 			updateClassPath(cp);
 		}
 		for (String cp : classPathDef.getDir()) {
-			updateClassPath(cp + "/*");
+			if (!cp.endsWith("/*")) {
+				if (cp.endsWith("/")) {
+					cp += "*";
+				} else {
+					cp += "/*";
+				}
+			}
+			updateClassPath(cp);
 		}
 		for (String cp : classPathDef.getJar()) {
 			updateClassPath(cp);
