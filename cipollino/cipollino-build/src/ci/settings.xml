@@ -11,6 +11,14 @@
 		</mirror>
 	</mirrors>
 
+	<servers>
+		<server>
+			<id>intellibird.nexus.snapshot</id>
+			<username>deploy</username>
+			<password>deploy</password>
+		</server>
+	</servers>
+
 	<activeProfiles>
 	</activeProfiles>
 
