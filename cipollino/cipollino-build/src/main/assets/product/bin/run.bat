@@ -1,3 +1,4 @@
+@echo off
 set "DIRNAME=%~dp0%"
 
 set CIPOLLINO_HOME=%DIRNAME%..
