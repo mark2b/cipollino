@@ -27,6 +27,7 @@
 		<snapshotRepository>
 			<id>intellibird.nexus.snapshot</id>
 			<url>http://intellibird.com/nexus/content/repositories/snapshots/</url>
+			<uniqueVersion>false</uniqueVersion>
 		</snapshotRepository>
 	</distributionManagement>
 	<inceptionYear>2010</inceptionYear>
