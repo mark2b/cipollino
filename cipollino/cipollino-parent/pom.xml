@@ -82,6 +82,12 @@
 					</configuration>
 				</plugin>
 				<plugin>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<configuration>
+						<uniqueVersion>false</uniqueVersion>
+					</configuration>
+				</plugin>
+				<plugin>
 					<groupId>org.jvnet.jaxb2.maven2</groupId>
 					<artifactId>maven-jaxb2-plugin</artifactId>
 					<version>0.7.3</version>
