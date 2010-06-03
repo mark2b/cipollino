@@ -12,8 +12,6 @@ import org.cipollino.core.services.TransformationService;
 import org.cipollino.core.xml.AbstractX2JModelFactory;
 import org.cipollino.core.xml.ModelSerializer;
 
-import javassist.ClassPool;
-
 import com.google.inject.AbstractModule;
 
 public class DIModule extends AbstractModule {
