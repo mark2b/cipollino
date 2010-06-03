@@ -9,7 +9,7 @@
 	</parent>
 	<artifactId>cipollino-build</artifactId>
 	<packaging>pom</packaging>
-	<name>Cipollino - Build</name>
+	<name>Cipollino :: Build</name>
 
 	<profiles>
 		<profile>
@@ -42,113 +42,9 @@
 		</profile>
 		<profile>
 			<id>assembly</id>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-clean-plugin</artifactId>
-						<configuration>
-							<filesets>
-								<fileset>
-									<directory>${product.output}/${product.name}</directory>
-									<followSymlinks>false</followSymlinks>
-								</fileset>
-							</filesets>
-						</configuration>
-					</plugin>
-					<plugin>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<executions>
-							<execution>
-								<phase>package</phase>
-								<goals>
-									<goal>single</goal>
-								</goals>
-								<configuration>
-									<outputDirectory>${product.output}</outputDirectory>
-									<appendAssemblyId>false</appendAssemblyId>
-									<attach>true</attach>
-									<finalName>${product.name}</finalName>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-			<dependencies>
-				<dependency>
-					<groupId>org.cipollino</groupId>
-					<artifactId>cipollino-core</artifactId>
-					<version>${project.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>org.cipollino</groupId>
-					<artifactId>cipollino-agent</artifactId>
-					<version>${project.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>org.cipollino</groupId>
-					<artifactId>cipollino-logger</artifactId>
-					<version>${project.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>org.cipollino</groupId>
-					<artifactId>cipollino-dependencies</artifactId>
-					<version>${project.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>log4j</groupId>
-					<artifactId>log4j</artifactId>
-					<scope>runtime</scope>
-				</dependency>
-			</dependencies>
-		</profile>
-		<profile>
-			<id>jboss51</id>
-			<activation>
-				<property>
-					<name>app-type</name>
-					<value>jboss51</value>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<configuration>
-							<descriptors>
-								<descriptor>src/main/assembly/assembly-jboss51.xml</descriptor>
-							</descriptors>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-			<dependencies>
-				<dependency>
-					<groupId>org.jboss.logging</groupId>
-					<artifactId>jboss-logging-log4j</artifactId>
-				</dependency>
-			</dependencies>
-		</profile>
-		<profile>
-			<id>jse</id>
-			<activation>
-				<property>
-					<name>app-type</name>
-					<value>jse</value>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<configuration>
-							<descriptors>
-								<descriptor>src/main/assembly/assembly.xml</descriptor>
-							</descriptors>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
+			<modules>
+				<module>./build-bundle-pom.xml</module>
+			</modules>
 		</profile>
 	</profiles>
 </project>

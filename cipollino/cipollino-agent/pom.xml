@@ -8,7 +8,7 @@
 		<relativePath>../cipollino-parent</relativePath>
 	</parent>
 	<artifactId>cipollino-agent</artifactId>
-	<name>Cipollino - Agent</name>
+	<name>Cipollino :: Agent</name>
 	<build>
 		<pluginManagement>
 			<plugins>
