@@ -7,4 +7,9 @@
 		<format>zip</format>
 	</formats>
 	<includeBaseDirectory>false</includeBaseDirectory>
+
+	<componentDescriptors>
+		<componentDescriptor>src/main/assembly/main-artifacts-component.xml</componentDescriptor>
+		<componentDescriptor>src/main/assembly/jboss51-artifacts-component.xml</componentDescriptor>
+	</componentDescriptors>
 </assembly>
