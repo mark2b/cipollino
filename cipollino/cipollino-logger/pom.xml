@@ -8,7 +8,7 @@
 		<relativePath>../cipollino-parent</relativePath>
 	</parent>
 	<artifactId>cipollino-logger</artifactId>
-	<name>Cipollino - Logger</name>
+	<name>Cipollino :: Logger</name>
 	<build>
 		<plugins>
 			<plugin>
@@ -57,11 +57,6 @@
 		<dependency>
 			<groupId>org.cipollino</groupId>
 			<artifactId>cipollino-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.cipollino</groupId>
-			<artifactId>cipollino-dependencies</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>

@@ -8,7 +8,7 @@
 		<relativePath>../cipollino-parent</relativePath>
 	</parent>
 	<artifactId>cipollino-dependencies</artifactId>
-	<name>Cipollino - Dependencies</name>
+	<name>Cipollino :: Dependencies</name>
 
 	<build>
 		<plugins>
