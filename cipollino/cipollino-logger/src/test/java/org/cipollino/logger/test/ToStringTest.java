@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
-import javax.swing.JFrame;
-
 import org.cipollino.logger.format.ToString;
 import org.testng.annotations.Test;
 
@@ -17,7 +15,7 @@ public class ToStringTest {
 //		System.out.println("----------------------------");
 //		System.out.println(toString.toString(new Data1()));
 //		System.out.println("----------------------------");
-		System.out.println(ToString.create().toString(new JFrame()));
+//		System.out.println(ToString.create().toString(new JFrame()));
 //		System.out.println("----------------------------");
 //		System.out.println(toString.toString(new Data1()));
 //		System.out.println("----------------------------");
