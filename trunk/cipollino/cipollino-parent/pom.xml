@@ -330,6 +330,8 @@
 						<artifactId>cobertura-maven-plugin</artifactId>
 						<executions>
 							<execution>
+								<id>coverage</id>
+								<phase>verify</phase>
 								<goals>
 									<goal>cobertura</goal>
 								</goals>
