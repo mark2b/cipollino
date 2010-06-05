@@ -338,7 +338,7 @@
 						<executions>
 							<execution>
 								<id>coverage</id>
-								<phase>verify</phase>
+								<phase>package</phase>
 								<goals>
 									<goal>cobertura</goal>
 								</goals>
