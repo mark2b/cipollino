@@ -47,6 +47,11 @@
 					</plugin>
 				</plugins>
 			</build>
+			<modules>
+				<module>../cipollino-core</module>
+				<module>../cipollino-logger</module>
+				<module>../cipollino-agent</module>
+			</modules>
 		</profile>
 		<profile>
 			<id>build-all</id>
