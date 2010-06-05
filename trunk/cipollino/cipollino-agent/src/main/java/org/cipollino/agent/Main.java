@@ -54,7 +54,6 @@ public class Main {
 			buildArgsOptions();
 			connectToVM();
 			AgentWasConnected.print();
-			System.exit(0);
 			return 0;
 		} catch (final ErrorException e) {
 			e.getErrorMessage().print(e.getArgs());

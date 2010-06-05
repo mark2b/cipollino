@@ -19,7 +19,7 @@ public class DIModule extends AbstractModule {
 	@Override
 	protected void configure() {
 		bind(ModelSerializer.class);
-		bind(Runtime.class);
+		bind(Runtime.class).toInstance(Runtime.createRuntime());
 		bind(ClassTransformer.class);
 		bind(MethodParser.class);
 		bind(TransformationService.class);
@@ -27,7 +27,8 @@ public class DIModule extends AbstractModule {
 		bind(ControlFileService.class);
 		bind(ReplaceService.class);
 		bind(ClassPathService.class);
-		bind(AbstractX2JModelFactory.class).annotatedWith(ModelFactories.named("org.cipollino.core.schema.ModelFactory")).to(
-				org.cipollino.core.schema.X2JModelFactory.class);
+		bind(AbstractX2JModelFactory.class).annotatedWith(
+				ModelFactories.named("org.cipollino.core.schema.ModelFactory"))
+				.to(org.cipollino.core.schema.X2JModelFactory.class);
 	}
 }
