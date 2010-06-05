@@ -1,5 +1,7 @@
 package org.cipollino.core.error;
 
+import java.util.Arrays;
+
 public class ErrorException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
@@ -25,6 +27,6 @@ public class ErrorException extends RuntimeException {
 	}
 
 	public Object[] getArgs() {
-		return args;
+		return Arrays.copyOf(args, args.length);
 	}
 }

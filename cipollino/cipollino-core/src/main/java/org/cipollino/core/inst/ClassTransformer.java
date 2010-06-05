@@ -38,8 +38,9 @@ public class ClassTransformer implements ClassFileTransformer {
 	private ClassPathService classPathService;
 
 	@Override
-	public byte[] transform(ClassLoader classLoader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer)
-			throws IllegalClassFormatException {
+	public byte[] transform(ClassLoader classLoader, String className,
+			Class<?> classBeingRedefined, ProtectionDomain protectionDomain,
+			byte[] classfileBuffer) throws IllegalClassFormatException {
 		String classFQN = className.replace('/', '.');
 		if (runtime.needTransformation(classFQN)) {
 			ClassData classData = runtime.getClassData(classFQN);
@@ -55,7 +56,8 @@ public class ClassTransformer implements ClassFileTransformer {
 				classData.setState(ClassState.TRANSFORMED);
 				break;
 			case TO_BE_RETRANSFORMED:
-				classfileBuffer = transformBytecode(classData.getOriginBytecode(), classData);
+				classfileBuffer = transformBytecode(classData
+						.getOriginBytecode(), classData);
 				classData.setState(ClassState.TRANSFORMED);
 				break;
 			case TO_BE_DELETED:
@@ -69,7 +71,8 @@ public class ClassTransformer implements ClassFileTransformer {
 
 	private byte[] transformBytecode(byte[] classfileBuffer, ClassData classData) {
 		try {
-			CtClass cl = classPathService.getClassPool().makeClass(new java.io.ByteArrayInputStream(classfileBuffer), false);
+			CtClass cl = classPathService.getClassPool().makeClass(
+					new java.io.ByteArrayInputStream(classfileBuffer), false);
 			List<MethodDef> methods = classData.getMethods();
 			for (MethodDef methodDef : methods) {
 				transformMethod(methodDef, cl);
@@ -84,16 +87,17 @@ public class ClassTransformer implements ClassFileTransformer {
 
 	private void transformMethod(MethodDef methodDef, CtClass ctClass) {
 		try {
-			CtMethod srcCtMethod = ctClass.getMethod(methodDef.getMethodName(), methodDef.getSignature());
+			CtMethod srcCtMethod = ctClass.getMethod(methodDef.getMethodName(),
+					methodDef.getSignature());
 			boolean staticMethod = (srcCtMethod.getModifiers() & Modifier.STATIC) == Modifier.STATIC;
 			methodDef.setStaticMethod(staticMethod);
-			if (srcCtMethod != null) {
-				srcCtMethod.insertBefore(buildBeforeMethodCode(methodDef));
-				srcCtMethod.insertAfter(buildAfterMethodCode());
-				srcCtMethod.addCatch(buildOnExceptionCode(), classPathService.getClassPool().get(Throwable.class.getName()));
-				srcCtMethod.insertAfter(buildOnFinally(), true);
-				Trace.print("Transformed " + methodDef.getClassName() + "." + methodDef.getMethodName() + " method.");
-			}
+			srcCtMethod.insertBefore(buildBeforeMethodCode(methodDef));
+			srcCtMethod.insertAfter(buildAfterMethodCode());
+			srcCtMethod.addCatch(buildOnExceptionCode(), classPathService
+					.getClassPool().get(Throwable.class.getName()));
+			srcCtMethod.insertAfter(buildOnFinally(), true);
+			Trace.print("Transformed " + methodDef.getClassName() + "."
+					+ methodDef.getMethodName() + " method.");
 		} catch (NotFoundException e) {
 			ClassNotFound.print(e.getMessage());
 		} catch (CannotCompileException e) {

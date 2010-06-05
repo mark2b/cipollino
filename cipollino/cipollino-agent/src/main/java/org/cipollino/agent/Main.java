@@ -40,40 +40,47 @@ public class Main {
 	private final StartOptions options = new StartOptions();
 
 	public static void main(String[] args) {
-		System.setProperty(CIPOLLINO_LOG_FILE, System.getProperty(CIPOLLINO_LOG_FILE, "cipollino.log"));
+		System.setProperty(CIPOLLINO_LOG_FILE, System.getProperty(
+				CIPOLLINO_LOG_FILE, "cipollino.log"));
 
 		final Main main = new Main();
-		main.start(args);
+		int exitCode = main.start(args);
+		System.exit(exitCode);
 	}
 
-	private void start(String[] args) {
+	private int start(String[] args) {
 		try {
 			parseArgs(args);
 			buildArgsOptions();
 			connectToVM();
 			AgentWasConnected.print();
 			System.exit(0);
-			return;
+			return 0;
 		} catch (final ErrorException e) {
 			e.getErrorMessage().print(e.getArgs());
-			System.exit(201);
+			return 201;
 		} catch (final Exception e) {
 			e.printStackTrace();
 			AgentWasnotConnected.print(e.getMessage(), e);
-			System.exit(202);
+			return 202;
 		}
 	}
 
 	private void connectToVM() {
 		try {
-			final URLClassLoader classLoader = (URLClassLoader) ClassLoader.getSystemClassLoader();
+			final URLClassLoader classLoader = (URLClassLoader) ClassLoader
+					.getSystemClassLoader();
 			final URL[] urls = classLoader.getURLs();
 			if (urls.length == 0) {
-				throw new ErrorException(ErrorCode.InternalError, "Invalid Agent Jar");
+				throw new ErrorException(ErrorCode.InternalError,
+						"Invalid Agent Jar");
 			}
-			final String jarName = new File(urls[0].getFile()).getAbsolutePath();
-			final VirtualMachine machine = VirtualMachine.attach(options.getPid());
-			machine.loadAgent(jarName, String.format("--file=%s", options.getControlFile().getAbsolutePath()));
+			final String jarName = new File(urls[0].getFile())
+					.getAbsolutePath();
+			final VirtualMachine machine = VirtualMachine.attach(options
+					.getPid());
+			machine.loadAgent(jarName, String.format("--file=%s", options
+					.getControlFile().getAbsolutePath()));
 		} catch (final Exception e) {
 			throw new ErrorException(AgentWasnotConnected, e.getMessage());
 		}
@@ -89,7 +96,8 @@ public class Main {
 				final String fileName = cl.getOptionValue(OPTION_FILE);
 				final File file = new File(fileName);
 				if (!file.exists()) {
-					throw new ErrorException(ControlFileNotFound, file.getAbsolutePath());
+					throw new ErrorException(ControlFileNotFound, file
+							.getAbsolutePath());
 				} else {
 					options.setControlFile(file);
 				}
@@ -103,7 +111,8 @@ public class Main {
 					final String fileName = cl.getOptionValue(OPTION_PID_FILE);
 					final File file = new File(fileName);
 					if (!file.exists()) {
-						throw new ErrorException(PidFileNotFound, file.getAbsolutePath());
+						throw new ErrorException(PidFileNotFound, file
+								.getAbsolutePath());
 					} else {
 						try {
 							final FileReader reader = new FileReader(file);
@@ -111,9 +120,11 @@ public class Main {
 							options.setPid(pid);
 							IOUtils.closeQuietly(reader);
 						} catch (final FileNotFoundException e) {
-							throw new ErrorException(PidFileNotFound, file.getAbsolutePath());
+							throw new ErrorException(PidFileNotFound, file
+									.getAbsolutePath());
 						} catch (final IOException e) {
-							throw new ErrorException(ErrorCode.InternalError, e, e.getMessage());
+							throw new ErrorException(ErrorCode.InternalError,
+									e, e.getMessage());
 						}
 					}
 				}
@@ -128,9 +139,13 @@ public class Main {
 	@SuppressWarnings("static-access")
 	private Options buildArgsOptions() {
 		final Options argsOptions = new Options();
-		argsOptions.addOption(OptionBuilder.hasArg().withLongOpt(OPTION_FILE).withDescription("Control File").create()).addOption(
-				OptionBuilder.hasArg().withLongOpt(OPTION_PID).withDescription("Process ID").create()).addOption(
-				OptionBuilder.hasArg().withLongOpt(OPTION_PID_FILE).withDescription("Process ID file").create());
+		argsOptions.addOption(
+				OptionBuilder.hasArg().withLongOpt(OPTION_FILE)
+						.withDescription("Control File").create()).addOption(
+				OptionBuilder.hasArg().withLongOpt(OPTION_PID).withDescription(
+						"Process ID").create()).addOption(
+				OptionBuilder.hasArg().withLongOpt(OPTION_PID_FILE)
+						.withDescription("Process ID file").create());
 		return argsOptions;
 	}
 
