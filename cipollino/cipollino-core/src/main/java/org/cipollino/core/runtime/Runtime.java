@@ -24,8 +24,7 @@ public class Runtime {
 
 	private Map<String, Class<Script>> implClassMap = new LinkedHashMap<String, Class<Script>>();
 
-	public Runtime() {
-		instance = this;
+	private Runtime() {
 	}
 
 	@SuppressWarnings("unchecked")
@@ -60,12 +59,13 @@ public class Runtime {
 				classesMap.remove(key);
 			}
 		}
-		String[] uuids = elementsMap.keySet().toArray(new String[elementsMap.size()]);
+		String[] uuids = elementsMap.keySet().toArray(
+				new String[elementsMap.size()]);
 		for (String uuid : uuids) {
 			if (elementsMap.get(uuid) instanceof MethodDef) {
 				MethodDef method = (MethodDef) elementsMap.get(uuid);
 				if (method.isDeleted()) {
-					elementsMap.remove(method.hashCode());
+					elementsMap.remove(uuid);
 				}
 			}
 		}
@@ -112,5 +112,10 @@ public class Runtime {
 
 	public Set<String> getTargetClasses() {
 		return classesMap.keySet();
+	}
+
+	public static Runtime createRuntime() {
+		Runtime.instance = new Runtime();
+		return Runtime.instance;
 	}
 }
