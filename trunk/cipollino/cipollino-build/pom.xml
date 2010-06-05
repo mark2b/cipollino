@@ -14,39 +14,6 @@
 	<profiles>
 		<profile>
 			<id>code-quality</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>cobertura-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<goals>
-									<goal>cobertura</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>findbugs-maven-plugin</artifactId>
-						<version>2.3.1</version>
-						<configuration>
-							<findbugsXmlOutput>true</findbugsXmlOutput>
-							<findbugsXmlWithMessages>true</findbugsXmlWithMessages>
-							<xmlOutput>true</xmlOutput>
-						</configuration>
-						<executions>
-							<execution>
-								<id></id>
-								<goals>
-									<goal>findbugs</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
 			<modules>
 				<module>../cipollino-core</module>
 				<module>../cipollino-logger</module>
