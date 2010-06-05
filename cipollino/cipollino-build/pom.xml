@@ -36,6 +36,14 @@
 							<findbugsXmlWithMessages>true</findbugsXmlWithMessages>
 							<xmlOutput>true</xmlOutput>
 						</configuration>
+						<executions>
+							<execution>
+								<id></id>
+								<goals>
+									<goal>findbugs</goal>
+								</goals>
+							</execution>
+						</executions>
 					</plugin>
 				</plugins>
 			</build>
@@ -53,7 +61,7 @@
 		<profile>
 			<id>assembly</id>
 			<modules>
-				<module>./build-bundle-pom.xml</module>
+				<module>./bundle</module>
 			</modules>
 		</profile>
 	</profiles>
