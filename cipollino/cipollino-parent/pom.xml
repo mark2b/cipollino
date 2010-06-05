@@ -358,6 +358,13 @@
 							<formats>
 								<format>xml</format>
 							</formats>
+							<check>
+								<regexes>
+									<regex>
+										<pattern>**/target/site/cobertura/coverage.xml</pattern>
+									</regex>
+								</regexes>
+							</check>
 						</configuration>
 					</plugin>
 				</plugins>
