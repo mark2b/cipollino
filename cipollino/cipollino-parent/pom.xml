@@ -340,8 +340,8 @@
 								<configuration>
 									<instrumentation>
 										<ignores>
-											<ignore>*.ObjectFactory</ignore>
-											<ignore>*.package-info</ignore>
+											<ignore>.*ObjectFactory</ignore>
+											<ignore>.*package-info</ignore>
 										</ignores>
 									</instrumentation>
 								</configuration>
