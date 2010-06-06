@@ -49,7 +49,7 @@ public class ReplaceService {
 
 	public String replaceByProperties(String input, Properties properties, ParseInfo info) {
 		StringBuilder builder = new StringBuilder(input);
-		Map<String, String> placeHolders = info.placeHolders;
+		Map<String, String> placeHolders = info.getPlaceHolders();
 		for (Entry<String, String> entry : placeHolders.entrySet()) {
 			String placeHolder = entry.getValue();
 			int fromIndex = 0;
