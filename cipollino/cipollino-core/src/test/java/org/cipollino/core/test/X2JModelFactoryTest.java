@@ -1,15 +1,15 @@
 package org.cipollino.core.test;
 
 import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.fail;
 
 import java.io.InputStreamReader;
 
 import org.cipollino.core.DIModule;
 import org.cipollino.core.actions.Action;
 import org.cipollino.core.actions.DefaultAction;
-import org.cipollino.core.model.ActionDef;
 import org.cipollino.core.model.Agent;
 import org.cipollino.core.schema.ActionType;
 import org.cipollino.core.schema.AgentType;

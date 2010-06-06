@@ -16,6 +16,9 @@ public class CodegenTest {
 		MethodDef methodDef = new MethodDef();
 		beforeMethodGenerator.setMethodDef(methodDef);
 		beforeMethodGenerator.generate();
+
+		methodDef.setStaticMethod(true);
+		beforeMethodGenerator.generate();
 	}
 
 	@Test
