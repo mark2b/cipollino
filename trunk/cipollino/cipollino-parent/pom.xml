@@ -329,12 +329,6 @@
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>cobertura-maven-plugin</artifactId>
 						<configuration>
-							<instrumentation>
-								<ignores>
-									<ignore>*.ObjectFactory</ignore>
-									<ignore>*.package-info</ignore>
-								</ignores>
-							</instrumentation>
 						</configuration>
 						<executions>
 							<execution>
@@ -343,6 +337,14 @@
 								<goals>
 									<goal>cobertura</goal>
 								</goals>
+								<configuration>
+									<instrumentation>
+										<ignores>
+											<ignore>*.ObjectFactory</ignore>
+											<ignore>*.package-info</ignore>
+										</ignores>
+									</instrumentation>
+								</configuration>
 							</execution>
 						</executions>
 					</plugin>
