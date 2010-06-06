@@ -24,5 +24,7 @@ public class ReplaceServiceTest {
 		assertEquals(result, "+ A + BB + CCC +");
 		result = replaceService.replaceByProperties("${a}", properties);
 		assertEquals(result, "A");
+		result = replaceService.replaceByProperties("${Z}", properties);
+		assertEquals(result, "${Z}");
 	}
 }
