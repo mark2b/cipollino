@@ -18,9 +18,8 @@ abstract public class AbstractX2JModelFactory {
 
 	@SuppressWarnings("unchecked")
 	private <T> T create(Object source, Class<T> targetClazz) {
-		Method method;
 		try {
-			method = getClass().getMethod("create", source.getClass());
+			Method method = getClass().getMethod("create", source.getClass());
 			return (T) method.invoke(this, source);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -31,7 +30,8 @@ abstract public class AbstractX2JModelFactory {
 		if (source == null) {
 			return null;
 		}
-		AbstractX2JModelFactory modelFactory = getModelFactoryFactory().getFactory(source);
+		AbstractX2JModelFactory modelFactory = getModelFactoryFactory()
+				.getFactory(source);
 		return modelFactory.create(source, targetClass);
 	}
 }
