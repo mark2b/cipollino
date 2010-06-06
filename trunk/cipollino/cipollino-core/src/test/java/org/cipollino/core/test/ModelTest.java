@@ -8,10 +8,6 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import org.cipollino.core.DIModule;
-import org.cipollino.core.actions.Action;
-import org.cipollino.core.actions.DefaultAction;
-import org.cipollino.core.model.ActionDef;
-import org.cipollino.core.model.Agent;
 import org.cipollino.core.schema.ActionType;
 import org.cipollino.core.schema.AgentType;
 import org.cipollino.core.schema.ClassPathType;
@@ -19,7 +15,6 @@ import org.cipollino.core.schema.MethodType;
 import org.cipollino.core.schema.PhaseType;
 import org.cipollino.core.schema.ScriptType;
 import org.cipollino.core.schema.TargetType;
-import org.cipollino.core.schema.X2JModelFactory;
 import org.cipollino.core.xml.ModelSerializer;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -33,8 +28,8 @@ public class ModelTest {
 	@Inject
 	private ModelSerializer modelSerializer;
 
-	@Inject
-	private X2JModelFactory modelFactory;
+	// @Inject
+	// private X2JModelFactory modelFactory;
 
 	@BeforeClass
 	void init() {
@@ -88,15 +83,21 @@ public class ModelTest {
 		ActionType actionType = targetType.getAction().get(0);
 		ScriptType scriptType = actionType.getScript().get(0);
 
+		assertEquals(scriptType.getPhase(), PhaseType.BEFORE);
+		assertTrue(scriptType.getValue().length() > 0);
+
 		assertEquals(scriptType.getAssignTo(), "v1");
 
-//		Agent project = modelFactory.create(agentType);
-//
-//		ActionDef actionDef = modelFactory.createModel(actionType,
-//				ActionDef.class);
-//
-//		Action action = actionDef.createAction();
-//
-//		assertTrue(action instanceof DefaultAction);
+		ScriptType scriptType1 = actionType.getScript().get(1);
+		assertEquals(scriptType1.getPhase(), PhaseType.AFTER);
+
+		// Agent project = modelFactory.create(agentType);
+		//
+		// ActionDef actionDef = modelFactory.createModel(actionType,
+		// ActionDef.class);
+		//
+		// Action action = actionDef.createAction();
+		//
+		// assertTrue(action instanceof DefaultAction);
 	}
 }
