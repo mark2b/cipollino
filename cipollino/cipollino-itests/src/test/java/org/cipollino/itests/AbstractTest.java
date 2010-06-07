@@ -23,8 +23,23 @@ public abstract class AbstractTest {
 	protected final Properties properties = new Properties();
 
 	protected File getJavaHome() {
-		return new File(System.getProperty("jdk.home", System
-				.getProperty("java.home")));
+		File javaHome = new File(System.getProperty("java.home"));
+		if (javaHome.exists()) {
+			File javac = new File(javaHome, "bin/javac");
+			if (javac.exists()) {
+				return javaHome;
+			} else {
+				javaHome = javaHome.getParentFile();
+				if (javaHome.exists()) {
+					javac = new File(javaHome, "bin/javac");
+					if (javac.exists()) {
+						return javaHome;
+					}
+				}
+			}
+		}
+		throw new RuntimeException("JDK not found on "
+				+ javaHome.getAbsolutePath());
 	}
 
 	protected File getJavaBin() {
