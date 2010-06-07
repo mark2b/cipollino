@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 @Test
 public class BasicTest extends AbstractTest {
 
-	@Test(enabled = true)
+	@Test(enabled = false)
 	public void testJavaAgent() throws Exception {
 
 		ProcessContext context = startTestAppWithAgen("target/app1.jar",
@@ -23,6 +23,17 @@ public class BasicTest extends AbstractTest {
 	}
 
 	@Test(enabled = false)
+	public void testAgentConnectWithWrongProcess() throws Exception {
+
+		ProcessContext agentContext = startAgentApp(
+				"src/test/resources/app2-file.xml", "1234");
+
+		Thread.sleep(2000);
+		int exitValue = waitForProcessExit(agentContext.process);
+		assertEquals(exitValue, 201);
+	}
+
+	@Test(enabled = true)
 	public void testAgentConnect() throws Exception {
 
 		ProcessContext appContext = startTestApp("target/app2.jar",
@@ -45,23 +56,5 @@ public class BasicTest extends AbstractTest {
 
 		List<String> agentLogLines = loadLog(agentContext.log);
 		assertTrue(agentLogLines.get(0).endsWith("Connected."));
-	}
-
-	@Test(enabled = false)
-	public void testAgentConnect2() throws Exception {
-
-		ProcessContext agentContext = startAgentApp(
-				"src/test/resources/app2-file.xml", "1234");
-
-		Thread.sleep(2000);
-		int exitValue = waitForProcessExit(agentContext.process);
-		assertEquals(exitValue, 0);
-
-		//
-		// List<String> appLogLines = loadLog(appContext.log);
-		// assertTrue(appLogLines.get(2).endsWith("Agent was started."));
-		//
-		// List<String> agentLogLines = loadLog(agentContext.log);
-		// assertTrue(agentLogLines.get(0).endsWith("Connected."));
 	}
 }
