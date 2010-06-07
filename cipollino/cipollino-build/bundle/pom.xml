@@ -91,7 +91,7 @@
 						<artifactId>maven-assembly-plugin</artifactId>
 						<configuration>
 							<descriptors>
-								<descriptor>src/main/assembly/assembly-jboss51.xml</descriptor>
+								<descriptor>../src/main/assembly/assembly-jboss51.xml</descriptor>
 							</descriptors>
 						</configuration>
 					</plugin>
@@ -118,7 +118,7 @@
 						<artifactId>maven-assembly-plugin</artifactId>
 						<configuration>
 							<descriptors>
-								<descriptor>src/main/assembly/assembly.xml</descriptor>
+								<descriptor>../src/main/assembly/assembly.xml</descriptor>
 							</descriptors>
 						</configuration>
 					</plugin>
