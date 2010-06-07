@@ -23,9 +23,7 @@ public abstract class AbstractTest {
 	protected final Properties properties = new Properties();
 
 	protected File getJavaHome() {
-		System.out.println("AbstractTest.getJavaHome() " + properties.getProperty("jdk.home", "MMM"));
-		System.out.println("AbstractTest.getJavaHome(1) " + properties.getProperty("jdk1.home", "MMM"));
-		return new File(properties.getProperty("jdk.home", System
+		return new File(System.getProperty("jdk.home", System
 				.getProperty("java.home")));
 	}
 
@@ -127,7 +125,6 @@ public abstract class AbstractTest {
 
 	private void loadProperties() throws IOException {
 		properties.load(getClass().getResourceAsStream("/itests.properties"));
-		properties.putAll(System.getProperties());
 	}
 
 	@SuppressWarnings("unchecked")
