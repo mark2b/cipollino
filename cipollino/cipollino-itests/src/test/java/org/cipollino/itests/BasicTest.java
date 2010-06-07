@@ -52,9 +52,9 @@ public class BasicTest extends AbstractTest {
 		appContext.process.destroy();
 
 		List<String> appLogLines = loadLog(appContext.log);
-		assertTrue(appLogLines.get(2).endsWith("Agent was started."));
+		assertTrue(findInLog(appLogLines, "Agent was started."));
 
 		List<String> agentLogLines = loadLog(agentContext.log);
-		assertTrue(agentLogLines.get(0).endsWith("Connected."));
+		assertTrue(findInLog(agentLogLines, "Connected."));
 	}
 }

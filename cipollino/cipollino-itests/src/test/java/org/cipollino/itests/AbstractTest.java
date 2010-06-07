@@ -205,4 +205,13 @@ public abstract class AbstractTest {
 		context.log = logFile;
 		return context;
 	}
+
+	protected boolean findInLog(List<String> appLogLines, String string) {
+		for (String line : appLogLines) {
+			if (line.contains(string)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
