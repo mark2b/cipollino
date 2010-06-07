@@ -124,6 +124,7 @@ public abstract class AbstractTest {
 	}
 
 	private void loadProperties() throws IOException {
+		properties.putAll(System.getProperties());
 		properties.load(getClass().getResourceAsStream("/itests.properties"));
 	}
 
