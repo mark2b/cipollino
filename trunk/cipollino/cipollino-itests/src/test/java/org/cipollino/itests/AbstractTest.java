@@ -23,8 +23,7 @@ public abstract class AbstractTest {
 	protected final Properties properties = new Properties();
 
 	protected File getJavaHome() {
-		System.out.println("AbstractTest.getJavaHome() " + properties.getProperty("jdk.home", System
-				.getProperty("java.home")));
+		System.out.println("AbstractTest.getJavaHome() " + properties.getProperty("jdk.home", "MMM"));
 		return new File(properties.getProperty("jdk.home", System
 				.getProperty("java.home")));
 	}
