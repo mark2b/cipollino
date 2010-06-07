@@ -73,6 +73,9 @@
 					<scope>runtime</scope>
 				</dependency>
 			</dependencies>
+			<properties>
+				<product.output>${basedir}/../../output</product.output>
+			</properties>
 		</profile>
 		<profile>
 			<id>jboss51</id>
