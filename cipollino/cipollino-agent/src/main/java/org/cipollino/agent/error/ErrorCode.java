@@ -59,7 +59,12 @@ public enum ErrorCode implements ErrorMessage {
 	 * 
 	 */
 	@Message(code = "00210", message = "Connection to application failed. %s")
-	AgentWasnotConnected;
+	AgentWasnotConnected,
+	/**
+	 * 
+	 */
+	@Message(code = "00211", message = "Connection to application already established.")
+	AgentAlreadyConnected;
 
 	private final static LogManager MANAGER = new LogManager(ErrorCode.class);
 
