@@ -1,6 +1,6 @@
 package org.cipollino.agent;
 
-import static org.cipollino.agent.error.ErrorCode.AgentWasConnected;
+import static org.cipollino.agent.error.ErrorCode.*;
 import static org.cipollino.agent.error.ErrorCode.AgentWasnotConnected;
 import static org.cipollino.agent.error.ErrorCode.ArgumentsParsingError;
 import static org.cipollino.agent.error.ErrorCode.ControlFileMissing;
@@ -59,7 +59,6 @@ public class Main {
 			e.getErrorMessage().print(e.getArgs());
 			return 201;
 		} catch (final Exception e) {
-			e.printStackTrace();
 			AgentWasnotConnected.print(e.getMessage(), e);
 			return 202;
 		}

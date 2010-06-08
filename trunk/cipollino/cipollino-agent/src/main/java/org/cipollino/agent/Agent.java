@@ -1,5 +1,6 @@
 package org.cipollino.agent;
 
+import static org.cipollino.agent.error.ErrorCode.AgentAlreadyConnected;
 import static org.cipollino.agent.error.ErrorCode.AgentWasStarted;
 import static org.cipollino.agent.error.ErrorCode.AgentWasnotStarted;
 import static org.cipollino.agent.error.ErrorCode.ArgumentsParsingError;
@@ -36,11 +37,15 @@ public class Agent {
 	private void start(String argsLine, Instrumentation instrumentation,
 			boolean attached) {
 		try {
+			if (isAlreadyLoaded()) {
+				throw new ErrorException(AgentAlreadyConnected);
+			}
 			initDI();
 			buildArgsOptions();
 			parseArgs(argsLine);
 			options.setAttached(attached);
 			transformationService.start(instrumentation, options);
+			registerAsLoaded();
 			AgentWasStarted.print();
 		} catch (final ErrorException e) {
 			e.getErrorMessage().print(e.getArgs());
@@ -103,4 +108,13 @@ public class Agent {
 				.withDescription("Control File").create('f'));
 		return argsOptions;
 	}
+
+	private boolean isAlreadyLoaded() {
+		return System.getProperty("org.cipollino.agent") != null;
+	}
+
+	private void registerAsLoaded() {
+		System.setProperty("org.cipollino.agent", "connected");
+	}
+
 }
