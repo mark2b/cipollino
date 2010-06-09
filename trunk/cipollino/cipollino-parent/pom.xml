@@ -309,6 +309,40 @@
 	</properties>
 	<profiles>
 		<profile>
+			<id>windows-platform</id>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
+			<properties>
+				<platform>windows</platform>
+			</properties>
+		</profile>
+		<profile>
+			<id>linux-platform</id>
+			<activation>
+				<os>
+					<family>unix</family>
+					<name>linux</name>
+				</os>
+			</activation>
+			<properties>
+				<platform>unix</platform>
+			</properties>
+		</profile>
+		<profile>
+			<id>macos-platform</id>
+			<activation>
+				<os>
+					<family>mac</family>
+				</os>
+			</activation>
+			<properties>
+				<platform>mac</platform>
+			</properties>
+		</profile>
+		<profile>
 			<id>code-quality</id>
 			<build>
 				<plugins>
