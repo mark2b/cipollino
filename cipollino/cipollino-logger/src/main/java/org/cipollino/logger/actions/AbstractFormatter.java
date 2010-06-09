@@ -3,7 +3,7 @@ package org.cipollino.logger.actions;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.cipollino.core.runtime.CallState;
+import org.cipollino.core.runtime.CallContext;
 import org.cipollino.core.services.ReplaceService;
 import org.cipollino.core.services.ReplaceService.ParseInfo;
 
@@ -17,7 +17,7 @@ public abstract class AbstractFormatter implements Formatter {
 	private ReplaceService replaceService;
 
 	@Override
-	public String format(String format, CallState callState) {
+	public String format(String format, CallContext callState) {
 		StringBuilder builder = new StringBuilder(format);
 		if (parseInfo == null) {
 			parseInfo = replaceService.parse(format);
@@ -37,7 +37,7 @@ public abstract class AbstractFormatter implements Formatter {
 		return builder.toString();
 	}
 
-	protected String getValueFor(String key, CallState callState) {
+	protected String getValueFor(String key, CallContext callState) {
 		Object value = null;
 		if ("method".equals(key)) {
 			value = formatMethodName(callState);
@@ -51,11 +51,11 @@ public abstract class AbstractFormatter implements Formatter {
 		return null == value ? "null" : value.toString();
 	}
 
-	protected String formatMethodName(CallState callState) {
+	protected String formatMethodName(CallContext callState) {
 		return callState.getMethodDef().getMethodName();
 	}
 
-	protected String formatParameters(CallState callState) {
+	protected String formatParameters(CallContext callState) {
 		StringBuilder builder = new StringBuilder();
 		Object[] parameters = callState.getParameters();
 
@@ -67,7 +67,7 @@ public abstract class AbstractFormatter implements Formatter {
 
 	abstract protected String formatParameter(Object object);
 
-	protected Object formatResult(CallState callState) {
+	protected Object formatResult(CallContext callState) {
 		return formatParameter(callState.getResult());
 	}
 }

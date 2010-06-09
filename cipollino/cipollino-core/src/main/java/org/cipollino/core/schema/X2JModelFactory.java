@@ -1,10 +1,12 @@
 package org.cipollino.core.schema;
 
+import java.util.List;
+
 import org.cipollino.core.annotations.ModelFactory;
 import org.cipollino.core.model.ActionDef;
+import org.cipollino.core.model.Agent;
 import org.cipollino.core.model.ClassPathDef;
 import org.cipollino.core.model.MethodDef;
-import org.cipollino.core.model.Agent;
 import org.cipollino.core.model.ScriptDef;
 import org.cipollino.core.model.TargetDef;
 import org.cipollino.core.xml.AbstractX2JModelFactory;
@@ -73,11 +75,26 @@ public class X2JModelFactory extends AbstractX2JModelFactory {
 		ScriptDef target = new ScriptDef();
 		target.setSourceCode(source.getValue());
 		target.setAssignTo(source.getAssignTo());
+
+		target.setGlobalContext(source.getGlobalContext());
+		target.setClassContext(source.getClassContext());
+		target.setInstanceContext(source.getInstanceContext());
+
 		return target;
 	}
 
 	public ActionDef create(ActionType source) {
 		ActionDef target = new ActionDef();
+		apply(source, target);
 		return target;
+	}
+
+	protected void apply(ActionType source, ActionDef target) {
+		List<ScriptType> scriptTypes = source.getScript();
+		if (scriptTypes != null) {
+			for (ScriptType scriptType : scriptTypes) {
+				target.getScriptDef().add(createModel(scriptType, ScriptDef.class));
+			}
+		}
 	}
 }

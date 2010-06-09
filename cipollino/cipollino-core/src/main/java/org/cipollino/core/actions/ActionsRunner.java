@@ -8,7 +8,8 @@ import java.util.List;
 
 import org.cipollino.core.model.ActionDef;
 import org.cipollino.core.model.MethodDef;
-import org.cipollino.core.runtime.CallState;
+import org.cipollino.core.runtime.CallContext;
+import org.cipollino.core.runtime.Runtime;
 
 public class ActionsRunner {
 
@@ -16,7 +17,7 @@ public class ActionsRunner {
 
 	private final List<Action> reverseActions;
 
-	private final CallState callState = new CallState();
+	private final CallContext callContext = new CallContext();
 
 	public ActionsRunner(Object target, MethodDef methodDef, Object[] parameters, List<ActionDef> actionsDef) {
 
@@ -28,18 +29,19 @@ public class ActionsRunner {
 		reverseActions = new LinkedList<Action>(actions);
 		Collections.reverse(reverseActions);
 
-		callState.setTarget(target);
-		callState.setMethodDef(methodDef);
-		callState.setParameters(parameters);
+		callContext.setTarget(target);
+		callContext.setMethodDef(methodDef);
+		callContext.setParameters(parameters);
+		callContext.setUserContext(Runtime.getInstance().getUserContext());
 
 	}
 
 	public boolean beforeMethod() {
 		for (Action action : actions) {
 			try {
-				action.executeBefore(callState);
+				action.executeBefore(callContext);
 			} catch (Exception e) {
-				ActionExecutionFailed.print("before", callState.getMethodDef().getMethodName(), e);
+				ActionExecutionFailed.print("before", callContext.getMethodDef().getMethodName(), e);
 				return false;
 			}
 		}
@@ -49,9 +51,9 @@ public class ActionsRunner {
 	public boolean afterMethod() {
 		for (Action action : actions) {
 			try {
-				action.executeAfter(callState);
+				action.executeAfter(callContext);
 			} catch (Exception e) {
-				ActionExecutionFailed.print("after", callState.getMethodDef().getMethodName(), e);
+				ActionExecutionFailed.print("after", callContext.getMethodDef().getMethodName(), e);
 				return false;
 			}
 		}
@@ -64,7 +66,7 @@ public class ActionsRunner {
 	public void onFinally() {
 	}
 
-	public CallState getCallState() {
-		return callState;
+	public CallContext getCallState() {
+		return callContext;
 	}
 }

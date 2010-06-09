@@ -16,13 +16,15 @@ public class Runtime {
 
 	private static Runtime instance;
 
-	private Map<String, ClassData> classesMap = new LinkedHashMap<String, ClassData>();
+	final private Map<String, ClassData> classesMap = new LinkedHashMap<String, ClassData>();
 
-	private ThreadLocal<Stack<ActionsRunner>> currentRunner = new ThreadLocal<Stack<ActionsRunner>>();
+	final private ThreadLocal<Stack<ActionsRunner>> currentRunner = new ThreadLocal<Stack<ActionsRunner>>();
 
-	private Map<String, Object> elementsMap = new HashMap<String, Object>();
+	final private Map<String, Object> elementsMap = new HashMap<String, Object>();
 
-	private Map<String, Class<Script>> implClassMap = new LinkedHashMap<String, Class<Script>>();
+	final private Map<String, Class<Script>> implClassMap = new LinkedHashMap<String, Class<Script>>();
+
+	final private UserContext userContext = new UserContext();
 
 	private Runtime() {
 	}
@@ -52,15 +54,13 @@ public class Runtime {
 	}
 
 	public void cleanDeletedItems() {
-		String[] keys = classesMap.keySet().toArray(
-				new String[classesMap.size()]);
+		String[] keys = classesMap.keySet().toArray(new String[classesMap.size()]);
 		for (String key : keys) {
 			if (classesMap.get(key).getState().equals(ClassState.DELETED)) {
 				classesMap.remove(key);
 			}
 		}
-		String[] uuids = elementsMap.keySet().toArray(
-				new String[elementsMap.size()]);
+		String[] uuids = elementsMap.keySet().toArray(new String[elementsMap.size()]);
 		for (String uuid : uuids) {
 			if (elementsMap.get(uuid) instanceof MethodDef) {
 				MethodDef method = (MethodDef) elementsMap.get(uuid);
@@ -118,4 +118,9 @@ public class Runtime {
 		Runtime.instance = new Runtime();
 		return Runtime.instance;
 	}
+
+	public UserContext getUserContext() {
+		return userContext;
+	}
+
 }

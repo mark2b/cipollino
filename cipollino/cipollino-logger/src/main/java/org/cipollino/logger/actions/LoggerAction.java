@@ -2,7 +2,7 @@ package org.cipollino.logger.actions;
 
 import org.cipollino.core.DI;
 import org.cipollino.core.actions.AbstractAction;
-import org.cipollino.core.runtime.CallState;
+import org.cipollino.core.runtime.CallContext;
 import org.cipollino.logger.model.FormatDef;
 import org.cipollino.logger.model.LoggerActionDef;
 import org.slf4j.Logger;
@@ -20,7 +20,7 @@ public class LoggerAction extends AbstractAction {
 	private Formatter exceptionFormatter;
 
 	@Override
-	public boolean onExecuteBefore(CallState callState) {
+	public boolean onExecuteBefore(CallContext callState) {
 		FormatDef formatDef = getLoggerActionDef().getBeforeFormatDef();
 		String format = formatDef.getFormat();
 		Formatter formatter = getBeforeFormatter();
@@ -30,7 +30,7 @@ public class LoggerAction extends AbstractAction {
 	}
 
 	@Override
-	public boolean onExecuteAfter(CallState callState) {
+	public boolean onExecuteAfter(CallContext callState) {
 		FormatDef formatDef = getLoggerActionDef().getAfterFormatDef();
 
 		String format = formatDef.getFormat();
@@ -42,7 +42,7 @@ public class LoggerAction extends AbstractAction {
 	}
 
 	@Override
-	public boolean onException(CallState callState) {
+	public boolean onException(CallContext callState) {
 		FormatDef formatDef = getLoggerActionDef().getExceptionFormatDef();
 
 		String format = formatDef.getFormat();
