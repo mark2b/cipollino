@@ -101,11 +101,6 @@
 	<profiles>
 		<profile>
 			<id>windows-platform</id>
-			<activation>
-				<os>
-					<family>windows</family>
-				</os>
-			</activation>
 			<dependencies>
 				<dependency>
 					<groupId>com.sun</groupId>
@@ -116,12 +111,6 @@
 		</profile>
 		<profile>
 			<id>linux-platform</id>
-			<activation>
-				<os>
-					<family>unix</family>
-					<name>linux</name>
-				</os>
-			</activation>
 			<dependencies>
 				<dependency>
 					<groupId>com.sun</groupId>
