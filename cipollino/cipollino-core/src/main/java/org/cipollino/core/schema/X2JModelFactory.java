@@ -20,7 +20,8 @@ public class X2JModelFactory extends AbstractX2JModelFactory {
 	public Agent create(AgentType source) {
 		Agent target = new Agent();
 
-		target.setClassPathDef(createModel(source.getClassPath(), ClassPathDef.class));
+		target.setClassPathDef(createModel(source.getClassPath(),
+				ClassPathDef.class));
 
 		for (TargetType targetType : source.getTarget()) {
 			TargetDef targetDef = createModel(targetType, TargetDef.class);
@@ -75,11 +76,6 @@ public class X2JModelFactory extends AbstractX2JModelFactory {
 		ScriptDef target = new ScriptDef();
 		target.setSourceCode(source.getValue());
 		target.setAssignTo(source.getAssignTo());
-
-		target.setGlobalContext(source.getGlobalContext());
-		target.setClassContext(source.getClassContext());
-		target.setInstanceContext(source.getInstanceContext());
-
 		return target;
 	}
 
@@ -93,7 +89,8 @@ public class X2JModelFactory extends AbstractX2JModelFactory {
 		List<ScriptType> scriptTypes = source.getScript();
 		if (scriptTypes != null) {
 			for (ScriptType scriptType : scriptTypes) {
-				target.getScriptDef().add(createModel(scriptType, ScriptDef.class));
+				target.getScriptDef().add(
+						createModel(scriptType, ScriptDef.class));
 			}
 		}
 	}

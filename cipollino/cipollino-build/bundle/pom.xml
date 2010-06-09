@@ -78,13 +78,7 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>jboss51</id>
-			<activation>
-				<property>
-					<name>app-type</name>
-					<value>jboss51</value>
-				</property>
-			</activation>
+			<id>jboss-apptype</id>
 			<build>
 				<plugins>
 					<plugin>
@@ -103,15 +97,12 @@
 					<artifactId>jboss-logging-log4j</artifactId>
 				</dependency>
 			</dependencies>
+			<properties>
+				<target-apptype>jboss</target-apptype>
+			</properties>
 		</profile>
 		<profile>
-			<id>jse</id>
-			<activation>
-				<property>
-					<name>app-type</name>
-					<value>jse</value>
-				</property>
-			</activation>
+			<id>jse-apptype</id>
 			<build>
 				<plugins>
 					<plugin>
@@ -124,6 +115,9 @@
 					</plugin>
 				</plugins>
 			</build>
+			<properties>
+				<target-apptype>std</target-apptype>
+			</properties>
 		</profile>
 	</profiles>
 </project>
