@@ -339,7 +339,7 @@
 				</os>
 			</activation>
 			<properties>
-				<target-platform>mac</target-platform>
+				<target-platform>macos</target-platform>
 			</properties>
 		</profile>
 		<profile>
