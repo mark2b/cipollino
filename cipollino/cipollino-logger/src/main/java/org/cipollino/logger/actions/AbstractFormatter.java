@@ -46,7 +46,7 @@ public abstract class AbstractFormatter implements Formatter {
 		} else if ("result".equals(key)) {
 			value = formatResult(callState);
 		} else {
-			value = callState.getStateMap().get(key);
+			value = callState.getContext().get(key);
 		}
 		return null == value ? "null" : value.toString();
 	}

@@ -19,62 +19,62 @@ public class CallContext {
 
 	private UserContext userContext = null;
 
-	private Map<Object, Object> stateMap = new HashMap<Object, Object>();
+	private Map<Object, Object> contextMap = new HashMap<Object, Object>();
 
-	public Map<Object, Object> getStateMap() {
-		return stateMap;
+	public Map<Object, Object> getContext() {
+		return contextMap;
 	}
 
 	public MethodDef getMethodDef() {
-		return (MethodDef) stateMap.get(METHOD_DEF);
+		return (MethodDef) contextMap.get(METHOD_DEF);
 	}
 
 	public void setMethodDef(MethodDef methodDef) {
-		stateMap.put(METHOD_DEF, methodDef);
+		contextMap.put(METHOD_DEF, methodDef);
 	}
 
 	public Object[] getParameters() {
-		return (Object[]) stateMap.get(PARAMETERS);
+		return (Object[]) contextMap.get(PARAMETERS);
 	}
 
 	public void setParameters(Object[] parameters) {
-		stateMap.put(PARAMETERS, parameters);
+		contextMap.put(PARAMETERS, parameters);
 	}
 
 	public Object getResult() {
-		return stateMap.get(RESULT);
+		return contextMap.get(RESULT);
 	}
 
 	public void setResult(Object result) {
-		stateMap.put(RESULT, result);
+		contextMap.put(RESULT, result);
 	}
 
 	public void setResult(int result) {
-		stateMap.put(RESULT, result);
+		contextMap.put(RESULT, result);
 	}
 
 	public void setResult(boolean result) {
-		stateMap.put(RESULT, result);
+		contextMap.put(RESULT, result);
 	}
 
 	public void setResult(double result) {
-		stateMap.put(RESULT, result);
+		contextMap.put(RESULT, result);
 	}
 
 	public Exception getException() {
-		return (Exception) stateMap.get(EXCEPTION);
+		return (Exception) contextMap.get(EXCEPTION);
 	}
 
 	public void setException(Throwable e) {
-		stateMap.put(EXCEPTION, e);
+		contextMap.put(EXCEPTION, e);
 	}
 
 	public Object getTarget() {
-		return stateMap.get(TARGET);
+		return contextMap.get(TARGET);
 	}
 
 	public void setTarget(Object target) {
-		stateMap.put(TARGET, target);
+		contextMap.put(TARGET, target);
 	}
 
 	public boolean isSuccess() {
@@ -103,5 +103,9 @@ public class CallContext {
 
 	public Map<Object, Object> getInstanceContext() {
 		return userContext.getInstanceContext(getTarget());
+	}
+
+	public void destroy() {
+		userContext.destroyInstanceContext(getTarget());
 	}
 }

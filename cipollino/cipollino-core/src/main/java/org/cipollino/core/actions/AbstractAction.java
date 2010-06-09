@@ -29,7 +29,7 @@ abstract public class AbstractAction implements Action {
 				Script script = clazz.newInstance();
 				Object o = script.invoke(callContext);
 				if (scriptDef.getAssignTo() != null && o != null) {
-					callContext.getStateMap().put(scriptDef.getAssignTo(), o);
+					callContext.getContext().put(scriptDef.getAssignTo(), o);
 				}
 			} catch (Exception e) {
 				ActionExecutionFailed.print(phase, callContext.getMethodDef().getMethodName(), e);

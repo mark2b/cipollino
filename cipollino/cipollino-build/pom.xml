@@ -31,7 +31,13 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>assembly</id>
+			<id>build-devenv</id>
+			<modules>
+				<module>./bundle</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>build-bundle</id>
 			<modules>
 				<module>./bundle</module>
 			</modules>

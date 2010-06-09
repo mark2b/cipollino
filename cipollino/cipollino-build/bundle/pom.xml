@@ -10,10 +10,9 @@
 	<artifactId>cipollino-bundle</artifactId>
 	<packaging>pom</packaging>
 	<name>Cipollino :: Bundle</name>
-
 	<profiles>
 		<profile>
-			<id>assembly</id>
+			<id>build-devenv</id>
 			<build>
 				<plugins>
 					<plugin>
@@ -33,6 +32,33 @@
 							<execution>
 								<phase>package</phase>
 								<goals>
+									<goal>directory-single</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${product.output}</outputDirectory>
+									<appendAssemblyId>false</appendAssemblyId>
+									<attach>true</attach>
+									<finalName>${product.name}</finalName>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+			<properties>
+				<product.output>${basedir}/../../output</product.output>
+			</properties>
+		</profile>
+		<profile>
+			<id>build-bundle</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
 									<goal>single</goal>
 								</goals>
 								<configuration>
@@ -46,36 +72,6 @@
 					</plugin>
 				</plugins>
 			</build>
-			<dependencies>
-				<dependency>
-					<groupId>org.cipollino</groupId>
-					<artifactId>cipollino-core</artifactId>
-					<version>${project.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>org.cipollino</groupId>
-					<artifactId>cipollino-agent</artifactId>
-					<version>${project.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>org.cipollino</groupId>
-					<artifactId>cipollino-logger</artifactId>
-					<version>${project.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>org.cipollino</groupId>
-					<artifactId>cipollino-dependencies</artifactId>
-					<version>${project.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>log4j</groupId>
-					<artifactId>log4j</artifactId>
-					<scope>runtime</scope>
-				</dependency>
-			</dependencies>
-			<properties>
-				<product.output>${basedir}/../../output</product.output>
-			</properties>
 		</profile>
 		<profile>
 			<id>jboss-apptype</id>
@@ -120,4 +116,31 @@
 			</properties>
 		</profile>
 	</profiles>
+	<dependencies>
+		<dependency>
+			<groupId>org.cipollino</groupId>
+			<artifactId>cipollino-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.cipollino</groupId>
+			<artifactId>cipollino-agent</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.cipollino</groupId>
+			<artifactId>cipollino-logger</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.cipollino</groupId>
+			<artifactId>cipollino-dependencies</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+	</dependencies>
 </project>
