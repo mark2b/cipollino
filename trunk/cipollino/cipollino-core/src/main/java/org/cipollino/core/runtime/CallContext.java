@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.cipollino.core.model.MethodDef;
 
-public class CallState {
+public class CallContext {
 
 	final public static String TARGET = "$target";
 
@@ -16,6 +16,8 @@ public class CallState {
 	final public static String RESULT = "$result";
 
 	final public static String EXCEPTION = "$exception";
+
+	private UserContext userContext = null;
 
 	private Map<Object, Object> stateMap = new HashMap<Object, Object>();
 
@@ -81,5 +83,25 @@ public class CallState {
 
 	public boolean isFailed() {
 		return getException() != null;
+	}
+
+	public UserContext getUserContext() {
+		return userContext;
+	}
+
+	public void setUserContext(UserContext userContext) {
+		this.userContext = userContext;
+	}
+
+	public Map<Object, Object> getGlobalContext() {
+		return userContext.getGlobalContext();
+	}
+
+	public Map<Object, Object> getClassContext() {
+		return userContext.getClassContext(getMethodDef().getClassName());
+	}
+
+	public Map<Object, Object> getInstanceContext() {
+		return userContext.getInstanceContext(getTarget());
 	}
 }

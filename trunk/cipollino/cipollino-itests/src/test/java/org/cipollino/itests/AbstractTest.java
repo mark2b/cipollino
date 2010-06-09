@@ -25,13 +25,13 @@ public abstract class AbstractTest {
 	protected File getJavaHome() {
 		File javaHome = new File(System.getProperty("java.home"));
 		if (javaHome.exists()) {
-			File javac = new File(javaHome, "bin/javac");
+			File javac = new File(javaHome, "bin/javac.exe");
 			if (javac.exists()) {
 				return javaHome;
 			} else {
 				javaHome = javaHome.getParentFile();
 				if (javaHome.exists()) {
-					javac = new File(javaHome, "bin/javac");
+					javac = new File(javaHome, "bin/javac.exe");
 					if (javac.exists()) {
 						return javaHome;
 					}

@@ -1,12 +1,12 @@
 package org.cipollino.core.actions;
 
-import org.cipollino.core.runtime.CallState;
+import org.cipollino.core.runtime.CallContext;
 
 public interface Action {
 
-	void executeBefore(CallState callState);
+	void executeBefore(CallContext callState);
 
-	void executeAfter(CallState callState);
+	void executeAfter(CallContext callState);
 
-	void executeOnException(CallState callState);
+	void executeOnException(CallContext callState);
 }

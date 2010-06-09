@@ -1,21 +1,21 @@
 package org.cipollino.core.actions;
 
-import org.cipollino.core.runtime.CallState;
+import org.cipollino.core.runtime.CallContext;
 
 public class DefaultAction extends AbstractAction {
 
 	@Override
-	protected boolean onExecuteBefore(CallState callState) {
+	protected boolean onExecuteBefore(CallContext callState) {
 		return true;
 	}
 
 	@Override
-	protected boolean onExecuteAfter(CallState callState) {
+	protected boolean onExecuteAfter(CallContext callState) {
 		return true;
 	}
 
 	@Override
-	protected boolean onException(CallState callState) {
+	protected boolean onException(CallContext callState) {
 		return true;
 	}
 

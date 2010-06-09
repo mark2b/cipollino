@@ -35,7 +35,7 @@ import org.cipollino.core.model.ScriptDef;
 import org.cipollino.core.model.TargetDef;
 import org.cipollino.core.parsers.MethodParser;
 import org.cipollino.core.runtime.AbstractScript;
-import org.cipollino.core.runtime.CallState;
+import org.cipollino.core.runtime.CallContext;
 import org.cipollino.core.runtime.ClassData;
 import org.cipollino.core.runtime.ClassState;
 import org.cipollino.core.runtime.Runtime;
@@ -290,7 +290,7 @@ public class TransformationService {
 				CtClass ctClass = classPathService.getClassPool().makeClass(className);
 				ctClass.setSuperclass(ctSuperClass);
 				CtClass ctReturnType = getCtClass(Object.class);
-				CtMethod invokeMethod = CtNewMethod.make(ctReturnType, "invoke", new CtClass[] { getCtClass(CallState.class) }, new CtClass[0],
+				CtMethod invokeMethod = CtNewMethod.make(ctReturnType, "invoke", new CtClass[] { getCtClass(CallContext.class) }, new CtClass[0],
 						ajustSourceCode(scriptDef, scriptDef.getSourceCode()), ctClass);
 				ctClass.addMethod(invokeMethod);
 				Class<Script> clazz = ctClass.toClass();
@@ -307,6 +307,7 @@ public class TransformationService {
 	private String ajustSourceCode(ScriptDef scriptDef, String sourceCode) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("{");
+		builder.append("org.cipollino.core.runtime.CallContext callContext = $1;");
 		builder.append(sourceCode);
 		if (scriptDef.getAssignTo() == null) {
 			builder.append("return null;");

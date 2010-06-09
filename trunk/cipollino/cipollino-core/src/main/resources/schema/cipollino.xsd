@@ -48,6 +48,9 @@
 				<attribute name="lang" type="string" default="java" />
 				<attribute name="assignTo" type="string" />
 				<attribute name="phase" type="c:PhaseType" default="before" />
+				<attribute name="globalContext" type="string" />
+				<attribute name="classContext" type="string" />
+				<attribute name="instanceContext" type="string" />
 			</extension>
 		</simpleContent>
 	</complexType>
