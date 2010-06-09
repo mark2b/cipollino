@@ -130,7 +130,8 @@
 			<id>linux-platform</id>
 			<activation>
 				<os>
-					<family>linux</family>
+					<family>unix</family>
+					<name>linux</name>
 				</os>
 			</activation>
 			<dependencies>
