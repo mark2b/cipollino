@@ -102,7 +102,7 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>jse-apptype</id>
+			<id>std-apptype</id>
 			<build>
 				<plugins>
 					<plugin>
