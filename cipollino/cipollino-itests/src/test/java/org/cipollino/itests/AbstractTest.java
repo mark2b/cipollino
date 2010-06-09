@@ -25,13 +25,13 @@ public abstract class AbstractTest {
 	protected File getJavaHome() {
 		File javaHome = new File(System.getProperty("java.home"));
 		if (javaHome.exists()) {
-			File javac = new File(javaHome, "bin/javac.exe");
+			File javac = getJavac(javaHome);
 			if (javac.exists()) {
 				return javaHome;
 			} else {
 				javaHome = javaHome.getParentFile();
 				if (javaHome.exists()) {
-					javac = new File(javaHome, "bin/javac.exe");
+					javac = getJavac(javaHome);
 					if (javac.exists()) {
 						return javaHome;
 					}
@@ -213,5 +213,11 @@ public abstract class AbstractTest {
 			}
 		}
 		return false;
+	}
+
+	private File getJavac(File javaHome) {
+		String javacName = System.getProperty("os.name").toLowerCase()
+				.contains("windows") ? "javac.exe" : "javac";
+		return new File(javaHome, "bin/" + javacName);
 	}
 }
