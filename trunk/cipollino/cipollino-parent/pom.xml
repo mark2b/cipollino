@@ -316,7 +316,7 @@
 				</os>
 			</activation>
 			<properties>
-				<platform>windows</platform>
+				<target-platform>windows</target-platform>
 			</properties>
 		</profile>
 		<profile>
@@ -328,7 +328,7 @@
 				</os>
 			</activation>
 			<properties>
-				<platform>unix</platform>
+				<target-platform>unix</target-platform>
 			</properties>
 		</profile>
 		<profile>
@@ -339,7 +339,7 @@
 				</os>
 			</activation>
 			<properties>
-				<platform>mac</platform>
+				<target-platform>mac</target-platform>
 			</properties>
 		</profile>
 		<profile>
