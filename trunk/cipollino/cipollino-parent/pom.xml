@@ -17,7 +17,8 @@
 	<scm>
 		<connection>scm:svn:http://cipollino.googlecode.com/svn/tags/cipollino-build-0.1/cipollino</connection>
 		<developerConnection>scm:svn:https://cipollino.googlecode.com/svn/tags/cipollino-build-0.1/cipollino</developerConnection>
-		<url>http://cipollino.googlecode.com/svn/tags/cipollino-build-0.1/cipollino</url>
+		<url>http://cipollino.googlecode.com/svn/tags/cipollino-build-0.1/cipollino
+		</url>
 	</scm>
 	<issueManagement>
 		<system>Google Code Issue Tracking</system>
@@ -26,7 +27,8 @@
 	<distributionManagement>
 		<snapshotRepository>
 			<id>intellibird.nexus.snapshot</id>
-			<url>http://intellibird.com/nexus/content/repositories/snapshots/</url>
+			<url>http://intellibird.com/nexus/content/repositories/snapshots/
+			</url>
 			<uniqueVersion>false</uniqueVersion>
 		</snapshotRepository>
 	</distributionManagement>
@@ -62,15 +64,18 @@
 							</relocation>
 							<relocation>
 								<pattern>org.apache.commons.lang</pattern>
-								<shadedPattern>org.cipollino.internal.org.apache.commons.lang</shadedPattern>
+								<shadedPattern>org.cipollino.internal.org.apache.commons.lang
+								</shadedPattern>
 							</relocation>
 							<relocation>
 								<pattern>org.apache.commons.io</pattern>
-								<shadedPattern>org.cipollino.internal.org.apache.commons.io</shadedPattern>
+								<shadedPattern>org.cipollino.internal.org.apache.commons.io
+								</shadedPattern>
 							</relocation>
 							<relocation>
 								<pattern>org.apache.commons.cli</pattern>
-								<shadedPattern>org.cipollino.internal.org.apache.commons.cli</shadedPattern>
+								<shadedPattern>org.cipollino.internal.org.apache.commons.cli
+								</shadedPattern>
 							</relocation>
 						</relocations>
 					</configuration>
@@ -97,7 +102,8 @@
 					<artifactId>maven-jaxb2-plugin</artifactId>
 					<version>0.7.3</version>
 					<configuration>
-						<generateDirectory>target/generated-sources/xjc</generateDirectory>
+						<generateDirectory>target/generated-sources/xjc
+						</generateDirectory>
 						<readOnly>true</readOnly>
 						<schemaDirectory>src/main/resources</schemaDirectory>
 						<extension>true</extension>
@@ -241,12 +247,14 @@
 				<artifactId>tools</artifactId>
 				<classifier>windows</classifier>
 				<version>1.6.0</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.sun</groupId>
 				<artifactId>tools</artifactId>
 				<classifier>linux</classifier>
 				<version>1.6.0</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.jboss.logging</groupId>
@@ -291,7 +299,8 @@
 		</repository>
 		<repository>
 			<id>intellibird.nexus.snapshot</id>
-			<url>http://intellibird.com/nexus/content/repositories/snapshots/</url>
+			<url>http://intellibird.com/nexus/content/repositories/snapshots/
+			</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -308,24 +317,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<profiles>
-		<profile>
-			<id>windows-platform</id>
-			<properties>
-				<target-platform>windows</target-platform>
-			</properties>
-		</profile>
-		<profile>
-			<id>linux-platform</id>
-			<properties>
-				<target-platform>unix</target-platform>
-			</properties>
-		</profile>
-		<profile>
-			<id>macos-platform</id>
-			<properties>
-				<target-platform>macos</target-platform>
-			</properties>
-		</profile>
 		<profile>
 			<id>code-quality</id>
 			<build>
