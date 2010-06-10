@@ -1,6 +1,6 @@
 package org.cipollino.agent;
 
-import static org.cipollino.agent.error.ErrorCode.*;
+import static org.cipollino.agent.error.ErrorCode.AgentWasConnected;
 import static org.cipollino.agent.error.ErrorCode.AgentWasnotConnected;
 import static org.cipollino.agent.error.ErrorCode.ArgumentsParsingError;
 import static org.cipollino.agent.error.ErrorCode.ControlFileMissing;
@@ -27,7 +27,6 @@ import org.cipollino.core.error.ErrorException;
 import org.cipollino.core.os.OSFamily;
 import org.cipollino.core.os.OSType;
 
-@SuppressWarnings("restriction")
 public class Main {
 	private static final String CIPOLLINO_LOG_FILE = "cipollino.log.file";
 
