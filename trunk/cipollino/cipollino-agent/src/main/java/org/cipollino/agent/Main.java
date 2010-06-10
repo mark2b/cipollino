@@ -24,8 +24,8 @@ import org.apache.commons.cli.PosixParser;
 import org.apache.commons.io.IOUtils;
 import org.cipollino.core.error.ErrorCode;
 import org.cipollino.core.error.ErrorException;
-
-import com.sun.tools.attach.VirtualMachine;
+import org.cipollino.core.os.OSFamily;
+import org.cipollino.core.os.OSType;
 
 @SuppressWarnings("restriction")
 public class Main {
@@ -43,7 +43,7 @@ public class Main {
 		System.setProperty(CIPOLLINO_LOG_FILE, System.getProperty(
 				CIPOLLINO_LOG_FILE, "cipollino.log"));
 
-		final Main main = new Main();
+		Main main = new Main();
 		int exitCode = main.start(args);
 		System.exit(exitCode);
 	}
@@ -64,25 +64,57 @@ public class Main {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void connectToVM() {
 		try {
-			final URLClassLoader classLoader = (URLClassLoader) ClassLoader
+			URLClassLoader systemClassLoader = (URLClassLoader) ClassLoader
 					.getSystemClassLoader();
-			final URL[] urls = classLoader.getURLs();
-			if (urls.length == 0) {
+			URL[] systemUrls = systemClassLoader.getURLs();
+			if (systemUrls.length == 0) {
 				throw new ErrorException(ErrorCode.InternalError,
 						"Invalid Agent Jar");
 			}
-			final String jarName = new File(urls[0].getFile())
+			String jarName = new File(systemUrls[0].getFile())
 					.getAbsolutePath();
-			final VirtualMachine machine = VirtualMachine.attach(options
-					.getPid());
-			machine.loadAgent(jarName, String.format("--file=%s", options
-					.getControlFile().getAbsolutePath()));
-		} catch (final Exception e) {
+
+			ClassLoader classLoader = systemClassLoader;
+			OSType osType = OSType.getCurrent();
+			if (!osType.getFamily().equals(OSFamily.MAC)) {
+				File toolsJarFile = getToolsJarFile();
+				if (!toolsJarFile.exists()) {
+					throw new ErrorException(
+							org.cipollino.agent.error.ErrorCode.MissingToolsJar,
+							getJavaHome().getAbsolutePath());
+				}
+				classLoader = new URLClassLoader(new URL[] { toolsJarFile
+						.toURI().toURL() });
+			}
+			Class virtualMachineClass = classLoader
+					.loadClass("com.sun.tools.attach.VirtualMachine");
+
+			Object machine = virtualMachineClass.getMethod("attach",
+					String.class).invoke(null, options.getPid());
+			virtualMachineClass.getMethod("loadAgent", String.class,
+					String.class).invoke(
+					machine,
+					jarName,
+					String.format("--file=%s", options.getControlFile()
+							.getAbsolutePath()));
+		} catch (Exception e) {
 			throw new ErrorException(AgentWasnotConnected, e.getMessage());
 		}
 
+	}
+
+	private File getToolsJarFile() {
+		File javaHome = getJavaHome();
+		File toolsJarFile = new File(javaHome, "lib/tools.jar");
+		return toolsJarFile;
+	}
+
+	private File getJavaHome() {
+		File javaHome = new File(System.getProperty("java.home"));
+		return javaHome;
 	}
 
 	private void parseArgs(String[] args) {
