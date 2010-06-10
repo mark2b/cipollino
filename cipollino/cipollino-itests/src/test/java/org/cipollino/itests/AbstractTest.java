@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.testng.annotations.BeforeClass;
 
 public abstract class AbstractTest {
@@ -44,6 +45,10 @@ public abstract class AbstractTest {
 
 	protected File getJavaBin() {
 		return new File(getJavaHome(), "bin");
+	}
+
+	protected File getJavaLib() {
+		return new File(getJavaHome(), "lib");
 	}
 
 	protected File getProductHome() {
@@ -154,9 +159,18 @@ public abstract class AbstractTest {
 		assertTrue(jarFile.exists());
 		File logFile = new File("target/cipollino.log");
 		logFile.delete();
+
+		List<String> path = new ArrayList<String>();
+		path.add(jarFile.getAbsolutePath());
+		File toolsJarFile = new File(getJavaLib(), "tools.jar");
+		if (toolsJarFile.exists()) {
+			path.add(toolsJarFile.getAbsolutePath());
+		}
+
 		Process process = startJavaProcess("-Dlog4j.configuration="
 				+ getLog4jXml().toURI().toURL(), "-Dcipollino.log.file="
-				+ logFile.getAbsolutePath(), "-jar", jarFile.getAbsolutePath(),
+				+ logFile.getAbsolutePath(), "-cp", StringUtils.join(path
+				.iterator(), File.pathSeparator), "org.cipollino.agent.Main",
 				"--file", controlFile, "--pid", pid);
 
 		ProcessContext context = new ProcessContext();
