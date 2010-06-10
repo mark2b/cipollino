@@ -64,7 +64,12 @@ public enum ErrorCode implements ErrorMessage {
 	 * 
 	 */
 	@Message(code = "00211", message = "Connection to application already established.")
-	AgentAlreadyConnected;
+	AgentAlreadyConnected,
+	/**
+	 * 
+	 */
+	@Message(code = "00212", message = "Missing tools.jar. You must run Cipollino with JDK only. Check JAVA_HOME. Current JVM loaded from %s.")
+	MissingToolsJar;
 
 	private final static LogManager MANAGER = new LogManager(ErrorCode.class);
 

@@ -160,17 +160,9 @@ public abstract class AbstractTest {
 		File logFile = new File("target/cipollino.log");
 		logFile.delete();
 
-		List<String> path = new ArrayList<String>();
-		path.add(jarFile.getAbsolutePath());
-		File toolsJarFile = new File(getJavaLib(), "tools.jar");
-		if (toolsJarFile.exists()) {
-			path.add(toolsJarFile.getAbsolutePath());
-		}
-
 		Process process = startJavaProcess("-Dlog4j.configuration="
 				+ getLog4jXml().toURI().toURL(), "-Dcipollino.log.file="
-				+ logFile.getAbsolutePath(), "-cp", StringUtils.join(path
-				.iterator(), File.pathSeparator), "org.cipollino.agent.Main",
+				+ logFile.getAbsolutePath(), "-jar", jarFile.getAbsolutePath(),
 				"--file", controlFile, "--pid", pid);
 
 		ProcessContext context = new ProcessContext();
