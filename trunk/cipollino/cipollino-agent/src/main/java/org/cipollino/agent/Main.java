@@ -78,21 +78,16 @@ public class Main {
 
 			ClassLoader classLoader = systemClassLoader;
 			OSType osType = OSType.getCurrent();
-			System.out.println("Main.connectToVM()");
 			if (!osType.getFamily().equals(OSFamily.MAC)) {
-				System.out.println("Main.connectToVM(1)");
 				File toolsJarFile = getToolsJarFile();
 				if (!toolsJarFile.exists()) {
-					System.out.println("Main.connectToVM(11)");
 					throw new ErrorException(
 							org.cipollino.agent.error.ErrorCode.MissingToolsJar,
 							getJavaHome().getAbsolutePath());
 				}
-				System.out.println("Main.connectToVM(111) " + toolsJarFile);
 				classLoader = new URLClassLoader(new URL[] { toolsJarFile
 						.toURI().toURL() });
 			}
-			System.out.println("Main.connectToVM(2)");
 			Class virtualMachineClass = classLoader
 					.loadClass("com.sun.tools.attach.VirtualMachine");
 
