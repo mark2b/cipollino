@@ -38,6 +38,7 @@
 						</goals>
 						<configuration>
 							<skipTests>false</skipTests>
+							<jvm>${jdk.home}</jvm>
 						</configuration>
 					</execution>
 				</executions>
