@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<c:agent xmlns:c="http://cipollino.googlecode.com/cipollino/1.0"
+<c:system xmlns:c="http://cipollino.googlecode.com/cipollino/1.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<c:classPath>
-		<c:classes>/classes</c:classes>
-		<c:jar>/tmp/a.jar</c:jar>
-		<c:dir>/tmp</c:dir>
-		<c:path>a.jar:b.jar</c:path>
-	</c:classPath>
+	<c:compiler>
+		<c:classPath>
+			<c:classes>/classes</c:classes>
+			<c:jar>/tmp/a.jar</c:jar>
+			<c:dir>/tmp</c:dir>
+			<c:path>a.jar:b.jar</c:path>
+		</c:classPath>
+	</c:compiler>
 	<c:target>
 		<c:method name="a">
 		</c:method>
@@ -19,4 +21,4 @@
 			</c:script>
 		</c:action>
 	</c:target>
-</c:agent>
+</c:system>
