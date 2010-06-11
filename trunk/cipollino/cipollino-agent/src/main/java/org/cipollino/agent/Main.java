@@ -79,16 +79,7 @@ public class Main {
 			ClassLoader classLoader = systemClassLoader;
 			OSType osType = OSType.getCurrent();
 			if (!osType.getFamily().equals(OSFamily.MAC)) {
-				File toolsJarFile = getToolsJarFile(getJavaHome());
-				if (!toolsJarFile.exists()) {
-					File javaHome = getJavaHome().getParentFile();
-					toolsJarFile = getToolsJarFile(javaHome);
-					if (!toolsJarFile.exists()) {
-						throw new ErrorException(
-								org.cipollino.agent.error.ErrorCode.MissingToolsJar,
-								javaHome.getAbsolutePath());
-					}
-				}
+				File toolsJarFile = getToolsJarFile();
 				classLoader = new URLClassLoader(new URL[] { toolsJarFile
 						.toURI().toURL() });
 			}
@@ -109,8 +100,20 @@ public class Main {
 
 	}
 
-	private File getToolsJarFile(File javaHome) {
+	private File getToolsJarFile() {
+		File javaHome = getJavaHome();
+		System.out.println("Main.getToolsJarFile() " + javaHome);
 		File toolsJarFile = new File(javaHome, "lib/tools.jar");
+		if (!toolsJarFile.exists()) {
+			javaHome.getParentFile();
+			System.out.println("Main.getToolsJarFile(1) " + javaHome);
+			toolsJarFile = new File(javaHome, "lib/tools.jar");
+			if (!toolsJarFile.exists()) {
+				throw new ErrorException(
+						org.cipollino.agent.error.ErrorCode.MissingToolsJar,
+						javaHome.getAbsolutePath());
+			}
+		}
 		return toolsJarFile;
 	}
 
