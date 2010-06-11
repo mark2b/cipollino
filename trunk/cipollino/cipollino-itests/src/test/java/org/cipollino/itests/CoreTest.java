@@ -13,7 +13,7 @@ public class CoreTest extends AbstractTest {
 	@Test(enabled = true)
 	public void testJavaAgent() throws Exception {
 
-		ProcessContext context = startTestAppWithAgen("target/app1.jar", "target/app1.log", "src/test/resources/app1-file1.xml");
+		ProcessContext context = startTestAppWithAgent("target/app1.jar", "target/app1.log", "src/test/resources/app1-file1.xml");
 
 		Thread.sleep(3000);
 		context.process.destroy();
