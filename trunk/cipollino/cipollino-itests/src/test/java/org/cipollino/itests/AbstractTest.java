@@ -23,6 +23,7 @@ public abstract class AbstractTest {
 	protected final Properties properties = new Properties();
 
 	protected File getJavaHome() {
+		System.out.println("AbstractTest.getJavaHome() " + System.getProperty("java.home"));
 		File javaHome = new File(System.getProperty("java.home"));
 		if (javaHome.exists()) {
 			File javac = getJavac(javaHome);
