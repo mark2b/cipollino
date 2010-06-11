@@ -81,12 +81,12 @@ public class Main {
 			if (!osType.getFamily().equals(OSFamily.MAC)) {
 				File toolsJarFile = getToolsJarFile(getJavaHome());
 				if (!toolsJarFile.exists()) {
-					toolsJarFile = getToolsJarFile(getJavaHome()
-							.getParentFile());
+					File javaHome = getJavaHome().getParentFile();
+					toolsJarFile = getToolsJarFile(javaHome);
 					if (!toolsJarFile.exists()) {
 						throw new ErrorException(
 								org.cipollino.agent.error.ErrorCode.MissingToolsJar,
-								getJavaHome().getAbsolutePath());
+								javaHome.getAbsolutePath());
 					}
 				}
 				classLoader = new URLClassLoader(new URL[] { toolsJarFile
