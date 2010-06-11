@@ -1,16 +1,7 @@
 package org.cipollino.core.os;
 
-import org.cipollino.core.os.unix.LinuxUtils;
-import org.cipollino.core.os.unix.UnixUtils;
-import org.cipollino.core.os.windows.WindowsUtils;
-
 public enum OSType {
 	MACOS {
-
-		@Override
-		public OSUtils getOSUtils() {
-			return new UnixUtils();
-		}
 
 		@Override
 		protected boolean isCurrentOS() {
@@ -23,11 +14,6 @@ public enum OSType {
 		}
 	},
 	SOLARIS {
-
-		@Override
-		public OSUtils getOSUtils() {
-			return new UnixUtils();
-		}
 
 		@Override
 		protected boolean isCurrentOS() {
@@ -43,11 +29,6 @@ public enum OSType {
 	AIX {
 
 		@Override
-		public OSUtils getOSUtils() {
-			return new UnixUtils();
-		}
-
-		@Override
 		protected boolean isCurrentOS() {
 			return System.getProperty("os.name").equals("AIX");
 		}
@@ -58,11 +39,6 @@ public enum OSType {
 		}
 	},
 	HPUX {
-
-		@Override
-		public OSUtils getOSUtils() {
-			return new UnixUtils();
-		}
 
 		@Override
 		protected boolean isCurrentOS() {
@@ -77,11 +53,6 @@ public enum OSType {
 	LINUX {
 
 		@Override
-		public OSUtils getOSUtils() {
-			return new LinuxUtils();
-		}
-
-		@Override
 		protected boolean isCurrentOS() {
 			return System.getProperty("os.name").equals("Linux");
 		}
@@ -92,10 +63,6 @@ public enum OSType {
 		}
 	},
 	WINDOWS {
-		@Override
-		public OSUtils getOSUtils() {
-			return new WindowsUtils();
-		}
 
 		@Override
 		protected boolean isCurrentOS() {
@@ -110,19 +77,12 @@ public enum OSType {
 
 	abstract public OSFamily getFamily();
 
-	abstract public OSUtils getOSUtils();
-
 	public String getArch() {
 		return System.getProperty("os.arch");
 	}
 
 	public String getVersion() {
 		return System.getProperty("os.version");
-	}
-
-	@SuppressWarnings("unchecked")
-	public <T> T getOSUtils(Class<T> clazz) {
-		return (T) getOSUtils();
 	}
 
 	abstract protected boolean isCurrentOS();
