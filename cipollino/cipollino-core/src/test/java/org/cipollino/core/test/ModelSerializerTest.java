@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import org.cipollino.core.DIModule;
 import org.cipollino.core.error.ErrorException;
 import org.cipollino.core.schema.ActionType;
-import org.cipollino.core.schema.AgentType;
+import org.cipollino.core.schema.SystemType;
 import org.cipollino.core.xml.ModelSerializer;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -30,12 +30,12 @@ public class ModelSerializerTest {
 
 	@Test
 	public void testRead() throws Exception {
-		AgentType agentType = modelSerializer.read(new InputStreamReader(
+		SystemType modelType = modelSerializer.read(new InputStreamReader(
 				getClass().getResourceAsStream("/control-file1.xml")),
-				AgentType.class);
-		assertNotNull(agentType);
-		assertEquals(agentType.getTarget().size(), 1);
-		ActionType actionType = agentType.getTarget().get(0).getAction().get(0);
+				SystemType.class);
+		assertNotNull(modelType);
+		assertEquals(modelType.getTarget().size(), 1);
+		ActionType actionType = modelType.getTarget().get(0).getAction().get(0);
 		actionType.getScript().get(0);
 	}
 
@@ -43,6 +43,6 @@ public class ModelSerializerTest {
 	public void testReadBroken() throws Exception {
 		modelSerializer.read(new InputStreamReader(getClass()
 				.getResourceAsStream("/control-file1-broken.xml")),
-				AgentType.class);
+				SystemType.class);
 	}
 }

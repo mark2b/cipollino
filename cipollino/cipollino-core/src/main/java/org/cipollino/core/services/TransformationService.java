@@ -29,8 +29,8 @@ import org.apache.commons.io.IOUtils;
 import org.cipollino.core.error.ErrorException;
 import org.cipollino.core.inst.ClassTransformer;
 import org.cipollino.core.model.ActionDef;
-import org.cipollino.core.model.Agent;
 import org.cipollino.core.model.MethodDef;
+import org.cipollino.core.model.Model;
 import org.cipollino.core.model.ScriptDef;
 import org.cipollino.core.model.TargetDef;
 import org.cipollino.core.parsers.MethodParser;
@@ -41,7 +41,7 @@ import org.cipollino.core.runtime.ClassState;
 import org.cipollino.core.runtime.Runtime;
 import org.cipollino.core.runtime.Script;
 import org.cipollino.core.runtime.StartOptions;
-import org.cipollino.core.schema.AgentType;
+import org.cipollino.core.schema.SystemType;
 import org.cipollino.core.xml.AbstractX2JModelFactory;
 import org.cipollino.core.xml.ModelSerializer;
 import org.cipollino.core.xml.X2JModelFactoryFactory;
@@ -98,7 +98,7 @@ public class TransformationService {
 	 * @return list of affected classes
 	 */
 	private List<String> loadControlFile() {
-		Agent model = loadModel(options.getControlFile());
+		Model model = loadModel(options.getControlFile());
 		classPathService.updateClassPool(model.getClassPathDef());
 		List<String> affectedClasses = loadTargets(model);
 		return affectedClasses;
@@ -110,13 +110,15 @@ public class TransformationService {
 	 * @param inputFile
 	 * @return model
 	 */
-	private Agent loadModel(File inputFile) {
+	private Model loadModel(File inputFile) {
 		FileReader reader = null;
 		try {
 			reader = new FileReader(inputFile);
-			AgentType agentType = modelSerializer.read(reader, AgentType.class);
-			AbstractX2JModelFactory modelFactory = modelFactoryFactory.getFactory(agentType);
-			return modelFactory.createModel(agentType, Agent.class);
+			SystemType modelType = modelSerializer.read(reader,
+					SystemType.class);
+			AbstractX2JModelFactory modelFactory = modelFactoryFactory
+					.getFactory(modelType);
+			return modelFactory.createModel(modelType, Model.class);
 		} catch (FileNotFoundException e) {
 			throw new ErrorException(ControlFileNotFound, inputFile);
 		} finally {
@@ -134,7 +136,8 @@ public class TransformationService {
 				}
 			}
 			if (!classesToTransform.isEmpty()) {
-				instrumentation.retransformClasses(classesToTransform.toArray(new Class<?>[classesToTransform.size()]));
+				instrumentation.retransformClasses(classesToTransform
+						.toArray(new Class<?>[classesToTransform.size()]));
 			}
 		} catch (UnmodifiableClassException e) {
 			ClassCanNotBeTransformed.print(e.getMessage());
@@ -152,7 +155,8 @@ public class TransformationService {
 				}
 			}
 			if (!classesToTransform.isEmpty()) {
-				instrumentation.retransformClasses(classesToTransform.toArray(new Class<?>[classesToTransform.size()]));
+				instrumentation.retransformClasses(classesToTransform
+						.toArray(new Class<?>[classesToTransform.size()]));
 			}
 		} catch (UnmodifiableClassException e) {
 			ClassCanNotBeTransformed.print(e.getMessage());
@@ -166,11 +170,12 @@ public class TransformationService {
 	 * @param model
 	 * @return list of affected classes
 	 */
-	public List<String> loadTargets(Agent model) {
+	public List<String> loadTargets(Model model) {
 		List<String> affectedClasses = new ArrayList<String>();
 
 		// Class name to methods list map for new methods.
-		Map<String, List<MethodDef>> methodsMap = loadMethods(model.getTargets());
+		Map<String, List<MethodDef>> methodsMap = loadMethods(model
+				.getTargets());
 
 		// Mark unused transformed classes for delete
 		Set<String> targetClasses = runtime.getTargetClasses();
@@ -264,14 +269,16 @@ public class TransformationService {
 		return false;
 	}
 
-	private CtMethod findCtMethod(MethodDef methodDef, CtMethod[] methods) throws NotFoundException {
+	private CtMethod findCtMethod(MethodDef methodDef, CtMethod[] methods)
+			throws NotFoundException {
 		CtMethod method = null;
 		for (CtMethod ctMethod : methods) {
 			if (ctMethod.getName().equals(methodDef.getMethodName())) {
 				if (methodDef.getArguments().size() == 0) {
 					method = ctMethod;
 					break;
-				} else if (ctMethod.getParameterTypes().length == methodDef.getArguments().size()) {
+				} else if (ctMethod.getParameterTypes().length == methodDef
+						.getArguments().size()) {
 					method = ctMethod;
 					break;
 				}
@@ -287,11 +294,15 @@ public class TransformationService {
 				String className = createUniqueClassName();
 				CtClass ctSuperClass;
 				ctSuperClass = getCtClass(AbstractScript.class);
-				CtClass ctClass = classPathService.getClassPool().makeClass(className);
+				CtClass ctClass = classPathService.getClassPool().makeClass(
+						className);
 				ctClass.setSuperclass(ctSuperClass);
 				CtClass ctReturnType = getCtClass(Object.class);
-				CtMethod invokeMethod = CtNewMethod.make(ctReturnType, "invoke", new CtClass[] { getCtClass(CallContext.class) }, new CtClass[0],
-						ajustSourceCode(scriptDef, scriptDef.getSourceCode()), ctClass);
+				CtMethod invokeMethod = CtNewMethod.make(ctReturnType,
+						"invoke",
+						new CtClass[] { getCtClass(CallContext.class) },
+						new CtClass[0], ajustSourceCode(scriptDef, scriptDef
+								.getSourceCode()), ctClass);
 				ctClass.addMethod(invokeMethod);
 				Class<Script> clazz = ctClass.toClass();
 				runtime.registerImplClass(className, clazz);
@@ -307,7 +318,8 @@ public class TransformationService {
 	private String ajustSourceCode(ScriptDef scriptDef, String sourceCode) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("{");
-		builder.append("org.cipollino.core.runtime.CallContext callContext = $1;");
+		builder
+				.append("org.cipollino.core.runtime.CallContext callContext = $1;");
 		builder.append(sourceCode);
 		if (scriptDef.getAssignTo() == null) {
 			builder.append("return null;");

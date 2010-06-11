@@ -3,7 +3,7 @@ package org.cipollino.core.model;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Agent {
+public class Model {
 
 	private List<TargetDef> targets = new LinkedList<TargetDef>();
 
