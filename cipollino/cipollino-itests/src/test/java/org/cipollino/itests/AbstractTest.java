@@ -23,7 +23,6 @@ public abstract class AbstractTest {
 	protected final Properties properties = new Properties();
 
 	protected File getJavaHome() {
-		System.out.println("AbstractTest.getJavaHome() " + System.getProperty("java.home"));
 		File javaHome = new File(System.getProperty("java.home"));
 		if (javaHome.exists()) {
 			File javac = getJavac(javaHome);
@@ -191,7 +190,7 @@ public abstract class AbstractTest {
 		return context;
 	}
 
-	protected ProcessContext startTestAppWithAgen(String jar, String log,
+	protected ProcessContext startTestAppWithAgent(String jar, String log,
 			String controlFile) throws IOException {
 		File jarFile = new File(jar);
 		File logFile = new File(log);
