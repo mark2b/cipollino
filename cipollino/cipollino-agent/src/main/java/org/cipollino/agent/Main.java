@@ -104,12 +104,11 @@ public class Main {
 		File javaHome = getJavaHome();
 		File toolsJarFile = new File(javaHome, "lib/tools.jar");
 		if (!toolsJarFile.exists()) {
-			javaHome = javaHome.getParentFile();
-			toolsJarFile = new File(javaHome, "lib/tools.jar");
+			toolsJarFile = new File(javaHome, "../lib/tools.jar");
 			if (!toolsJarFile.exists()) {
 				throw new ErrorException(
 						org.cipollino.agent.error.ErrorCode.MissingToolsJar,
-						toolsJarFile.getAbsolutePath());
+						javaHome.getAbsolutePath());
 			}
 		}
 		return toolsJarFile;
