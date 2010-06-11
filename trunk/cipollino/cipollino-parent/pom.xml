@@ -377,5 +377,38 @@
 				</plugins>
 			</reporting>
 		</profile>
+		<profile>
+			<id>linux</id>
+			<activation>
+				<os>
+					<name>linux</name>
+				</os>
+			</activation>
+			<properties>
+				<jdk.home>${java.home}/..</jdk.home>
+			</properties>
+		</profile>
+		<profile>
+			<id>windows</id>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
+			<properties>
+				<jdk.home>${java.home}/..</jdk.home>
+			</properties>
+		</profile>
+		<profile>
+			<id>mac</id>
+			<activation>
+				<os>
+					<name>mac</name>
+				</os>
+			</activation>
+			<properties>
+				<jdk.home>${java.home}</jdk.home>
+			</properties>
+		</profile>
 	</profiles>
 </project>
