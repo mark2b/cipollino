@@ -102,11 +102,11 @@ public class Main {
 
 	private File getToolsJarFile() {
 		File javaHome = getJavaHome();
-		System.out.println("Main.getToolsJarFile() " + javaHome);
+		ErrorCode.Info.print("Main.getToolsJarFile() " + javaHome);
 		File toolsJarFile = new File(javaHome, "lib/tools.jar");
 		if (!toolsJarFile.exists()) {
 			javaHome.getParentFile();
-			System.out.println("Main.getToolsJarFile(1) " + javaHome);
+			ErrorCode.Info.print("Main.getToolsJarFile(2) " + javaHome);
 			toolsJarFile = new File(javaHome, "lib/tools.jar");
 			if (!toolsJarFile.exists()) {
 				throw new ErrorException(
