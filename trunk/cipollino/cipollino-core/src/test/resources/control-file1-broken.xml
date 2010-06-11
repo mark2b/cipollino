@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<c:agent xmlns:c="1http://cipollino.googlecode.com/cipollino/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<c:system xmlns:c="1http://cipollino.googlecode.com/cipollino/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<c:target>
 		<c:method name="a">
 		</c:method>
@@ -10,4 +10,4 @@
 			</c:script>
 		</c:action>
 	</c:target>
-</c:agent>
+</c:system>
