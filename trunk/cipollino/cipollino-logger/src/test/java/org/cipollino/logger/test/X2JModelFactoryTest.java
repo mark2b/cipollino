@@ -7,8 +7,8 @@ import java.io.InputStreamReader;
 
 import org.cipollino.core.DIModule;
 import org.cipollino.core.actions.Action;
-import org.cipollino.core.model.Agent;
-import org.cipollino.core.schema.AgentType;
+import org.cipollino.core.model.Model;
+import org.cipollino.core.schema.SystemType;
 import org.cipollino.core.schema.X2JModelFactory;
 import org.cipollino.core.xml.ModelSerializer;
 import org.cipollino.logger.actions.LoggerAction;
@@ -36,12 +36,12 @@ public class X2JModelFactoryTest {
 
 	@Test
 	public void parseTest() {
-		AgentType agentType = modelSerializer.read(new InputStreamReader(
+		SystemType modelType = modelSerializer.read(new InputStreamReader(
 				getClass().getResourceAsStream("/control-file1.xml")),
-				AgentType.class);
-		assertNotNull(agentType);
-		Agent agent = modelFactory.create(agentType);
-		Action action = agent.getTargets().get(0).getActions().get(0)
+				SystemType.class);
+		assertNotNull(modelType);
+		Model model = modelFactory.create(modelType);
+		Action action = model.getTargets().get(0).getActions().get(0)
 				.createAction();
 		assertTrue(action instanceof LoggerAction);
 	}

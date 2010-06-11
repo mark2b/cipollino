@@ -9,11 +9,11 @@ import java.util.List;
 
 import org.cipollino.core.DIModule;
 import org.cipollino.core.schema.ActionType;
-import org.cipollino.core.schema.AgentType;
 import org.cipollino.core.schema.ClassPathType;
 import org.cipollino.core.schema.MethodType;
 import org.cipollino.core.schema.PhaseType;
 import org.cipollino.core.schema.ScriptType;
+import org.cipollino.core.schema.SystemType;
 import org.cipollino.core.schema.TargetType;
 import org.cipollino.core.xml.ModelSerializer;
 import org.testng.annotations.BeforeClass;
@@ -61,19 +61,19 @@ public class ModelTest {
 
 	@Test
 	public void parseTest() {
-		AgentType agentType = modelSerializer.read(new InputStreamReader(
+		SystemType modelType = modelSerializer.read(new InputStreamReader(
 				getClass().getResourceAsStream("/control-file1.xml")),
-				AgentType.class);
-		assertNotNull(agentType);
+				SystemType.class);
+		assertNotNull(modelType);
 
-		ClassPathType classPathType = agentType.getClassPath();
+		ClassPathType classPathType = modelType.getCompiler().getClassPath();
 
 		assertEquals(classPathType.getClasses().get(0), "/classes");
 		assertEquals(classPathType.getDir().get(0), "/tmp");
 		assertEquals(classPathType.getJar().get(0), "/tmp/a.jar");
 		assertEquals(classPathType.getPath().get(0), "a.jar:b.jar");
 
-		List<TargetType> targetTypes = agentType.getTarget();
+		List<TargetType> targetTypes = modelType.getTarget();
 		TargetType targetType = targetTypes.get(0);
 
 		MethodType methodType = targetType.getMethod().get(0);

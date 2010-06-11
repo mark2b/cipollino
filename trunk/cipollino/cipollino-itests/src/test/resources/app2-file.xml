@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<c:agent xmlns:c="http://cipollino.googlecode.com/cipollino/1.0"
+<c:system xmlns:c="http://cipollino.googlecode.com/cipollino/1.0"
 	xmlns:l="http://cipollino.googlecode.com/cipollino-logger/1.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-	<c:classPath></c:classPath>
 	<c:target>
 		<c:method name="org.cipollino.itests.app2.Main.run1()" />
 
 		<c:action xsi:type="l:LoggerActionType" />
 	</c:target>
-</c:agent>
+</c:system>

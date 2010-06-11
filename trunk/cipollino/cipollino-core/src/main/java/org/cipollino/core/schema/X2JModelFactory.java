@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.cipollino.core.annotations.ModelFactory;
 import org.cipollino.core.model.ActionDef;
-import org.cipollino.core.model.Agent;
 import org.cipollino.core.model.ClassPathDef;
 import org.cipollino.core.model.MethodDef;
+import org.cipollino.core.model.Model;
 import org.cipollino.core.model.ScriptDef;
 import org.cipollino.core.model.TargetDef;
 import org.cipollino.core.xml.AbstractX2JModelFactory;
@@ -17,11 +17,14 @@ import com.google.inject.Singleton;
 @Singleton
 public class X2JModelFactory extends AbstractX2JModelFactory {
 
-	public Agent create(AgentType source) {
-		Agent target = new Agent();
+	public Model create(SystemType source) {
+		Model target = new Model();
 
-		target.setClassPathDef(createModel(source.getClassPath(),
-				ClassPathDef.class));
+		CompilerType compilerType = source.getCompiler();
+		if (compilerType != null) {
+			target.setClassPathDef(createModel(compilerType.getClassPath(),
+					ClassPathDef.class));
+		}
 
 		for (TargetType targetType : source.getTarget()) {
 			TargetDef targetDef = createModel(targetType, TargetDef.class);

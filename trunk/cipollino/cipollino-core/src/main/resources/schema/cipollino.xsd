@@ -2,14 +2,21 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://cipollino.googlecode.com/cipollino/1.0"
 	xmlns:c="http://cipollino.googlecode.com/cipollino/1.0" xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
 	elementFormDefault="qualified" jxb:version="2.0">
-	<element name="agent" type="c:AgentType" />
+	<element name="system" type="c:SystemType" />
 
-	<complexType name="AgentType">
+	<complexType name="SystemType">
 		<sequence>
-			<element name="classPath" type="c:ClassPathType" minOccurs="0"
+			<element name="compiler" type="c:CompilerType" minOccurs="0"
 				maxOccurs="1" />
 			<element name="target" type="c:TargetType" minOccurs="0"
 				maxOccurs="unbounded" />
+		</sequence>
+	</complexType>
+
+	<complexType name="CompilerType">
+		<sequence>
+			<element name="classPath" type="c:ClassPathType" minOccurs="0"
+				maxOccurs="1" />
 		</sequence>
 	</complexType>
 

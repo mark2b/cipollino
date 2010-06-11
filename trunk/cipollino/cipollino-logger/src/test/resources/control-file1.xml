@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<c:agent xmlns:c="http://cipollino.googlecode.com/cipollino/1.0"
+<c:system xmlns:c="http://cipollino.googlecode.com/cipollino/1.0"
 	xmlns:l="http://cipollino.googlecode.com/cipollino-logger/1.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<c:target>
@@ -9,4 +9,4 @@
 			<l:format phase="after"><![CDATA[<<< ${method} ${result}]]></l:format>
 		</c:action>
 	</c:target>
-</c:agent>
+</c:system>
