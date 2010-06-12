@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 import org.cipollino.core.error.ErrorException;
 import org.cipollino.core.model.MethodDef;
+import org.cipollino.core.model.ParameterDef;
 
 import com.google.inject.Singleton;
 
@@ -39,12 +40,23 @@ public class MethodParser {
 				throw new ErrorException(MethodNameNotFound, input);
 			}
 			method.setMethodName(methodName);
+			int parameterIndex = -1;
 			for (int i = 4; i <= matcher.groupCount(); i += 3) {
 				if (matcher.groupCount() >= i + 1) {
 					String argClassName = matcher.group(i);
 					String argName = matcher.group(i + 1);
 					if (argClassName != null && argName != null) {
-						method.getArguments().put(argName, argClassName);
+						parameterIndex++;
+						ParameterDef parameterDef = method.getParameters().get(
+								parameterIndex);
+						if (parameterDef == null) {
+							parameterDef = new ParameterDef();
+							parameterDef.setIndex(parameterIndex);
+							parameterDef.setName(argName);
+							method.getParameters().put(parameterIndex,
+									parameterDef);
+						}
+						parameterDef.setType(argClassName);
 					}
 				}
 			}
@@ -56,9 +68,10 @@ public class MethodParser {
 
 	private void normalizeMethod(MethodDef method) {
 		method.setClassName(normalizeClassName(method.getClassName()));
-		for (Entry<String, String> entry : method.getArguments().entrySet()) {
-			method.getArguments().put(entry.getKey(),
-					normalizeClassName(entry.getValue()));
+		for (Entry<Integer, ParameterDef> entry : method.getParameters()
+				.entrySet()) {
+			ParameterDef parameterDef = entry.getValue();
+			parameterDef.setType(normalizeClassName(parameterDef.getType()));
 		}
 	}
 

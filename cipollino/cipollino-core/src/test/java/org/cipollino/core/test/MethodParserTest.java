@@ -13,12 +13,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.cipollino.core.model.MethodDef;
+import org.cipollino.core.model.ParameterDef;
 import org.cipollino.core.parsers.MethodParser;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import au.com.bytecode.opencsv.CSVReader;
-
 
 public class MethodParserTest {
 
@@ -34,30 +34,33 @@ public class MethodParserTest {
 	}
 
 	@Test(dataProvider = "methods", enabled = true)
-	public void methodPatternTest(MethodDef method, String className, String methodName,
-			String params) {
+	public void methodPatternTest(MethodDef method, String className,
+			String methodName, String params) {
 		methodParser.parseMethod(method);
 		assertEquals(method.getClassName(), className);
 		assertEquals(method.getMethodName(), methodName);
 		String[] paramsPairs = params.split("\\s*,\\s*");
-		Iterator<Entry<String, String>> argumentsIt = method.getArguments().entrySet().iterator();
+		Iterator<Entry<Integer, ParameterDef>> parametersIt = method
+				.getParameters().entrySet().iterator();
 		for (String paramPair : paramsPairs) {
-			Entry<String, String> argument = argumentsIt.next();
+			Entry<Integer, ParameterDef> parameterDef = parametersIt.next();
 			String[] tokens = paramPair.split("\\s+");
-			assertEquals(argument.getValue(), tokens[0]);
-			assertEquals(argument.getKey(), tokens[1]);
+			assertEquals(parameterDef.getValue().getType(), tokens[0]);
+			assertEquals(parameterDef.getValue().getName(), tokens[1]);
 		}
 	}
 
 	@DataProvider(name = "classes")
 	Object[][] getClasses() {
-		return new String[][] { new String[] { "com.a.c.b.Class", "com.a.c.b.Class" },
+		return new String[][] {
+				new String[] { "com.a.c.b.Class", "com.a.c.b.Class" },
 				new String[] { "String", "String" } };
 	}
 
 	@DataProvider(name = "methods")
 	Iterator<Object[]> getMethods() throws IOException {
-		CSVReader reader = new CSVReader(new InputStreamReader(getClass().getResourceAsStream("/methods.csv")), '|');
+		CSVReader reader = new CSVReader(new InputStreamReader(getClass()
+				.getResourceAsStream("/methods.csv")), '|');
 		List<String[]> inputList = reader.readAll();
 		List<Object[]> outputList = new ArrayList<Object[]>();
 		for (String[] strings : inputList) {

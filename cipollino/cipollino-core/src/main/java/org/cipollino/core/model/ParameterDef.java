@@ -6,7 +6,9 @@ public class ParameterDef {
 
 	private String name;
 
-	private boolean updatable;
+	private String type;
+
+	private boolean updatable = false;
 
 	public int getIndex() {
 		return index;
@@ -22,6 +24,14 @@ public class ParameterDef {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public boolean isUpdatable() {
