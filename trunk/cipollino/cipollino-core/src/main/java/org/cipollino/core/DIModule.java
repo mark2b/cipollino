@@ -1,9 +1,9 @@
 package org.cipollino.core;
 
 import org.cipollino.core.annotations.ModelFactories;
-import org.cipollino.core.inst.ClassTransformer;
 import org.cipollino.core.runtime.Runtime;
 import org.cipollino.core.services.ClassPathService;
+import org.cipollino.core.services.ClassTransformerService;
 import org.cipollino.core.services.ControlFileService;
 import org.cipollino.core.services.MethodParserService;
 import org.cipollino.core.services.PropertiesService;
@@ -20,7 +20,7 @@ public class DIModule extends AbstractModule {
 	protected void configure() {
 		bind(ModelSerializer.class);
 		bind(Runtime.class).toInstance(Runtime.createRuntime());
-		bind(ClassTransformer.class);
+		bind(ClassTransformerService.class);
 		bind(MethodParserService.class);
 		bind(TransformationService.class);
 		bind(PropertiesService.class);

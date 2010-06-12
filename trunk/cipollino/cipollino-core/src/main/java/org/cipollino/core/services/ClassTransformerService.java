@@ -1,4 +1,4 @@
-package org.cipollino.core.inst;
+package org.cipollino.core.services;
 
 import static org.cipollino.core.error.ErrorCode.ClassNotFound;
 import static org.cipollino.core.error.ErrorCode.CompilationFailure;
@@ -23,13 +23,12 @@ import org.cipollino.core.model.MethodDef;
 import org.cipollino.core.runtime.ClassData;
 import org.cipollino.core.runtime.ClassState;
 import org.cipollino.core.runtime.Runtime;
-import org.cipollino.core.services.ClassPathService;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
-public class ClassTransformer implements ClassFileTransformer {
+public class ClassTransformerService implements ClassFileTransformer {
 
 	@Inject
 	private Runtime runtime;
