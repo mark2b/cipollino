@@ -3,9 +3,9 @@ package org.cipollino.core.test;
 import javassist.ClassPool;
 
 import org.cipollino.core.DIModule;
-import org.cipollino.core.inst.ClassTransformer;
 import org.cipollino.core.model.MethodDef;
 import org.cipollino.core.model.TargetDef;
+import org.cipollino.core.services.ClassTransformerService;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -17,7 +17,7 @@ import com.google.inject.Injector;
 public class TransformationTest {
 
 	@Inject
-	ClassTransformer transformer;
+	ClassTransformerService transformer;
 
 	@Inject
 	org.cipollino.core.runtime.Runtime runtime;

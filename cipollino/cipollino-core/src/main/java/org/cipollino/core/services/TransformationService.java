@@ -27,7 +27,6 @@ import javassist.NotFoundException;
 
 import org.apache.commons.io.IOUtils;
 import org.cipollino.core.error.ErrorException;
-import org.cipollino.core.inst.ClassTransformer;
 import org.cipollino.core.model.ActionDef;
 import org.cipollino.core.model.MethodDef;
 import org.cipollino.core.model.Model;
@@ -69,7 +68,7 @@ public class TransformationService {
 	private MethodParserService methodParser;
 
 	@Inject
-	private ClassTransformer classTransformer;
+	private ClassTransformerService classTransformer;
 
 	@Inject
 	private ControlFileService controlFileService;
