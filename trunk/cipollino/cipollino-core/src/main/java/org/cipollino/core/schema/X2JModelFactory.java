@@ -76,7 +76,7 @@ public class X2JModelFactory extends AbstractX2JModelFactory {
 		for (MethodParameterType parameterType : source.getParameter()) {
 			ParameterDef parameterDef = createModel(parameterType,
 					ParameterDef.class);
-			target.getParameters().put(parameterDef.getName(), parameterDef);
+			target.getParameters().put(parameterDef.getIndex(), parameterDef);
 		}
 		return target;
 	}

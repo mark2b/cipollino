@@ -9,7 +9,9 @@
 				__methodDef,$args,__methodDef.getTargetDef().getActions());
 		__runner.beforeMethod();
 		__runtime.pushRunner(__runner);
-		$2 = (String)__runner.getCallState().getParameters()[1];
+		<% for (ParameterDef  parameterDef : getMethodDef().getParameters().values()) {%>
+			$<%=parameterDef.getIndex() + 1%> = (<%=parameterDef.getType()%>)__runner.getCallState().getParameters()[<%=parameterDef.getIndex()%>];
+		<%}%>
 	} catch (java.lang.Throwable t) {
 		t.printStackTrace();
 	}

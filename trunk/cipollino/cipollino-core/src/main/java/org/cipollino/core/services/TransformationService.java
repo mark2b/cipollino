@@ -31,6 +31,7 @@ import org.cipollino.core.inst.ClassTransformer;
 import org.cipollino.core.model.ActionDef;
 import org.cipollino.core.model.MethodDef;
 import org.cipollino.core.model.Model;
+import org.cipollino.core.model.ParameterDef;
 import org.cipollino.core.model.ScriptDef;
 import org.cipollino.core.model.TargetDef;
 import org.cipollino.core.parsers.MethodParser;
@@ -262,6 +263,7 @@ public class TransformationService {
 			if (ctMethod != null) {
 				methodDef.setClassName(ctMethod.getDeclaringClass().getName());
 				methodDef.setSignature(ctMethod.getSignature());
+				updateMethodParameters(methodDef, ctMethod);
 				return true;
 			}
 			MethodNotFound.print(methodDef.getMethodName());
@@ -271,16 +273,33 @@ public class TransformationService {
 		return false;
 	}
 
+	private void updateMethodParameters(MethodDef methodDef, CtMethod ctMethod)
+			throws NotFoundException {
+		CtClass[] parameterTypes = ctMethod.getParameterTypes();
+
+		for (int i = 0; i < parameterTypes.length; i++) {
+			CtClass parameterType = parameterTypes[i];
+			ParameterDef parameterDef = methodDef.getParameters().get(i);
+			if (parameterDef == null) {
+				parameterDef = new ParameterDef();
+				parameterDef.setIndex(i);
+				parameterDef.setName("arg" + i);
+				methodDef.getParameters().put(i, parameterDef);
+			}
+			parameterDef.setType(parameterType.getName());
+		}
+	}
+
 	private CtMethod findCtMethod(MethodDef methodDef, CtMethod[] methods)
 			throws NotFoundException {
 		CtMethod method = null;
 		for (CtMethod ctMethod : methods) {
 			if (ctMethod.getName().equals(methodDef.getMethodName())) {
-				if (methodDef.getArguments().size() == 0) {
+				if (methodDef.getParameters().size() == 0) {
 					method = ctMethod;
 					break;
 				} else if (ctMethod.getParameterTypes().length == methodDef
-						.getArguments().size()) {
+						.getParameters().size()) {
 					method = ctMethod;
 					break;
 				}

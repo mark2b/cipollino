@@ -32,21 +32,5 @@ public class TransformationTest {
 	void addInterceptorTest() throws Exception {
 		MethodDef method = new MethodDef();
 		method.setName("String org.cipollino.core.test.data.Transformation1.concat(String s1, String s2)");
-		method.getArguments().put("s1", "java.lang.String");
-		method.getArguments().put("s2", "java.lang.String");
-
-		TargetDef targetDef = new TargetDef();
-		targetDef.getMethods().put(method.getName(), method);
-
-		ClassPool cp = ClassPool.getDefault();
-		// CtClass ctClass = cp.get(method.getClassName());
-		// transformer.addInterceptor(interceptor, ctClass);
-		//
-		// Class clazz = ctClass.toClass();
-		// Object instance = clazz.newInstance();
-		// Object r1 = clazz.getMethod(method.getMethodName(), new Class[] {
-		// String.class, String.class }).invoke(
-		// instance, new Object[] { "a", "b" });
-		//
 	}
 }

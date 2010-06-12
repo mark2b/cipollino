@@ -1,5 +1,6 @@
 package org.cipollino.core.model;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -22,9 +23,7 @@ public class MethodDef {
 
 	final private String uuid;
 
-	final private Map<String, String> arguments = new LinkedHashMap<String, String>();
-
-	final private Map<String, ParameterDef> parameters = new LinkedHashMap<String, ParameterDef>();
+	final private Map<Integer, ParameterDef> parameters = new HashMap<Integer, ParameterDef>();
 
 	public MethodDef() {
 		this.uuid = UUID.randomUUID().toString();
@@ -54,7 +53,7 @@ public class MethodDef {
 		this.methodName = methodName;
 	}
 
-	public Map<String, ParameterDef> getParameters() {
+	public Map<Integer, ParameterDef> getParameters() {
 		return parameters;
 	}
 
@@ -96,9 +95,5 @@ public class MethodDef {
 
 	public void setSignature(String signature) {
 		this.signature = signature;
-	}
-
-	public Map<String, String> getArguments() {
-		return arguments;
 	}
 }
