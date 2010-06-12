@@ -22,7 +22,9 @@ public class MethodDef {
 
 	final private String uuid;
 
-	private Map<String, String> arguments = new LinkedHashMap<String, String>();
+	final private Map<String, String> arguments = new LinkedHashMap<String, String>();
+
+	final private Map<String, ParameterDef> parameters = new LinkedHashMap<String, ParameterDef>();
 
 	public MethodDef() {
 		this.uuid = UUID.randomUUID().toString();
@@ -52,8 +54,8 @@ public class MethodDef {
 		this.methodName = methodName;
 	}
 
-	public Map<String, String> getArguments() {
-		return arguments;
+	public Map<String, ParameterDef> getParameters() {
+		return parameters;
 	}
 
 	public TargetDef getTargetDef() {
@@ -94,5 +96,9 @@ public class MethodDef {
 
 	public void setSignature(String signature) {
 		this.signature = signature;
+	}
+
+	public Map<String, String> getArguments() {
+		return arguments;
 	}
 }
