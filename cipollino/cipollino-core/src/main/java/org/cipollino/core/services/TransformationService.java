@@ -34,7 +34,6 @@ import org.cipollino.core.model.Model;
 import org.cipollino.core.model.ParameterDef;
 import org.cipollino.core.model.ScriptDef;
 import org.cipollino.core.model.TargetDef;
-import org.cipollino.core.parsers.MethodParser;
 import org.cipollino.core.runtime.AbstractScript;
 import org.cipollino.core.runtime.CallContext;
 import org.cipollino.core.runtime.ClassData;
@@ -67,7 +66,7 @@ public class TransformationService {
 	private Runtime runtime;
 
 	@Inject
-	private MethodParser methodParser;
+	private MethodParserService methodParser;
 
 	@Inject
 	private ClassTransformer classTransformer;

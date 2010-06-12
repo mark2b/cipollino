@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 
 import org.cipollino.core.model.MethodDef;
 import org.cipollino.core.model.ParameterDef;
-import org.cipollino.core.parsers.MethodParser;
+import org.cipollino.core.services.MethodParserService;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -22,11 +22,11 @@ import au.com.bytecode.opencsv.CSVReader;
 
 public class MethodParserTest {
 
-	MethodParser methodParser = new MethodParser();
+	MethodParserService methodParser = new MethodParserService();
 
 	@Test(dataProvider = "classes", enabled = false)
 	public void classPatternTest(String input, String expected) {
-		Pattern pattern = Pattern.compile(MethodParser.CLASS_PATTERN);
+		Pattern pattern = Pattern.compile(MethodParserService.CLASS_PATTERN);
 		Matcher matcher = pattern.matcher(input);
 		boolean found = matcher.find();
 		assertTrue(found);
