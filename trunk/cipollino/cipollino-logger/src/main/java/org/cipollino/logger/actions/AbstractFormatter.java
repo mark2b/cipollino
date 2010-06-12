@@ -1,8 +1,11 @@
 package org.cipollino.logger.actions;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.cipollino.core.model.ParameterDef;
 import org.cipollino.core.runtime.CallContext;
 import org.cipollino.core.services.ReplaceService;
 import org.cipollino.core.services.ReplaceService.ParseInfo;
@@ -58,11 +61,37 @@ public abstract class AbstractFormatter implements Formatter {
 	protected String formatParameters(CallContext callState) {
 		StringBuilder builder = new StringBuilder();
 		Object[] parameters = callState.getParameters();
+		Collection<ParameterDef> parameterDefs = callState.getMethodDef()
+				.getParameters().values();
+		if (parameterDefs.size() > 0) {
+			int i = 0;
+			for (Iterator<ParameterDef> iterator = parameterDefs.iterator(); iterator
+					.hasNext(); i++) {
+				ParameterDef parameterDef = iterator.next();
 
-		for (int i = 0; i < parameters.length; i++) {
-			builder.append("arg" + i + ":" + formatParameter(parameters[i]) + ", ");
+				if (parameterDef.getIndex() < parameters.length) {
+					appendParameter(builder, parameterDef.getName(),
+							parameterDef.getIndex(),
+							i == parameterDefs.size() - 1);
+				}
+			}
+		} else {
+			for (int i = 0; i < parameters.length; i++) {
+				appendParameter(builder, "arg" + i, i,
+						i == parameters.length - 1);
+			}
 		}
 		return builder.toString();
+	}
+
+	private void appendParameter(StringBuilder builder, String name, int index,
+			boolean last) {
+		builder.append(name);
+		builder.append(":");
+		builder.append(formatParameter(index));
+		if (!last) {
+			builder.append(", ");
+		}
 	}
 
 	abstract protected String formatParameter(Object object);

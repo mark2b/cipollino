@@ -22,7 +22,7 @@
 
 	<complexType name="MethodType">
 		<sequence>
-			<element name="parameters" type="c:MethodParameterType"
+			<element name="parameter" type="c:MethodParameterType"
 				minOccurs="0" maxOccurs="unbounded" />
 		</sequence>
 		<attribute name="name" type="string" />
@@ -47,6 +47,7 @@
 	<complexType name="MethodParameterType">
 		<attribute name="index" type="int" use="optional" default="0" />
 		<attribute name="name" type="string" use="required" />
+		<attribute name="updatable" type="boolean" default="false" />
 	</complexType>
 
 	<complexType name="ScriptType">

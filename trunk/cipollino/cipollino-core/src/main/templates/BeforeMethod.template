@@ -9,6 +9,7 @@
 				__methodDef,$args,__methodDef.getTargetDef().getActions());
 		__runner.beforeMethod();
 		__runtime.pushRunner(__runner);
+		$2 = (String)__runner.getCallState().getParameters()[1];
 	} catch (java.lang.Throwable t) {
 		t.printStackTrace();
 	}

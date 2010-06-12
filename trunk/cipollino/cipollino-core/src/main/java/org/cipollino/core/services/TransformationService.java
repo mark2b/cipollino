@@ -251,9 +251,11 @@ public class TransformationService {
 		methodParser.parseMethod(methodDef);
 		try {
 			CtClass ctClass = getCtClass(methodDef.getClassName());
+			// First find method in this class
 			CtMethod[] ctMethods = ctClass.getDeclaredMethods();
 			CtMethod ctMethod = findCtMethod(methodDef, ctMethods);
 			if (ctMethod == null) {
+				// Find method in the parent classes
 				ctMethods = ctClass.getMethods();
 				ctMethod = findCtMethod(methodDef, ctMethods);
 			}

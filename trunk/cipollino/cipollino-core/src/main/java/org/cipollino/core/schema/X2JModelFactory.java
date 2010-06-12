@@ -7,6 +7,7 @@ import org.cipollino.core.model.ActionDef;
 import org.cipollino.core.model.ClassPathDef;
 import org.cipollino.core.model.MethodDef;
 import org.cipollino.core.model.Model;
+import org.cipollino.core.model.ParameterDef;
 import org.cipollino.core.model.ScriptDef;
 import org.cipollino.core.model.TargetDef;
 import org.cipollino.core.xml.AbstractX2JModelFactory;
@@ -72,6 +73,19 @@ public class X2JModelFactory extends AbstractX2JModelFactory {
 	public MethodDef create(MethodType source) {
 		MethodDef target = new MethodDef();
 		target.setName(source.getName());
+		for (MethodParameterType parameterType : source.getParameter()) {
+			ParameterDef parameterDef = createModel(parameterType,
+					ParameterDef.class);
+			target.getParameters().put(parameterDef.getName(), parameterDef);
+		}
+		return target;
+	}
+
+	public ParameterDef create(MethodParameterType source) {
+		ParameterDef target = new ParameterDef();
+		target.setIndex(source.getIndex());
+		target.setName(source.getName());
+		target.setUpdatable(source.isUpdatable());
 		return target;
 	}
 
