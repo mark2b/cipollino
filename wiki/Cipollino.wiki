@@ -1,0 +1,11 @@
+= Introduction =
+
+Add your content here.
+
+
+= Core Features =
+
+Cipollino core module provides next functionality:
+  * Add interceptors (actions) to desired methods in phases: _before_, _after_, _exception_, _finally_.
+  * Add java code snippet to actions.
+  * Support call, instance, class, global contexts.
