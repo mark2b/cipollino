@@ -26,6 +26,7 @@ import javassist.CtNewMethod;
 import javassist.NotFoundException;
 
 import org.apache.commons.io.IOUtils;
+import org.cipollino.core.error.ErrorCode;
 import org.cipollino.core.error.ErrorException;
 import org.cipollino.core.model.ActionDef;
 import org.cipollino.core.model.MethodDef;
@@ -265,6 +266,8 @@ public class TransformationService {
 				return true;
 			}
 			MethodNotFound.print(methodDef.getMethodName());
+		} catch (ErrorException e) {
+			e.getErrorMessage().print(e.getArgs());
 		} catch (NotFoundException e) {
 			ClassNotFound.print(e.getMessage());
 		}
@@ -274,6 +277,13 @@ public class TransformationService {
 	private void updateMethodParameters(MethodDef methodDef, CtMethod ctMethod)
 			throws NotFoundException {
 		CtClass[] parameterTypes = ctMethod.getParameterTypes();
+
+		for (ParameterDef parameterDef : methodDef.getParameters().values()) {
+			if (parameterDef.getIndex() > parameterTypes.length - 1) {
+				throw new ErrorException(ErrorCode.IllegalParameterIndex,
+						parameterDef.getIndex(), methodDef.getMethodName());
+			}
+		}
 
 		for (int i = 0; i < parameterTypes.length; i++) {
 			CtClass parameterType = parameterTypes[i];
