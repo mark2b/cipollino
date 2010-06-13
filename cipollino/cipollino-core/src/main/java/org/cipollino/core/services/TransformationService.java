@@ -288,15 +288,13 @@ public class TransformationService {
 		}
 	}
 
-	private CtMethod findCtMethod(MethodDef methodDef, CtMethod[] methods)
+	private CtMethod findCtMethod(MethodDef methodDef, CtMethod[] ctMethods)
 			throws NotFoundException {
 		CtMethod method = null;
-		for (CtMethod ctMethod : methods) {
+		// Find exact method
+		for (CtMethod ctMethod : ctMethods) {
 			if (ctMethod.getName().equals(methodDef.getMethodName())) {
-				if (methodDef.getParameters().size() == 0 || !methodDef.isParametersTypeDeclared()) {
-					method = ctMethod;
-					break;
-				} else if (ctMethod.getParameterTypes().length == methodDef
+				if (ctMethod.getParameterTypes().length == methodDef
 						.getParameters().size()) {
 					CtClass[] parameterTypes = ctMethod.getParameterTypes();
 					method = ctMethod;
@@ -308,6 +306,19 @@ public class TransformationService {
 						}
 					}
 					break;
+				}
+			}
+		}
+		if (method == null) {
+			// If exact method not found take the first one in case parameters
+			// are not provided
+			for (CtMethod ctMethod : ctMethods) {
+				if (ctMethod.getName().equals(methodDef.getMethodName())) {
+					if (methodDef.getParameters().size() == 0
+							|| !methodDef.isParametersTypeDeclared()) {
+						method = ctMethod;
+						break;
+					}
 				}
 			}
 		}
