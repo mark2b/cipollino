@@ -45,7 +45,7 @@
 	</complexType>
 
 	<complexType name="MethodParameterType">
-		<attribute name="index" type="int" use="optional" default="0" />
+		<attribute name="index" type="int" use="required" />
 		<attribute name="name" type="string" use="required" />
 		<attribute name="updatable" type="boolean" default="false" />
 	</complexType>
