@@ -71,7 +71,10 @@ public class MethodParserService {
 		for (Entry<Integer, ParameterDef> entry : method.getParameters()
 				.entrySet()) {
 			ParameterDef parameterDef = entry.getValue();
-			parameterDef.setType(normalizeClassName(parameterDef.getType()));
+			if (parameterDef.getType() != null) {
+				parameterDef
+						.setType(normalizeClassName(parameterDef.getType()));
+			}
 		}
 	}
 

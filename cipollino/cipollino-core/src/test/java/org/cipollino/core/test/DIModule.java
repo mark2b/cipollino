@@ -11,6 +11,7 @@ public class DIModule extends AbstractModule {
 	protected void configure() {
 		try {
 			bind(Properties.class).toInstance(loadTestProperties());
+			bind(TestUtils.class);
 		} catch (IOException e) {
 			throw new RuntimeException(e.getMessage(), e);
 		}
