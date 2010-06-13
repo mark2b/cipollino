@@ -10,7 +10,7 @@
 			name="org.cipollino.itests.app1.Main.convertCalendar()" />
 		-->
 		<c:method name="org.cipollino.itests.app1.Main.concat()">
-			<c:parameters name="s1" index="0" />
+			<c:parameter name="s1" index="0" />
 		</c:method>
 
 		<c:action xsi:type="l:LoggerActionType" />

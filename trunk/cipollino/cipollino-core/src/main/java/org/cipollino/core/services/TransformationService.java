@@ -298,7 +298,15 @@ public class TransformationService {
 					break;
 				} else if (ctMethod.getParameterTypes().length == methodDef
 						.getParameters().size()) {
+					CtClass[] parameterTypes = ctMethod.getParameterTypes();
 					method = ctMethod;
+					for (int i = 0; i < parameterTypes.length; i++) {
+						if (!parameterTypes[i].getName().equals(
+								methodDef.getParameters().get(i).getType())) {
+							method = null;
+							break;
+						}
+					}
 					break;
 				}
 			}
