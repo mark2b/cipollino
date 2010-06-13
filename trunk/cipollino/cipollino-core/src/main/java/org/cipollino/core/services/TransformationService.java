@@ -293,7 +293,7 @@ public class TransformationService {
 		CtMethod method = null;
 		for (CtMethod ctMethod : methods) {
 			if (ctMethod.getName().equals(methodDef.getMethodName())) {
-				if (methodDef.getParameters().size() == 0) {
+				if (methodDef.getParameters().size() == 0 || !methodDef.isParametersTypeDeclared()) {
 					method = ctMethod;
 					break;
 				} else if (ctMethod.getParameterTypes().length == methodDef

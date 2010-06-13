@@ -95,4 +95,13 @@ public class MethodDef {
 	public void setSignature(String signature) {
 		this.signature = signature;
 	}
+
+	public boolean isParametersTypeDeclared() {
+		for (ParameterDef parameterDef : parameters.values()) {
+			if (parameterDef.getType() == null) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

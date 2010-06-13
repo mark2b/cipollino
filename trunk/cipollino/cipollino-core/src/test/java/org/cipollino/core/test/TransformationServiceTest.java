@@ -2,6 +2,7 @@ package org.cipollino.core.test;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -116,4 +117,28 @@ public class TransformationServiceTest {
 		assertEquals(parameterDef.getType(), "java.io.FilenameFilter");
 	}
 
+	@Test
+	public void loadMethodTest() throws IllegalArgumentException,
+			IllegalAccessException, InvocationTargetException,
+			NoSuchMethodException {
+		MethodDef methodDef = new MethodDef();
+		methodDef.setName("java.io.File.list()");
+
+		Boolean loaded = (Boolean) testUtils.getPrivateMethod(
+				transformationService, "loadMethod", MethodDef.class).invoke(
+				transformationService, methodDef);
+		assertTrue(loaded);
+
+		methodDef = new MethodDef();
+		methodDef.setName("java.io.File.list()");
+		ParameterDef parameterDef = new ParameterDef();
+		parameterDef.setName("p1");
+		parameterDef.setIndex(0);
+		methodDef.getParameters().put(0, parameterDef);
+
+		loaded = (Boolean) testUtils.getPrivateMethod(transformationService,
+				"loadMethod", MethodDef.class).invoke(transformationService,
+				methodDef);
+		assertTrue(loaded);
+	}
 }
