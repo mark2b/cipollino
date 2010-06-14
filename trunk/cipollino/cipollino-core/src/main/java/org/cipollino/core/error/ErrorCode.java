@@ -111,7 +111,12 @@ public enum ErrorCode implements ErrorMessage {
 	 * 
 	 */
 	@Message(code = "00509", message = "Class Path not found [%s].")
-	ClassPathNotFound;
+	ClassPathNotFound,
+	/**
+	 * 
+	 */
+	@Message(code = "00510", message = "Illegal parameter's index [%d] for method [%s].")
+	IllegalParameterIndex;
 
 	private final static LogManager MANAGER = new LogManager(ErrorCode.class);
 

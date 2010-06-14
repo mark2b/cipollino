@@ -33,6 +33,7 @@ public abstract class AbstractFormatter implements Formatter {
 			while ((index = builder.indexOf(placeHolder, fromIndex)) >= 0) {
 				int endIndex = index + entry.getValue().length();
 				String value = getValueFor(entry.getKey(), callState);
+
 				builder.replace(index, endIndex, value);
 				fromIndex = endIndex;
 			}
@@ -48,10 +49,27 @@ public abstract class AbstractFormatter implements Formatter {
 			value = formatParameters(callState);
 		} else if ("result".equals(key)) {
 			value = formatResult(callState);
+		} else if ("exception".equals(key)) {
+			value = formatException(callState);
 		} else {
 			value = callState.getContext().get(key);
 		}
 		return null == value ? "null" : value.toString();
+	}
+
+	private String formatException(CallContext callState) {
+		StringBuilder builder = new StringBuilder();
+		if (callState.isFailed()) {
+			Exception exception = callState.getException();
+			builder.append(exception.getClass().getName());
+			String message = exception.getMessage();
+			if (message != null) {
+				builder.append(" (");
+				builder.append(exception.getMessage());
+				builder.append(")");
+			}
+		}
+		return builder.toString();
 	}
 
 	protected String formatMethodName(CallContext callState) {
@@ -69,18 +87,19 @@ public abstract class AbstractFormatter implements Formatter {
 			ParameterDef parameterDef = iterator.next();
 
 			if (parameterDef.getIndex() < parameters.length) {
-				appendParameter(builder, parameterDef.getName(), parameterDef
-						.getIndex(), i == parameterDefs.size() - 1);
+				appendParameter(builder, parameterDef.getName(),
+						parameters[parameterDef.getIndex()], i == parameterDefs
+								.size() - 1);
 			}
 		}
 		return builder.toString();
 	}
 
-	private void appendParameter(StringBuilder builder, String name, int index,
-			boolean last) {
+	private void appendParameter(StringBuilder builder, String name,
+			Object value, boolean last) {
 		builder.append(name);
 		builder.append(":");
-		builder.append(formatParameter(index));
+		builder.append(formatParameter(value));
 		if (!last) {
 			builder.append(", ");
 		}

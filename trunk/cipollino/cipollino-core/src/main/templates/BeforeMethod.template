@@ -9,9 +9,11 @@
 				__methodDef,$args,__methodDef.getTargetDef().getActions());
 		__runner.beforeMethod();
 		__runtime.pushRunner(__runner);
-		<% for (ParameterDef  parameterDef : getMethodDef().getParameters().values()) {%>
-			$<%=parameterDef.getIndex() + 1%> = (<%=parameterDef.getType()%>)__runner.getCallState().getParameters()[<%=parameterDef.getIndex()%>];
-		<%}%>
+		<% for (ParameterDef  parameterDef : getMethodDef().getParameters().values()) {
+			if (parameterDef.isUpdatable()) {%>
+				$<%=parameterDef.getIndex() + 1%> = (<%=parameterDef.getType()%>)__runner.getCallState().getParameters()[<%=parameterDef.getIndex()%>];
+			<%}
+		}%>
 	} catch (java.lang.Throwable t) {
 		t.printStackTrace();
 	}

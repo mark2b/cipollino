@@ -4,9 +4,9 @@ import org.cipollino.core.runtime.CallContext;
 
 public interface Action {
 
-	void executeBefore(CallContext callState);
+	void executeBefore(CallContext callContext);
 
-	void executeAfter(CallContext callState);
+	void executeAfter(CallContext callContext);
 
-	void executeOnException(CallContext callState);
+	void executeOnException(CallContext callContext);
 }
