@@ -315,7 +315,9 @@ public class TransformationService {
 							break;
 						}
 					}
-					break;
+					if (method == null) {
+						continue;
+					}
 				}
 			}
 		}

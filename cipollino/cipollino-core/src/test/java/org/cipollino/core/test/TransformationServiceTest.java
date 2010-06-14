@@ -130,7 +130,7 @@ public class TransformationServiceTest {
 		assertTrue(loaded);
 
 		methodDef = new MethodDef();
-		methodDef.setName("java.io.File.list()");
+		methodDef.setName("java.io.File.list(java.io.FilenameFilter filter)");
 		ParameterDef parameterDef = new ParameterDef();
 		parameterDef.setName("p1");
 		parameterDef.setIndex(0);
