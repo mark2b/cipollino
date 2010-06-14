@@ -10,13 +10,6 @@ public class Main {
 		app.convert(new Date());
 		app.convertCalendar(Calendar.getInstance());
 		app.concat("Hello,", "World !!!");
-
-		try {
-			app.concat(null, "World !!!");
-		} catch (Exception e) {
-			e.printStackTrace();
-			// TODO: handle exception
-		}
 	}
 
 	public String convert(Date date) {
@@ -28,6 +21,6 @@ public class Main {
 	}
 
 	public String concat(String s1, String s2) {
-		return s1.toLowerCase() + " " + s2;
+		return s1 + " " + s2;
 	}
 }
