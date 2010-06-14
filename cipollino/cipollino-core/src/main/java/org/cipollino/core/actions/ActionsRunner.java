@@ -19,7 +19,8 @@ public class ActionsRunner {
 
 	private final CallContext callContext = new CallContext();
 
-	public ActionsRunner(Object target, MethodDef methodDef, Object[] parameters, List<ActionDef> actionsDef) {
+	public ActionsRunner(Object target, MethodDef methodDef,
+			Object[] parameters, List<ActionDef> actionsDef) {
 
 		for (ActionDef actionDef : actionsDef) {
 			AbstractAction action = (AbstractAction) actionDef.createAction();
@@ -41,7 +42,8 @@ public class ActionsRunner {
 			try {
 				action.executeBefore(callContext);
 			} catch (Exception e) {
-				ActionExecutionFailed.print("before", callContext.getMethodDef().getMethodName(), e);
+				ActionExecutionFailed.print("before", callContext
+						.getMethodDef().getMethodName(), e);
 				return false;
 			}
 		}
@@ -53,7 +55,8 @@ public class ActionsRunner {
 			try {
 				action.executeAfter(callContext);
 			} catch (Exception e) {
-				ActionExecutionFailed.print("after", callContext.getMethodDef().getMethodName(), e);
+				ActionExecutionFailed.print("after", callContext.getMethodDef()
+						.getMethodName(), e);
 				return false;
 			}
 		}
@@ -61,6 +64,14 @@ public class ActionsRunner {
 	}
 
 	public void onException() {
+		for (Action action : actions) {
+			try {
+				action.executeOnException(callContext);
+			} catch (Exception e) {
+				ActionExecutionFailed.print("exception", callContext
+						.getMethodDef().getMethodName(), e);
+			}
+		}
 	}
 
 	public void onFinally() {

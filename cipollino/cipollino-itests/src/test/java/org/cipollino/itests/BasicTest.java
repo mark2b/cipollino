@@ -22,7 +22,7 @@ public class BasicTest extends AbstractTest {
 		assertTrue(logLines.get(0).endsWith("Agent was started."));
 	}
 
-	@Test(enabled = true)
+	@Test(enabled = false)
 	public void testAgentConnectWithWrongProcess() throws Exception {
 
 		ProcessContext agentContext = startAgentApp(
@@ -33,7 +33,7 @@ public class BasicTest extends AbstractTest {
 		assertEquals(exitValue, 201);
 	}
 
-	@Test(enabled = true)
+	@Test(enabled = false)
 	public void testAgentConnect() throws Exception {
 
 		ProcessContext appContext = startTestApp("target/app2.jar",
@@ -58,7 +58,7 @@ public class BasicTest extends AbstractTest {
 		assertTrue(findInLog(agentLogLines, "Connected."));
 	}
 
-	@Test(enabled = true)
+	@Test(enabled = false)
 	public void testAgentAlreadyConnected() throws Exception {
 
 		ProcessContext appContext = startTestApp("target/app2.jar",
