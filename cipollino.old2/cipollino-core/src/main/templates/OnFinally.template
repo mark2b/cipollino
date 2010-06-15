@@ -1,8 +1,0 @@
-<%@ jet class="OnFinallyGenerator" package="com.google.cipollino.core.codegen" skeleton="Codegen.skeleton"%>
-{
-	com.google.cipollino.core.runtime.Runtime __runtime = com.google.cipollino.core.runtime.Runtime.getInstance();
-
-	com.google.cipollino.core.actions.ActionsRunner __runner = __runtime.popRunner();
-
-	__runner.onFinally();
-}

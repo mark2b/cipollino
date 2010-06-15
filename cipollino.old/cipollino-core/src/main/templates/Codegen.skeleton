@@ -1,7 +1,0 @@
-package PACKAGE;
-
-public class CLASS extends AbstractGenerator {
-    public String generate() {
-        return "";
-    }
-}
