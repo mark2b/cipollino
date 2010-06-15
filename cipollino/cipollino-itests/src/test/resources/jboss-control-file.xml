@@ -4,10 +4,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<c:compiler>
 		<c:classPath>
-			<!--
-				<c:classes>${jboss.server.home.dir}/deploy/jmx-console.war/WEB-INF/classes/</c:classes>
-				<c:dir>${jboss.home.dir}/common/lib</c:dir>
-			-->
+			<c:classes>${jboss.server.home.dir}/deploy/jmx-console.war/WEB-INF/classes/</c:classes>
+			<c:dir>${jboss.home.dir}/common/lib</c:dir>
 		</c:classPath>
 	</c:compiler>
 	<c:target>

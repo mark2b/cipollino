@@ -130,5 +130,14 @@
 				</dependency>
 			</dependencies>
 		</profile>
+		<profile>
+			<id>jboss-apptype</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.jboss.logging</groupId>
+					<artifactId>jboss-logging-log4j</artifactId>
+				</dependency>
+			</dependencies>
+		</profile>
 	</profiles>
 </project>
