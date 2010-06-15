@@ -414,5 +414,17 @@
 				<jdk.home>${java.home}</jdk.home>
 			</properties>
 		</profile>
+		
+		<profile>
+			<id>promote</id>
+			<modules>
+				<module>../cipollino-core</module>
+				<module>../cipollino-logger</module>
+				<module>../cipollino-agent</module>
+				<module>../cipollino-build</module>
+				<module>../cipollino-build/dependencies</module>
+			</modules>
+		</profile>
+		
 	</profiles>
 </project>
