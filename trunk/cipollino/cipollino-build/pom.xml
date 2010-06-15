@@ -42,5 +42,15 @@
 				<module>./bundle</module>
 			</modules>
 		</profile>
+		<profile>
+			<id>promote</id>
+			<modules>
+				<module>../cipollino-parent</module>
+				<module>./dependencies</module>
+				<module>../cipollino-core</module>
+				<module>../cipollino-logger</module>
+				<module>../cipollino-agent</module>
+			</modules>
+		</profile>
 	</profiles>
 </project>
