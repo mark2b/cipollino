@@ -3,7 +3,7 @@
 	<parent>
 		<artifactId>cipollino-parent</artifactId>
 		<groupId>org.cipollino</groupId>
-		<version>0.2</version>
+		<version>0.3-SNAPSHOT</version>
 		<relativePath>../cipollino-parent</relativePath>
 	</parent>
 	<artifactId>cipollino-logger</artifactId>
