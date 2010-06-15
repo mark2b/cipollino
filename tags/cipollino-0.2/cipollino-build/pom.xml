@@ -1,0 +1,45 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.cipollino</groupId>
+		<artifactId>cipollino-parent</artifactId>
+		<version>0.2</version>
+		<relativePath>../cipollino-parent</relativePath>
+	</parent>
+	<artifactId>cipollino-build</artifactId>
+	<packaging>pom</packaging>
+	<name>Cipollino :: Build</name>
+
+	<profiles>
+		<profile>
+			<id>code-quality</id>
+			<modules>
+				<module>../cipollino-core</module>
+				<module>../cipollino-logger</module>
+				<module>../cipollino-agent</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>build-all</id>
+			<modules>
+				<module>../cipollino-parent</module>
+				<module>./dependencies</module>
+				<module>../cipollino-core</module>
+				<module>../cipollino-logger</module>
+				<module>../cipollino-agent</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>build-devenv</id>
+			<modules>
+				<module>./bundle</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>build-bundle</id>
+			<modules>
+				<module>./bundle</module>
+			</modules>
+		</profile>
+	</profiles>
+</project>

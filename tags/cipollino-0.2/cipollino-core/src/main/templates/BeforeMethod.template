@@ -1,0 +1,20 @@
+<%@ jet class="BeforeMethodGenerator" package="org.cipollino.core.codegen" skeleton="Codegen.skeleton"%>
+{
+	try {
+		org.cipollino.core.runtime.Runtime __runtime = org.cipollino.core.runtime.Runtime.getInstance();
+		org.cipollino.core.model.MethodDef __methodDef=(org.cipollino.core.model.MethodDef) __runtime.getElement("<%=getMethodDef().getUuid()%>");
+		org.cipollino.core.actions.ActionsRunner __runner = 
+			new org.cipollino.core.actions.ActionsRunner(
+				<%=getMethodDef().isStaticMethod()?"null":"$0"%>,
+				__methodDef,$args,__methodDef.getTargetDef().getActions());
+		__runner.beforeMethod();
+		__runtime.pushRunner(__runner);
+		<% for (ParameterDef  parameterDef : getMethodDef().getParameters().values()) {
+			if (parameterDef.isUpdatable()) {%>
+				$<%=parameterDef.getIndex() + 1%> = (<%=parameterDef.getType()%>)__runner.getCallState().getParameters()[<%=parameterDef.getIndex()%>];
+			<%}
+		}%>
+	} catch (java.lang.Throwable t) {
+		t.printStackTrace();
+	}
+}

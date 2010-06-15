@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<c:system xmlns:c="http://cipollino.googlecode.com/cipollino/1.0"
+	xmlns:l="http://cipollino.googlecode.com/cipollino-logger/1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<c:target>
+		<c:method name="org.cipollino.itests.app1.Main.concat()" />
+
+		<c:action>
+			<c:script phase="before">
+				<![CDATA[
+					callContext.getGlobalContext().put("aaa", "1");
+					callContext.getClassContext().put("bbb", "2");
+					callContext.getInstanceContext().put("ccc", "3");
+				]]>
+			</c:script>
+			<c:script phase="after">
+				<![CDATA[
+					System.out.println(callContext.getGlobalContext().get("aaa"));
+					System.out.println(callContext.getClassContext().get("bbb"));
+					System.out.println(callContext.getInstanceContext().get("ccc"));
+				]]>
+			</c:script>
+		</c:action>
+	</c:target>
+</c:system>

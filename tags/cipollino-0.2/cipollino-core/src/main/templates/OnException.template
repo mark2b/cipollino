@@ -1,0 +1,12 @@
+<%@ jet class="OnExceptionGenerator" package="org.cipollino.core.codegen" skeleton="Codegen.skeleton"%>
+{
+	try {
+		org.cipollino.core.runtime.Runtime __runtime = org.cipollino.core.runtime.Runtime.getInstance();
+		org.cipollino.core.actions.ActionsRunner __runner = __runtime.peekRunner();
+		__runner.getCallState().setException($e);
+		__runner.onException();
+	} catch (java.lang.Throwable t) {
+		t.printStackTrace();
+	}
+	throw $e;
+}

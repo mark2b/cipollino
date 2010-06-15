@@ -1,0 +1,9 @@
+package PACKAGE;
+
+import org.cipollino.core.model.*;
+
+public class CLASS extends AbstractGenerator {
+    public String generate() {
+        return "";
+    }
+}

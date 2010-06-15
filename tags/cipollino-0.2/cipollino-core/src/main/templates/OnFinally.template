@@ -1,0 +1,10 @@
+<%@ jet class="OnFinallyGenerator" package="org.cipollino.core.codegen" skeleton="Codegen.skeleton"%>
+{
+	try {
+		org.cipollino.core.runtime.Runtime __runtime = org.cipollino.core.runtime.Runtime.getInstance();
+		org.cipollino.core.actions.ActionsRunner __runner = __runtime.popRunner();
+		__runner.onFinally();
+	} catch (java.lang.Throwable t) {
+		t.printStackTrace();
+	}
+}
