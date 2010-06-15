@@ -19,6 +19,11 @@
 			<username>deploy</username>
 			<password>deploy</password>
 		</server>
+		<server>
+			<id>intellibird.nexus.release</id>
+			<username>deploy</username>
+			<password>deploy</password>
+		</server>
 	</servers>
 
 	<activeProfiles>
