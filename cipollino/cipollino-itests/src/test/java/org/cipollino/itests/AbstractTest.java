@@ -159,7 +159,8 @@ public abstract class AbstractTest {
 		File logFile = new File("target/cipollino.log");
 		logFile.delete();
 
-		Process process = startJavaProcess("-Dlog4j.configuration="
+		Process process = startJavaProcess("-Dcipollino.home="
+				+ getProductHome().getAbsolutePath(), "-Dlog4j.configuration="
 				+ getLog4jXml().toURI().toURL(), "-Dcipollino.log.file="
 				+ logFile.getAbsolutePath(), "-jar", jarFile.getAbsolutePath(),
 				"--file", controlFile, "--pid", pid);
@@ -178,7 +179,8 @@ public abstract class AbstractTest {
 
 		logFile.delete();
 
-		Process process = startJavaProcess("-Dlog.file="
+		Process process = startJavaProcess("-Dcipollino.home="
+				+ getProductHome().getAbsolutePath(), "-Dlog.file="
 				+ logFile.getAbsolutePath(), "-jar", jarFile.getAbsolutePath());
 		String pid = getProcesses().get(jarFile.getAbsolutePath());
 		assertNotNull(pid);

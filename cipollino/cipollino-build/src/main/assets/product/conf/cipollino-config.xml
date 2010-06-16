@@ -1,0 +1,3 @@
+<configuration>
+	<dependency>${lib}/cipollino-logger.jar</dependency>
+</configuration>

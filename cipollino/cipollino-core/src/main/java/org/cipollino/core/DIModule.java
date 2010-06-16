@@ -4,6 +4,7 @@ import org.cipollino.core.annotations.ModelFactories;
 import org.cipollino.core.runtime.Runtime;
 import org.cipollino.core.services.ClassPathService;
 import org.cipollino.core.services.ClassTransformerService;
+import org.cipollino.core.services.ConfigurationService;
 import org.cipollino.core.services.ControlFileService;
 import org.cipollino.core.services.MethodParserService;
 import org.cipollino.core.services.PropertiesService;
@@ -18,6 +19,8 @@ public class DIModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
+		bind(ConfigurationService.class).toInstance(
+				ConfigurationService.createService());
 		bind(ModelSerializer.class);
 		bind(Runtime.class).toInstance(Runtime.createRuntime());
 		bind(ClassTransformerService.class);

@@ -8,7 +8,11 @@ import static org.cipollino.agent.error.ErrorCode.ControlFileMissing;
 import static org.cipollino.agent.error.ErrorCode.ControlFileNotFound;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.instrument.Instrumentation;
+import java.util.Iterator;
+import java.util.List;
+import java.util.jar.JarFile;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -20,10 +24,13 @@ import org.cipollino.core.DI;
 import org.cipollino.core.error.ErrorCode;
 import org.cipollino.core.error.ErrorException;
 import org.cipollino.core.runtime.StartOptions;
+import org.cipollino.core.services.ConfigurationService;
+import org.cipollino.core.services.PropertiesService;
 import org.cipollino.core.services.TransformationService;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.Module;
 
 public class Agent {
 
@@ -40,6 +47,8 @@ public class Agent {
 			if (isAlreadyLoaded()) {
 				throw new ErrorException(AgentAlreadyConnected);
 			}
+			loadDependencies(instrumentation);
+
 			initDI();
 			buildArgsOptions();
 			parseArgs(argsLine);
@@ -56,11 +65,38 @@ public class Agent {
 		}
 	}
 
-	private void initDI() {
-		final Injector injector = DI.createInjector(
-				new org.cipollino.core.DIModule(),
-				new org.cipollino.logger.DIModule());
+	private void loadDependencies(Instrumentation instrumentation)
+			throws IOException {
+		ConfigurationService configurationService = ConfigurationService
+				.createService();
+		List<String> dependencies = configurationService.getDependencies();
+		for (String dependency : dependencies) {
+			File file = new File(dependency);
+			if (file.exists()) {
+				instrumentation.appendToSystemClassLoaderSearch(new JarFile(
+						file));
+			}
+		}
+	}
+
+	private void initDI() throws Exception {
+		Module[] modules = loadModules();
+		final Injector injector = DI.createInjector(modules);
 		injector.injectMembers(this);
+	}
+
+	private Module[] loadModules() throws Exception {
+		PropertiesService propertiesService = new PropertiesService();
+		List<String> modulesClassNames = propertiesService
+				.getProperties("di.module");
+		Module[] modules = new Module[modulesClassNames.size()];
+		Iterator<String> classNameIterator = modulesClassNames.iterator();
+		for (int i = 0; i < modules.length; i++) {
+			modules[i] = (Module) getClass().getClassLoader().loadClass(
+					classNameIterator.next()).newInstance();
+
+		}
+		return modules;
 	}
 
 	protected void parseArgs(String argsLine) {
