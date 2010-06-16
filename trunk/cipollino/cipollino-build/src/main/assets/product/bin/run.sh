@@ -13,6 +13,6 @@ if [ "x$JAVA" = "x" ]; then
     fi
 fi
 
-JAVA_OPTS="-Dlog4j.configuration=file:$CIPOLLINO_HOME/conf/cipollino-log4j.xml -Dcipollino.log.file=$CIPOLLINO_HOME/log/cipollino.log"
+JAVA_OPTS="-Dcipollino.home=$CIPOLLINO_HOME -Dlog4j.configuration=file:$CIPOLLINO_HOME/conf/cipollino-log4j.xml -Dcipollino.log.file=$CIPOLLINO_HOME/log/cipollino.log"
 
 $JAVA $JAVA_OPTS -jar $CIPOLLINO_HOME/lib/cipollino-agent.jar $*

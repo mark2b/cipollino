@@ -61,7 +61,7 @@ public class PropertiesService {
 		return values.size() > 0 ? values.get(0) : null;
 	}
 
-	private List<String> getProperties(String key) {
+	public List<String> getProperties(String key) {
 		List<String> list = new ArrayList<String>();
 		for (Properties properties : propertiesList) {
 			String value = (String) properties.get(key);

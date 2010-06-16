@@ -3,7 +3,7 @@ set "DIRNAME=%~dp0%"
 
 set CIPOLLINO_HOME=%DIRNAME%..
 
-set JAVA_OPTS=-Dlog4j.configuration=file:%CIPOLLINO_HOME%/conf/cipollino-log4j.xml -Dcipollino.log.file=%CIPOLLINO_HOME%/log/cipollino.log
+set JAVA_OPTS="-Dcipollino.home=%CIPOLLINO_HOME% -Dlog4j.configuration=file:%CIPOLLINO_HOME%/conf/cipollino-log4j.xml -Dcipollino.log.file=%CIPOLLINO_HOME%/log/cipollino.log"
 
 if "x%JAVA_HOME%" == "x" (
   set  JAVA=java

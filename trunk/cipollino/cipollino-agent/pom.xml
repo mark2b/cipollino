@@ -56,12 +56,12 @@
 		<dependency>
 			<groupId>org.cipollino</groupId>
 			<artifactId>cipollino-core</artifactId>
-		</dependency>
+		</dependency><!--
 		<dependency>
 			<groupId>org.cipollino</groupId>
 			<artifactId>cipollino-logger</artifactId>
 		</dependency>
-		<dependency>
+		--><dependency>
 			<groupId>org.cipollino</groupId>
 			<artifactId>cipollino-dependencies</artifactId>
 			<version>${project.version}</version>
